@@ -48,6 +48,10 @@ class MyApp extends StatelessWidget {
           ),
           centerTitle: true,
         ),
+        navigationBarTheme: NavigationBarThemeData(
+            backgroundColor: Colors.white,
+            indicatorColor: const Color(0xff0357AD),
+            surfaceTintColor: Colors.white),
         useMaterial3: true,
       ),
       initialRoute: '/',

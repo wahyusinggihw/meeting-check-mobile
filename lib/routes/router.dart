@@ -3,6 +3,9 @@ import 'package:meeting_check/views/bottom_navbar.dart';
 import 'package:meeting_check/views/profile_screen.dart';
 import 'package:meeting_check/views/qr_screen.dart';
 import 'package:meeting_check/views/detail_rapat.dart';
+import 'package:meeting_check/views/qrsuccess_screen.dart';
+import 'package:meeting_check/views/splash_screen.dart';
+import 'package:meeting_check/views/qrerror_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -12,13 +15,23 @@ class RouteGenerator {
             builder: (_) => const MyHomePage(
                   title: 'MeetingCheck',
                 ));
-      case '/rapat':
-        return MaterialPageRoute(builder: (_) => const QrScreen());
+      case '/splash':
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case '/qr-screen':
+        return MaterialPageRoute(
+            builder: (context) => const QrScreen(), settings: settings);
       case '/profile':
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
       case '/detail-rapat':
         return MaterialPageRoute(
             builder: (context) => const DetailRapat(), settings: settings);
+      // error
+      case '/error-qr':
+        return MaterialPageRoute(
+            builder: (_) => const QrErrorScreen(), settings: settings);
+      case '/success-qr':
+        return MaterialPageRoute(
+            builder: (_) => const QrSuccessScreen(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => const MyHomePage(

@@ -5,20 +5,15 @@ class QrScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+
     return Scaffold(
         body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/scanqr');
-            },
-            child: Container(
-              child: const Text('Scan QR'),
-            ),
-          ),
+          Text(args['qr']),
         ],
       ),
     ));
