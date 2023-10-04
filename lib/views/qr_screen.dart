@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class RapatScreen extends StatelessWidget {
-  const RapatScreen({super.key});
+class QrScreen extends StatelessWidget {
+  const QrScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
