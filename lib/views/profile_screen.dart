@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meeting_check/views/colors.dart';
+import 'package:meeting_check/views/widgets/button.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -39,23 +40,11 @@ class ProfileScreen extends StatelessWidget {
           userInfo(context, 'NO', '082123456789'),
           userInfo(context, 'Instansi', 'Kominfosanti'),
           Spacer(),
-          ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(secondaryColor),
-              ),
-              onPressed: () {},
-              child: Container(
-                width: 100,
-                alignment: Alignment.center,
-                child: const Text(
-                  'Keluar',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
-                ),
-              ))
+          secondaryButton(
+              text: 'Keluar',
+              onPressed: () {
+                Navigator.pushNamed(context, '/login');
+              })
         ],
       ),
     ));
