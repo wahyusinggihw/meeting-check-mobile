@@ -3,6 +3,7 @@ import 'package:meeting_check/routes/router.dart' as router;
 // import 'package:meeting_check/views/bottom_navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initialization();
+    _checkIfLoggedIn();
   }
 
   void initialization() async {
@@ -37,6 +39,25 @@ class _MyAppState extends State<MyApp> {
     await Future.delayed(const Duration(seconds: 1));
     print('go!');
     FlutterNativeSplash.remove();
+  }
+
+  bool isAuth = false;
+
+  void _checkIfLoggedIn() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var islogin = localStorage.getBool('islogin');
+    if (islogin != null) {
+      setState(() {
+        isAuth = true;
+      });
+    }
+    // if (token != null) {
+    //     setState(() {
+    //       isAuth = true;
+    //     });
+    //   if (mounted) {
+    //   }
+    // }
   }
 
   // This widget is the root of your application.
@@ -77,13 +98,13 @@ class _MyAppState extends State<MyApp> {
           ),
           centerTitle: true,
         ),
-        navigationBarTheme: NavigationBarThemeData(
+        navigationBarTheme: const NavigationBarThemeData(
             backgroundColor: Colors.white,
-            indicatorColor: const Color(0xff0357AD),
+            indicatorColor: Color(0xff0357AD),
             surfaceTintColor: Colors.white),
         useMaterial3: true,
       ),
-      initialRoute: '/form-daftarhadir',
+      initialRoute: isAuth ? '/' : '/login',
       onGenerateRoute: router.RouteGenerator.generateRoute,
       // home: const MyHomePage(title: 'MeetingCheck'),
     );

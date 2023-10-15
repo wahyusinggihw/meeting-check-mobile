@@ -1,0 +1,16 @@
+#ngrok download
+https://ngrok.com/download
+
+#ngrok install
+unzip ngrok.zip
+copas token
+
+# In a new terminal
+php spark serve 
+ngrok http 8080
+ or
+php spark serve -host 0.0.0.0 -port 4000
+ngrok http 0.0.0.0:4000
+
+#killall ngrok (windows + r)
+taskkill /f /im ngrok.exe

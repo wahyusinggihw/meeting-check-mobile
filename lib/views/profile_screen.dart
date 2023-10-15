@@ -1,12 +1,48 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:meeting_check/services/login_services.dart';
+import 'package:meeting_check/services/rapat_services.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/button.dart';
+// shared prefs
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String name = '';
+  String nip = '';
+  String no = '';
+  String instansi = '';
+
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  _loadUserData() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var user = jsonDecode(localStorage.getString('user').toString());
+
+    if (user != null) {
+      setState(() {
+        name = user['ket_ukerja'];
+        nip = user['kode_instansi'];
+        no = user['email_ukerja'];
+        instansi = user['ket_ukerja'];
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // SharedPreferences localStorage = await SharedPreferences.getInstance();
     return Scaffold(
         body: Padding(
       padding: MediaQuery.of(context).size.width > 600
@@ -27,7 +63,7 @@ class ProfileScreen extends StatelessWidget {
             height: 10,
           ),
           Text(
-            'John Doe',
+            name,
             style: TextStyle(
               fontSize: 22,
               color: Colors.black,
@@ -36,14 +72,17 @@ class ProfileScreen extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          userInfo(context, 'NIP', '199205142023052008'),
-          userInfo(context, 'NO', '082123456789'),
-          userInfo(context, 'Instansi', 'Kominfosanti'),
+          userInfo(context, 'NIP', nip),
+          userInfo(context, 'NO', no),
+          userInfo(context, 'Instansi', instansi),
           Spacer(),
           secondaryButton(
               text: 'Keluar',
               onPressed: () {
-                Navigator.pushNamed(context, '/login');
+                // RapatServices().extractCode();
+                LoginService().logout();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/login', (route) => false);
               })
         ],
       ),
@@ -87,6 +126,7 @@ Widget userInfo(context, String title, String value) => Padding(
                     style: TextStyle(
                       fontSize: 16,
                       height: 1.4,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
