@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:meeting_check/models/agendarapat_model.dart';
 import 'package:meeting_check/services/agendarapat_services.dart';
 import 'package:meeting_check/views/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   late Future<List<AgendaRapatModel>> futureAgendaRapat;
+
+  String idInstansi = '';
 
   @override
   void initState() {
@@ -65,19 +70,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.pushNamed(context, '/detail-rapat',
                                 arguments: {
                                   'title': 'Detail Rapat',
-                                  'agenda': agendaItems[index].judulRapat
+                                  'agenda': agendaItems[index].agendaRapat
                                 });
                           },
                           leading: const Icon(Icons.event_note,
                               color: secondaryColor),
                           tileColor: Colors.white,
-                          title: Text('${agendaItems[index].tanggal}',
+                          title: Text(
+                              '${agendaItems[index].jam}, ${agendaItems[index].tanggal}',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
                               )),
                           subtitle: Text(
-                            '${agendaItems[index].judulRapat}',
+                            '${agendaItems[index].deskripsi}',
                             // subtitle: Text(
                             //   '${agenda[index]}',
                             overflow: TextOverflow.ellipsis,

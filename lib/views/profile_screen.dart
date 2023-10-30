@@ -32,9 +32,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (user != null) {
       setState(() {
-        name = user['ket_ukerja'];
-        nip = user['kode_instansi'];
-        no = user['email_ukerja'];
+        name = user['nama_lengkap'];
+        nip = user['nip'];
+        no = user['no_hp'];
         instansi = user['ket_ukerja'];
       });
     }
@@ -49,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ? const EdgeInsets.symmetric(horizontal: 100, vertical: 50)
           : const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         // verticalDirection: VerticalDirection.up,
         children: [
@@ -62,11 +62,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(
             height: 10,
           ),
-          Text(
-            name,
-            style: TextStyle(
-              fontSize: 22,
-              color: Colors.black,
+          Center(
+            child: Text(
+              name,
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+              ),
             ),
           ),
           SizedBox(
@@ -90,50 +92,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-Widget userInfo(context, String title, String value) => Padding(
+Widget userInfo(BuildContext context, String title, String value) => Padding(
       padding: MediaQuery.of(context).size.width > 600
           ? const EdgeInsets.symmetric(horizontal: 100, vertical: 40)
           : const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // const SizedBox(
-          //   height: 1,
-          // ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.white,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey,
-                    ),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
                   ),
-                  // Text(':'),
-                  Text(
-                    value,
-                    style: TextStyle(
-                      fontSize: 16,
-                      height: 1.4,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          )
-        ],
+              Expanded(
+                child: Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 16,
+                    height: 1.4,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
 
