@@ -17,25 +17,25 @@ class _DetailRapatState extends State<DetailRapat> {
         centerTitle: true,
         title: Text('Detail Rapat'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Color.fromARGB(255, 255, 255, 255),
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromARGB(68, 0, 0, 0),
-                  offset: Offset(0, 10),
-                  blurRadius: 20,
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView(children: [
-                Column(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Color.fromARGB(255, 255, 255, 255),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(68, 0, 0, 0),
+                    offset: Offset(0, 10),
+                    blurRadius: 20,
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
                   // mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: 10),
@@ -83,7 +83,7 @@ class _DetailRapatState extends State<DetailRapat> {
                                 child: Text(
                                   'Deskripsi',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                   ),
                                 ),
                               ),
@@ -100,7 +100,7 @@ class _DetailRapatState extends State<DetailRapat> {
                                     args['agenda'].deskripsi,
                                     textAlign: TextAlign.justify,
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                     ),
                                   ),
                                 ),
@@ -112,7 +112,7 @@ class _DetailRapatState extends State<DetailRapat> {
                     )
                   ],
                 ),
-              ]),
+              ),
             ),
           ),
         ),
@@ -130,7 +130,7 @@ Widget detailRapatAgenda(String title, String value) => Padding(
             child: Text(
               title,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 14,
               ),
             ),
           ),
@@ -138,7 +138,7 @@ Widget detailRapatAgenda(String title, String value) => Padding(
             child: Text(
               value,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 14,
               ),
             ),
           ),
