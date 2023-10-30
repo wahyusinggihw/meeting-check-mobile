@@ -67,6 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           qrCodeResult = kodeRapat ?? "kode_rapat not found";
         });
+        Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
+          'kodeRapat': kodeRapat,
+        });
         print(qrCodeResult);
       }
     }

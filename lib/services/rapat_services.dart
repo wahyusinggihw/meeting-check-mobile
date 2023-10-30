@@ -4,7 +4,7 @@ import "package:dio/dio.dart";
 import '../services/secret.dart';
 
 class RapatServices {
-  login(data) async {
+  getRapatByKode(kodeRapat) async {
     final Response response;
     final Dio dio = Dio(
       BaseOptions(
@@ -16,19 +16,65 @@ class RapatServices {
         },
       ),
     );
-
-    String url = '$apiURL/api/login';
+    String url = '$apiURL/api/agenda-rapat/$kodeRapat';
     try {
-      response = await dio.post(
+      response = await dio.get(
         url,
-        data: data,
+        data: {
+          'kode_rapat': kodeRapat,
+        },
       );
       if (response.statusCode == 200) {
         print(response.data);
-        return response.data;
-        // return data.map((json) => UserModel.fromJson(json)).toList();
+        final Map<String, dynamic> responseData = response.data;
+        print(responseData);
+        return responseData;
       } else {
-        return response.data;
+        final Map<String, dynamic> responseData = response.data;
+        print(responseData);
+        return responseData;
+      }
+      // return AgendaRapatModel.fromJson(response.data);
+    } on DioException catch (error, stacktrace) {
+      print('Exception occured: $error stackTrace: $stacktrace');
+      throw Exception(error.response);
+    }
+  }
+
+  absensiStore({kodeRapat, nip, noHp, nama, asalInstansi}) async {
+    final Response response;
+    final Dio dio = Dio(
+      BaseOptions(
+        headers: {
+          'Authorization':
+              'Basic ${base64Encode(utf8.encode('$apiUsername:$apiPassword'))}',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+    String url = '$apiURL/api/form-absensi-store';
+    try {
+      response = await dio.post(
+        url,
+        data: {
+          'kode_rapat': kodeRapat,
+          'nip': nip,
+          'no_hp': noHp,
+          'nama': nama,
+          'alamat': asalInstansi,
+          'signatureData': 'ttd'
+        },
+      );
+      if (response.statusCode == 200) {
+        print(response.data);
+        final Map<String, dynamic> responseData = response.data;
+        print(responseData);
+        return responseData;
+      } else {
+        final Map<String, dynamic> responseData = response.data;
+        print(responseData);
+        return responseData;
       }
       // return AgendaRapatModel.fromJson(response.data);
     } on DioException catch (error, stacktrace) {
