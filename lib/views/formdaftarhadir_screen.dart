@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/button.dart';
 import 'package:meeting_check/views/widgets/form.dart';
+import 'package:meeting_check/views/widgets/tandatangan.dart';
 import 'package:signature/signature.dart';
 
 class FormDaftarHadir extends StatefulWidget {
@@ -27,6 +28,19 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
     onDrawEnd: () => log('onDrawEnd called!'),
   );
 
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() => log('Value changed'));
+  }
+
+  @override
+  void dispose() {
+    // IMPORTANT to dispose of the controller
+    _controller.dispose();
+    super.dispose();
+  }
+
   Future<void> exportImage(BuildContext context) async {
     if (_controller.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -44,22 +58,22 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
       return;
     }
 
-    // await push(
-    //   context,
-    //   Scaffold(
-    //     appBar: AppBar(
-    //       title: const Text('PNG Image'),
-    //     ),
-    //     body: Center(
-    //       child: Container(
-    //         color: Colors.grey[300],
-    //         child: Image.memory(data),
-    //       ),
-    //     ),
-    //   ),
-    // );
-
     if (!mounted) return;
+
+    await push(
+      context,
+      Scaffold(
+        appBar: AppBar(
+          title: const Text('PNG Image'),
+        ),
+        body: Center(
+          child: Container(
+            color: Colors.grey[300],
+            child: Image.memory(data),
+          ),
+        ),
+      ),
+    );
   }
 
   @override

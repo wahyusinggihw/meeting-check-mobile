@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:meeting_check/services/login_services.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/button.dart';
 import 'package:meeting_check/views/widgets/snackbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -14,6 +18,8 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nipController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isloading = false;
+
   @override
   Widget build(BuildContext context) {
     double currentHeight = MediaQuery.of(context).size.height;
@@ -89,10 +95,13 @@ class _LoginState extends State<Login> {
                           child: primaryButton(
                               text: 'Masuk',
                               onPressed: () {
-                                // if (_formKey.currentState!.validate()) {
-                                successSnackbar(context, 'Berhasil masuk.');
-                                Navigator.pushNamed(context, '/home');
-                                // }
+                                if (_formKey.currentState!.validate()) {
+                                  String username = _nipController.text;
+                                  String password = _passwordController.text;
+                                  _login(username, password);
+                                } else {
+                                  errorSnackbar(context, 'Gagal masuk.');
+                                }
                               }))
                     ],
                   ),
@@ -101,5 +110,31 @@ class _LoginState extends State<Login> {
         ],
       ),
     );
+  }
+
+  void _login(String username, String password) async {
+    setState(() {
+      _isloading = true;
+    });
+    var data = {
+      'username': username,
+      'password': password,
+    };
+    var response = await LoginService().login(data);
+    print(response['status']);
+    if (response['status'] == true) {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+
+      Map user = response['data'];
+
+      localStorage.setString('user', jsonEncode(user));
+      localStorage.setBool('islogin', true);
+      // localStorage.setString('token', response['token']);
+
+      successSnackbar(context, response['message']);
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+    } else {
+      errorSnackbar(context, response['message']);
+    }
   }
 }
