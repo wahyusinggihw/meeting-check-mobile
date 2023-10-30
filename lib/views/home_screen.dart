@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.pushNamed(context, '/detail-rapat',
                                 arguments: {
                                   'title': 'Detail Rapat',
-                                  'agenda': agendaItems[index].agendaRapat
+                                  'agenda': agendaItems[index]
                                 });
                           },
                           leading: const Icon(Icons.event_note,
