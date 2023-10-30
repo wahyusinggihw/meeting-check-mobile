@@ -83,7 +83,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
     RapatServices rapatServices = RapatServices();
     final Map<String, dynamic>? arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    final String kodeRapat = arguments?['kodeRapat'] ?? '';
+    final String idRapat = arguments?['uuid'] ?? '';
 
     return Scaffold(
         appBar: AppBar(
@@ -93,8 +93,8 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         body: ListView(
           children: [
             FutureBuilder<dynamic>(
-              future: rapatServices.getRapatByKode(
-                  kodeRapat), // Replace 'kodeRapat' with the actual value
+              future: rapatServices.getRapatById(
+                  idRapat), // Replace 'kodeRapat' with the actual value
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -138,7 +138,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                                       "Judul Rapat",
                                       // style: TextStyle(color: Colors.grey[600]),
                                     ),
-                                    Text(responseData['judul_rapat'],
+                                    Text(responseData[0]['judul_rapat'],
                                         style:
                                             TextStyle(color: Colors.grey[600]))
                                   ]),
@@ -474,9 +474,9 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         ));
   }
 
-  getAgendaRapat(kodeRapat) async {
+  getAgendaRapat(idAgenda) async {
     RapatServices rapatServices = RapatServices();
-    var data = await rapatServices.getRapatByKode(kodeRapat);
+    var data = await rapatServices.getRapatById(idAgenda);
     print('dari form:' + data);
   }
 }

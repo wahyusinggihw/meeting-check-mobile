@@ -4,7 +4,7 @@ import "package:dio/dio.dart";
 import '../services/secret.dart';
 
 class RapatServices {
-  getRapatByKode(kodeRapat) async {
+  getRapatById(idAgenda) async {
     final Response response;
     final Dio dio = Dio(
       BaseOptions(
@@ -16,12 +16,12 @@ class RapatServices {
         },
       ),
     );
-    String url = '$apiURL/api/agenda-rapat/$kodeRapat';
+    String url = '$apiURL/api/agenda-rapat/get-by-id/$idAgenda';
     try {
       response = await dio.get(
         url,
         data: {
-          'kode_rapat': kodeRapat,
+          'id_agenda': idAgenda,
         },
       );
       if (response.statusCode == 200) {

@@ -62,13 +62,14 @@ class _MyHomePageState extends State<MyHomePage> {
       if (codeScanner != "-1") {
         // QR code scanned successfully, now parse the URL to extract kode_rapat
         Uri uri = Uri.parse(codeScanner);
-        String? kodeRapat = uri.queryParameters['kode_rapat'];
+        // String? kodeRapat = uri.queryParameters['kode_rapat'];
+        String? uuid = uri.pathSegments[3];
 
         setState(() {
-          qrCodeResult = kodeRapat ?? "kode_rapat not found";
+          qrCodeResult = uuid ?? "kode_rapat not found";
         });
         Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
-          'kodeRapat': kodeRapat,
+          'idRapat': uuid,
         });
         print(qrCodeResult);
       }
