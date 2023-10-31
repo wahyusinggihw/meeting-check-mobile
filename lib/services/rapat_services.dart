@@ -1,9 +1,49 @@
 import 'dart:convert';
 // dio
 import "package:dio/dio.dart";
+import 'package:meeting_check/models/agendarapat_model.dart';
 import '../services/secret.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RapatServices {
+  Future<Map<String, dynamic>> getAgendaRapatById(String idAgenda) async {
+    final Dio dio = Dio(
+      BaseOptions(
+        headers: {
+          'Authorization':
+              'Basic ${base64Encode(utf8.encode('$apiUsername:$apiPassword'))}',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
+    );
+
+    final String url = '$apiURL/api/agenda-rapat/get-by-id/$idAgenda';
+
+    try {
+      final response = await dio.get(url);
+
+      if (response.statusCode == 200) {
+        // Check that response.data is a Map
+        if (response.data is Map<String, dynamic>) {
+          final Map<String, dynamic> responseData = response.data;
+          final bool status = responseData['status'];
+          final AgendaRapatModel agendaRapat =
+              AgendaRapatModel.fromJson(responseData['data']);
+
+          return {'status': status, 'agendaRapat': agendaRapat};
+        } else {
+          throw Exception('Unexpected response format');
+        }
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } on DioError catch (error) {
+      print('DioException occurred: ${error.response}');
+      throw Exception(error.response);
+    }
+  }
+
   getRapatById(idAgenda) async {
     final Response response;
     final Dio dio = Dio(
@@ -17,21 +57,17 @@ class RapatServices {
       ),
     );
     String url = '$apiURL/api/agenda-rapat/get-by-id/$idAgenda';
+    print(idAgenda);
     try {
-      response = await dio.get(
-        url,
-        data: {
-          'id_agenda': idAgenda,
-        },
-      );
+      response = await dio.get(url);
       if (response.statusCode == 200) {
-        print(response.data);
+        // print(response.data);
         final Map<String, dynamic> responseData = response.data;
-        print(responseData);
+        // print(responseData);
         return responseData;
       } else {
         final Map<String, dynamic> responseData = response.data;
-        print(responseData);
+        // print(responseData);
         return responseData;
       }
       // return AgendaRapatModel.fromJson(response.data);
@@ -41,7 +77,20 @@ class RapatServices {
     }
   }
 
-  absensiStore({kodeRapat, nip, noHp, nama, asalInstansi}) async {
+  getStatusRapat(idAgenda) {
+    var $data = getRapatById(idAgenda);
+    return $data;
+  }
+
+  absensiStore({
+    required kodeRapat,
+    required nip,
+    required noHp,
+    required nama,
+    required alamat,
+    required asalInstansi,
+    required signatureData,
+  }) async {
     final Response response;
     final Dio dio = Dio(
       BaseOptions(
@@ -54,6 +103,7 @@ class RapatServices {
       ),
     );
     String url = '$apiURL/api/form-absensi-store';
+    // print(signatureData);
     try {
       response = await dio.post(
         url,
@@ -62,18 +112,19 @@ class RapatServices {
           'nip': nip,
           'no_hp': noHp,
           'nama': nama,
-          'alamat': asalInstansi,
-          'signatureData': 'ttd'
+          'alamat': alamat,
+          'asal_instansi': asalInstansi,
+          'signatureData': signatureData
         },
       );
       if (response.statusCode == 200) {
-        print(response.data);
+        // print(response.data);
         final Map<String, dynamic> responseData = response.data;
-        print(responseData);
+        // print(responseData);
         return responseData;
       } else {
         final Map<String, dynamic> responseData = response.data;
-        print(responseData);
+        // print(responseData);
         return responseData;
       }
       // return AgendaRapatModel.fromJson(response.data);

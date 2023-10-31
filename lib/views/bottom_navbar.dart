@@ -5,7 +5,9 @@ import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/home_screen.dart';
 import 'package:meeting_check/views/profile_screen.dart';
 import 'package:meeting_check/views/qr_screen.dart';
+import 'package:meeting_check/views/widgets/alertdialog.dart';
 import 'dart:async';
+import 'package:meeting_check/views/widgets/snackbar.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -27,28 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Future<void> scanBarcodeNormal() async {
-    //   String barcodeScanRes;
-    //   // Platform messages may fail, so we use a try/catch PlatformException.
-    //   try {
-    //     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-    //         '#ff6666', 'Cancel', true, ScanMode.QR);
-    //     print(barcodeScanRes);
-    //     RapatServices().extractCode(_scanBarcode);
-    //   } on PlatformException {
-    //     barcodeScanRes = 'Failed to get platform version.';
-    //   }
-
-    //   // If the widget was removed from the tree while the asynchronous platform
-    //   // message was in flight, we want to discard the reply rather than calling
-    //   // setState to update our non-existent appearance.
-    //   if (!mounted) return;
-
-    //   setState(() {
-    //     _scanBarcode = barcodeScanRes;
-    //   });
-    // }
-
+    RapatServices rapatServices = RapatServices();
     String qrCodeResult = "Not yet scanned";
 
     Future<void> scanQRCode() async {
@@ -68,10 +49,21 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           qrCodeResult = uuid ?? "kode_rapat not found";
         });
-        Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
-          'idRapat': uuid,
-        });
-        print(qrCodeResult);
+        var rapat = await rapatServices.getAgendaRapatById(uuid);
+        print(rapat['status']);
+        // print(rapat['agendaRapat'].agendaRapat);
+        if (rapat['status'] == true) {
+          successSnackbar(context, 'Silahkan melakukan tanda tangan',
+              duration: 5);
+          Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
+            'idRapat': uuid,
+            'rapat': rapat['agendaRapat'],
+          });
+        } else {
+          errorDialog(context, 'Error', rapat['message']);
+        }
+
+        // print("idRapat:" + qrCodeResult);
       }
     }
 

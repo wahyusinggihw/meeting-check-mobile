@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-successSnackbar(BuildContext context, String text) {
+successSnackbar(BuildContext context, String text, {int duration = 2}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: Colors.blue,
       content: Text(text),
-      duration: const Duration(seconds: 2),
+      duration: Duration(seconds: duration),
     ),
   );
 }

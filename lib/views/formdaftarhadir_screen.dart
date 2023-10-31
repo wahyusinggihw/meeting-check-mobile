@@ -1,13 +1,17 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:meeting_check/services/rapat_services.dart';
 import 'package:meeting_check/views/colors.dart';
+import 'package:meeting_check/views/widgets/alertdialog.dart';
 import 'package:meeting_check/views/widgets/button.dart';
 import 'package:meeting_check/views/widgets/form.dart';
 import 'package:meeting_check/views/widgets/tandatangan.dart';
 import 'package:signature/signature.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:meeting_check/views/widgets/snackbar.dart';
 
 class FormDaftarHadir extends StatefulWidget {
   const FormDaftarHadir({super.key});
@@ -80,403 +84,188 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
 
   @override
   Widget build(BuildContext context) {
-    RapatServices rapatServices = RapatServices();
     final Map<String, dynamic>? arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    final String idRapat = arguments?['uuid'] ?? '';
+    final String idRapat = arguments?['idRapat'] ?? '';
+    var rapatData = arguments?['rapat'];
 
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text('Form Daftar Hadir'),
-        ),
-        body: ListView(
-          children: [
-            FutureBuilder<dynamic>(
-              future: rapatServices.getRapatById(
-                  idRapat), // Replace 'kodeRapat' with the actual value
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else if (!snapshot.hasData || snapshot.data == null) {
-                  return Text('No data available.');
-                } else {
-                  final responseData = snapshot.data!['data'];
-                  // return Text('Judul Rapat: $judulRapat');
-                  return Form(
-                      child: Padding(
-                    padding: MediaQuery.of(context).size.width > 600
-                        ? const EdgeInsets.symmetric(
-                            horizontal: 100, vertical: 50)
-                        : const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Agenda Rapat',
-                              style: Theme.of(context).textTheme.titleMedium),
-                          const SizedBox(height: 20),
-                          const SizedBox(height: 10),
-                          Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(color: Colors.grey)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Judul Rapat",
-                                      // style: TextStyle(color: Colors.grey[600]),
-                                    ),
-                                    Text(responseData[0]['judul_rapat'],
-                                        style:
-                                            TextStyle(color: Colors.grey[600]))
-                                  ]),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(color: Colors.grey)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Jam",
-                                      // style: TextStyle(color: Colors.grey[600]),
-                                    ),
-                                    Text(responseData['jam'],
-                                        style:
-                                            TextStyle(color: Colors.grey[600]))
-                                  ]),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(color: Colors.grey)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Tempat",
-                                      // style: TextStyle(color: Colors.grey[600]),
-                                    ),
-                                    Text(responseData['tempat'],
-                                        style:
-                                            TextStyle(color: Colors.grey[600]))
-                                  ]),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(color: Colors.grey)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Agenda",
-                                      // style: TextStyle(color: Colors.grey[600]),
-                                    ),
-                                    Text(responseData['agenda'],
-                                        style:
-                                            TextStyle(color: Colors.grey[600]))
-                                  ]),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            height: 48,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(color: primaryColor)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      "Tanda Tangan",
-                                    ),
-                                    IconButton(
-                                        onPressed: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  actionsAlignment:
-                                                      MainAxisAlignment.center,
-                                                  backgroundColor: Colors.white,
-                                                  scrollable: true,
-                                                  title: Text('Tanda Tangan'),
-                                                  content: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Form(
-                                                      child: Column(
-                                                        children: <Widget>[
-                                                          Stack(
-                                                            alignment:
-                                                                AlignmentDirectional
-                                                                    .topEnd,
-                                                            children: [
-                                                              Signature(
-                                                                  controller:
-                                                                      _controller,
-                                                                  width: 200,
-                                                                  height: 200,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white),
-                                                              IconButton(
-                                                                  onPressed: () =>
-                                                                      _controller
-                                                                          .clear(),
-                                                                  icon: const Icon(
-                                                                      Icons
-                                                                          .delete)),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    primaryButton(
-                                                        text: "Submit",
-                                                        onPressed: () async {
-                                                          exportImage(context);
-                                                        })
-                                                  ],
-                                                );
-                                              });
-                                        },
-                                        icon: Icon(
-                                          Icons.create,
-                                          color: primaryColor,
-                                          size: 20,
-                                        ))
-                                  ]),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ));
-                }
-              },
-            ),
-            // FutureBuilder(
-            //     future: rapatServices.getRapatByKode(kodeRapat),
-            //     builder: (context, snapshot) {
-            //       if (snapshot.connectionState == ConnectionState.waiting) {
-            //         return Center(child: CircularProgressIndicator());
-            //       } else if (snapshot.hasError) {
-            //         return Text('Error: ${snapshot.error}');
-            //       } else {
-            // final judulRapat = snapshot['data']['judul_rapat'];
-            // Handle the API response in the UI
-            // return Text('Data from API: ${snapshot.data}');
-            // return Form(
-            //   child: Padding(
-            //     padding: MediaQuery.of(context).size.width > 600
-            //         ? const EdgeInsets.symmetric(
-            //             horizontal: 100, vertical: 50)
-            //         : const EdgeInsets.symmetric(
-            //             horizontal: 20, vertical: 20),
-            //     child: Form(
-            //       key: _formKey,
-            //       child: Column(
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           Text('Agenda Rapat',
-            //               style:
-            //                   Theme.of(context).textTheme.titleMedium),
-            //           const SizedBox(height: 20),
-            //           TextFormField(
-            //             // controller: _nipController,
-            //             // access the object
-            //             initialValue: snapshot['data']['judul_rapat'],
-            //             // initialValue: '${snapshot.data!{'kode_rapat'}}}',
-            //             enabled: false,
-            //             decoration: const InputDecoration(
-            //                 fillColor: secondaryColor,
-            //                 focusColor: secondaryColor,
-            //                 hintText: 'NIPTT',
-            //                 border: OutlineInputBorder(
-            //                     borderRadius: BorderRadius.all(
-            //                         Radius.circular(15))),
-            //                 focusedBorder: OutlineInputBorder(
-            //                     borderRadius: BorderRadius.all(
-            //                         Radius.circular(15)),
-            //                     borderSide:
-            //                         BorderSide(color: primaryColor))),
-            //             validator: (value) {
-            //               if (value == null || value.isEmpty) {
-            //                 return 'Masukkan NIPTT anda';
-            //               }
-            //               return null;
-            //             },
-            //           ),
-            //           const SizedBox(height: 10),
-            //           Container(
-            //             height: 48,
-            //             decoration: BoxDecoration(
-            //                 color: Colors.white,
-            //                 borderRadius: BorderRadius.circular(15),
-            //                 border: Border.all(color: Colors.grey)),
-            //             child: Padding(
-            //               padding: const EdgeInsets.all(8.0),
-            //               child: Row(
-            //                   mainAxisAlignment:
-            //                       MainAxisAlignment.spaceBetween,
-            //                   children: [
-            //                     Text(
-            //                       "NIPTT",
-            //                       style: TextStyle(
-            //                           color: Colors.grey[600]),
-            //                     ),
-            //                     Text("1234567890",
-            //                         style: TextStyle(
-            //                             color: Colors.grey[600]))
-            //                   ]),
-            //             ),
-            //           ),
-            //           const SizedBox(height: 10),
-            //           Container(
-            //             height: 48,
-            //             decoration: BoxDecoration(
-            //                 color: Colors.white,
-            //                 borderRadius: BorderRadius.circular(15),
-            //                 border: Border.all(color: primaryColor)),
-            //             child: Padding(
-            //               padding: const EdgeInsets.all(8.0),
-            //               child: Row(
-            //                   mainAxisAlignment:
-            //                       MainAxisAlignment.spaceBetween,
-            //                   children: [
-            //                     Text(
-            //                       "Tanda Tangan",
-            //                       style: TextStyle(
-            //                           color: Colors.grey[600]),
-            //                     ),
-            //                     IconButton(
-            //                         onPressed: () {
-            //                           showDialog(
-            //                               context: context,
-            //                               builder:
-            //                                   (BuildContext context) {
-            //                                 return AlertDialog(
-            //                                   actionsAlignment:
-            //                                       MainAxisAlignment
-            //                                           .center,
-            //                                   backgroundColor:
-            //                                       Colors.white,
-            //                                   scrollable: true,
-            //                                   title:
-            //                                       Text('Tanda Tangan'),
-            //                                   content: Padding(
-            //                                     padding:
-            //                                         const EdgeInsets
-            //                                             .all(8.0),
-            //                                     child: Form(
-            //                                       child: Column(
-            //                                         children: <Widget>[
-            //                                           Stack(
-            //                                             alignment:
-            //                                                 AlignmentDirectional
-            //                                                     .topEnd,
-            //                                             children: [
-            //                                               Signature(
-            //                                                   controller:
-            //                                                       _controller,
-            //                                                   width:
-            //                                                       200,
-            //                                                   height:
-            //                                                       200,
-            //                                                   backgroundColor:
-            //                                                       Colors
-            //                                                           .white),
-            //                                               IconButton(
-            //                                                   onPressed: () =>
-            //                                                       _controller
-            //                                                           .clear(),
-            //                                                   icon: const Icon(
-            //                                                       Icons
-            //                                                           .delete)),
-            //                                             ],
-            //                                           ),
-            //                                         ],
-            //                                       ),
-            //                                     ),
-            //                                   ),
-            //                                   actions: [
-            //                                     primaryButton(
-            //                                         text: "Submit",
-            //                                         onPressed:
-            //                                             () async {
-            //                                           exportImage(
-            //                                               context);
-            //                                         })
-            //                                   ],
-            //                                 );
-            //                               });
-            //                         },
-            //                         icon: Icon(
-            //                           Icons.create,
-            //                           color: primaryColor,
-            //                           size: 20,
-            //                         ))
-            //                   ]),
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // );
-            // }
-            // }),
-          ],
-        ));
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Form Daftar Hadir'),
+      ),
+      body: buildForm(idRapat, rapatData),
+    );
   }
 
-  getAgendaRapat(idAgenda) async {
+  Widget buildForm(idRapat, rapatData) {
     RapatServices rapatServices = RapatServices();
-    var data = await rapatServices.getRapatById(idAgenda);
-    print('dari form:' + data);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FutureBuilder<dynamic>(
+          future: rapatServices.getRapatById(
+              idRapat), // Replace 'kodeRapat' with the actual value
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (!snapshot.hasData || snapshot.data == null) {
+              return Text('No data available.');
+            } else {
+              final responseData = snapshot.data!['data'];
+              // return Text('Judul Rapat: $judulRapat');
+              return buildRapatForm(rapatData);
+            }
+          },
+        ),
+      ],
+    );
   }
+
+  Widget buildRapatForm(rapatData) {
+    return Padding(
+      padding: MediaQuery.of(context).size.width > 600
+          ? const EdgeInsets.symmetric(horizontal: 100, vertical: 50)
+          : const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Agenda Rapat',
+                style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            formDaftarHadir('Judul Rapat', rapatData.agendaRapat),
+            const SizedBox(height: 10),
+            formDaftarHadir('Jam', rapatData.jam),
+            const SizedBox(height: 10),
+            formDaftarHadir('Tempat', rapatData.tempat),
+            const SizedBox(height: 10),
+            formDaftarHadir('Agenda', rapatData.deskripsi),
+            const SizedBox(height: 10),
+            Container(
+              height: 48,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: primaryColor)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: tandaTanganForm(),
+              ),
+            ),
+            Center(
+              child: primaryButton(
+                  text: 'Submit',
+                  onPressed: () {
+                    if (_controller.isEmpty) {
+                      // Show an error snackbar if the signature is empty
+                      errorSnackbar(context, 'Tanda tangan belum diisi');
+                    } else {
+                      submitAbsen(rapatData.idAgenda);
+                    }
+                  }),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  submitAbsen(uuid) async {
+    RapatServices rapatServices = RapatServices();
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var user = jsonDecode(localStorage.getString('user').toString());
+    var rapat = await rapatServices.getRapatById(uuid);
+
+    // Capture the signature as an image (PNG)
+    Uint8List? signatureImage = await _controller.toPngBytes();
+
+    // Encode the image as base64
+    String base64Signature = base64Encode(signatureImage as List<int>);
+
+    // Now you have the user's signature as base64
+    // You can send it to the server or store it as needed
+
+    // print('Base64 Signature: $base64Signature');
+    var statusAbsen = await rapatServices.absensiStore(
+      nip: user['nip'],
+      kodeRapat: rapat['data']['kode_rapat'],
+      noHp: user['no_hp'],
+      nama: user['nama_lengkap'],
+      alamat: user['alamat'],
+      asalInstansi: user['ket_ukerja'],
+      signatureData: base64Signature,
+    );
+    print(statusAbsen);
+    if (statusAbsen['status'] == false) {
+      Navigator.pop(context);
+      errorDialog(context, 'Error', statusAbsen['message']);
+    } else {
+      successSnackbar(context, 'Berhasil absen');
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+    }
+  }
+
+  Widget tandaTanganForm() =>
+      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        const Text(
+          "Tanda Tangan",
+        ),
+        IconButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      actionsAlignment: MainAxisAlignment.center,
+                      backgroundColor: Colors.white,
+                      scrollable: true,
+                      title: Text('Tanda Tangan'),
+                      content: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          child: Column(
+                            children: <Widget>[
+                              Stack(
+                                alignment: AlignmentDirectional.topEnd,
+                                children: [
+                                  Signature(
+                                      controller: _controller,
+                                      width: 200,
+                                      height: 200,
+                                      backgroundColor: Colors.white),
+                                  IconButton(
+                                      onPressed: () => _controller.clear(),
+                                      icon: const Icon(Icons.delete)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        primaryButton(
+                            text: "Submit",
+                            onPressed: () async {
+                              await _controller.toPngBytes();
+                              successSnackbar(context,
+                                  'Berhasil disimpan, silahkan submit form',
+                                  duration: 5);
+                              Navigator.pop(context);
+                            })
+                      ],
+                    );
+                  });
+            },
+            icon: Icon(
+              Icons.create,
+              color: primaryColor,
+              size: 20,
+            ))
+      ]);
 }
