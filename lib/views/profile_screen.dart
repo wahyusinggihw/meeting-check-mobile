@@ -56,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Center(
             child: CircleAvatar(
               radius: 60,
-              backgroundImage: AssetImage('assets/images/images.jpg'),
+              backgroundImage: AssetImage('assets/images/avatar.jpg'),
             ),
           ),
           const SizedBox(
@@ -65,6 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Center(
             child: Text(
               name,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
