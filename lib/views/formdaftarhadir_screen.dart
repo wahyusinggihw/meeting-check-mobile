@@ -201,10 +201,12 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                         text: 'Submit',
                         onPressed: () async {
                           await _controller.toPngBytes();
-                          successSnackbar(context,
-                              'Berhasil disimpan, silahkan submit form',
-                              duration: 5);
-                          Navigator.pop(context);
+                          if (_controller.isEmpty) {
+                            // Show an error snackbar if the signature is empty
+                            errorSnackbar(context, 'Tanda tangan belum diisi');
+                          } else {
+                            submitAbsen(rapatData.idAgenda);
+                          }
                         }),
                   ],
                 ),

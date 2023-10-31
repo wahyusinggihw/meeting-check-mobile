@@ -104,7 +104,7 @@ class _MyAppState extends State<MyApp> {
             surfaceTintColor: Colors.white),
         useMaterial3: true,
       ),
-      initialRoute: isAuth ? '/form-daftarhadir' : '/form-daftarhadir',
+      initialRoute: isAuth ? '/' : '/login',
       onGenerateRoute: router.RouteGenerator.generateRoute,
       // home: const MyHomePage(title: 'MeetingCheck'),
     );

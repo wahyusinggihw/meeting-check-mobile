@@ -50,9 +50,9 @@ class _MyHomePageState extends State<MyHomePage> {
           qrCodeResult = uuid ?? "kode_rapat not found";
         });
         var rapat = await rapatServices.getAgendaRapatById(uuid);
-        print(rapat['status']);
+        print(rapat['error']);
         // print(rapat['agendaRapat'].agendaRapat);
-        if (rapat['status'] == true) {
+        if (rapat['error'] != true) {
           successSnackbar(context, 'Silahkan melakukan tanda tangan',
               duration: 5);
           Navigator.pushNamed(context, '/form-daftarhadir', arguments: {

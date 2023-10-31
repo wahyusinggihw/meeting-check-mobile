@@ -24,17 +24,19 @@ class RapatServices {
       final response = await dio.get(url);
 
       if (response.statusCode == 200) {
-        // Check that response.data is a Map
-        if (response.data is Map<String, dynamic>) {
-          final Map<String, dynamic> responseData = response.data;
-          final bool status = responseData['status'];
-          final AgendaRapatModel agendaRapat =
-              AgendaRapatModel.fromJson(responseData['data']);
+        final Map<String, dynamic> responseData = response.data;
 
-          return {'status': status, 'agendaRapat': agendaRapat};
-        } else {
-          throw Exception('Unexpected response format');
+        if (responseData.containsKey('error') &&
+            responseData['error'] == true) {
+          // Error response
+          final String message = responseData['message'];
+          return {'error': true, 'message': message};
         }
+
+        // Success response
+        final AgendaRapatModel agendaRapat =
+            AgendaRapatModel.fromJson(responseData['data']);
+        return {'error': false, 'agendaRapat': agendaRapat};
       } else {
         throw Exception('Failed to load data');
       }
