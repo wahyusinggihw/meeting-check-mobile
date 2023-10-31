@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:meeting_check/models/user_model.dart';
 import 'package:meeting_check/services/secret.dart';
@@ -6,8 +7,7 @@ import "package:dio/dio.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
-  login(data) async {
-    final Response response;
+  Future<Map<String, dynamic>> login(Map<String, dynamic> data) async {
     final Dio dio = Dio(
       BaseOptions(
         headers: {
@@ -19,22 +19,33 @@ class LoginService {
       ),
     );
 
-    String url = '$apiURL/api/login';
+    final String url = '$apiURL/api/login';
+
     try {
-      response = await dio.post(
+      final response = await dio.post(
         url,
         data: data,
       );
+
       if (response.statusCode == 200) {
-        print(response.data);
-        return response.data;
-        // return data.map((json) => UserModel.fromJson(json)).toList();
+        final Map<String, dynamic> responseData = response.data;
+
+        if (responseData.containsKey('error') &&
+            responseData['error'] == true) {
+          // Error response
+          final String message = responseData['message'];
+          return {'error': true, 'message': message};
+        }
+        return {
+          'status': true,
+          'message': responseData['message'],
+          'data': responseData['data']
+        };
       } else {
-        return response.data;
+        throw Exception('Failed to load data');
       }
-      // return AgendaRapatModel.fromJson(response.data);
-    } on DioException catch (error, stacktrace) {
-      print('Exception occured: $error stackTrace: $stacktrace');
+    } on DioError catch (error, stacktrace) {
+      print('DioException occurred: $error stackTrace: $stacktrace');
       throw Exception(error.response);
     }
   }

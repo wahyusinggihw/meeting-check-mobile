@@ -22,7 +22,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    double currentHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: _isloading
           ? const Center(
@@ -49,72 +48,70 @@ class _LoginState extends State<Login> {
                               horizontal: 100, vertical: 50)
                           : const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 20),
-                      child: Container(
-                        child: Column(
-                          // mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextFormField(
-                              cursorColor: secondaryColor,
-                              controller: _nipController,
-                              decoration: const InputDecoration(
-                                  fillColor: secondaryColor,
-                                  focusColor: secondaryColor,
-                                  hintText: 'NIPTT',
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15))),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
-                                      borderSide:
-                                          BorderSide(color: primaryColor))),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Masukkan NIPTT anda';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            TextFormField(
-                              controller: _passwordController,
-                              decoration: const InputDecoration(
-                                  fillColor: secondaryColor,
-                                  focusColor: secondaryColor,
-                                  hintText: 'Password',
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15))),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
-                                      borderSide:
-                                          BorderSide(color: primaryColor))),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Masukkan password';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            // const Spacer(),
-                            Center(
-                                child: primaryButton(
-                                    text: 'Masuk',
-                                    onPressed: () {
-                                      _login(
-                                          '750119911225002', '750119911225002');
-                                      // if (_formKey.currentState!.validate()) {
-                                      //   String username = _nipController.text;
-                                      //   String password =
-                                      //       _passwordController.text;
-                                      //   // _login('75010201', '75010201');
-                                      // }
-                                    }))
-                          ],
-                        ),
+                      child: Column(
+                        // mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+                            cursorColor: secondaryColor,
+                            controller: _nipController,
+                            decoration: const InputDecoration(
+                                fillColor: secondaryColor,
+                                focusColor: secondaryColor,
+                                hintText: 'NIPTT',
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15))),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                    borderSide:
+                                        BorderSide(color: primaryColor))),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Masukkan NIPTT anda';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            controller: _passwordController,
+                            decoration: const InputDecoration(
+                                fillColor: secondaryColor,
+                                focusColor: secondaryColor,
+                                hintText: 'Password',
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15))),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15)),
+                                    borderSide:
+                                        BorderSide(color: primaryColor))),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Masukkan password';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          // const Spacer(),
+                          Center(
+                              child: primaryButton(
+                                  text: 'Masuk',
+                                  onPressed: () {
+                                    _login(
+                                        '750119911225002', '750119911225002');
+                                    // if (_formKey.currentState!.validate()) {
+                                    //   String username = _nipController.text;
+                                    //   String password =
+                                    //       _passwordController.text;
+                                    //   // _login('75010201', '75010201');
+                                    // }
+                                  }))
+                        ],
                       ),
                     ))
               ],
@@ -126,28 +123,70 @@ class _LoginState extends State<Login> {
     setState(() {
       _isloading = true;
     });
+
+    // Prepare the login data
     var data = {
       'username': username,
       'password': password,
     };
-    var response = await LoginService().login(data);
+
+    // Call the login service to attempt login
+    LoginService loginService = LoginService();
+    var response = await loginService.login(data);
+
+    // Check the login response
     print(response['status']);
     if (response['status'] == true) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
 
+      // Save user data in local storage
       Map user = response['data'];
-
       localStorage.setString('user', jsonEncode(user));
       localStorage.setBool('islogin', true);
-      // localStorage.setString('token', response['token']);
 
-      successSnackbar(context, response['message']);
+      // Show a success message
+      successSnackbar(context, response['message'], duration: 5);
+
+      // Navigate to the home screen
       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     } else {
+      // Login failed
       setState(() {
         _isloading = false;
       });
+
+      // Show an error message
       errorSnackbar(context, response['message']);
     }
   }
 }
+
+//   void _login(String username, String password) async {
+//     setState(() {
+//       _isloading = true;
+//     });
+//     var data = {
+//       'username': username,
+//       'password': password,
+//     };
+//     var response = await LoginService().login(data);
+//     print(response['status']);
+//     if (response['status'] == true) {
+//       SharedPreferences localStorage = await SharedPreferences.getInstance();
+
+//       Map user = response['data'];
+
+//       localStorage.setString('user', jsonEncode(user));
+//       localStorage.setBool('islogin', true);
+//       // localStorage.setString('token', response['token']);
+
+//       successSnackbar(context, response['message']);
+//       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+//     } else {
+//       setState(() {
+//         _isloading = false;
+//       });
+//       errorSnackbar(context, response['message']);
+//     }
+//   }
+// }

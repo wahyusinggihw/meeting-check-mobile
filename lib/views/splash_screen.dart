@@ -15,8 +15,8 @@ class SplashScreen extends StatelessWidget {
             'assets/images/logo.png',
             width: 200,
           ),
-          SizedBox(height: 40),
-          CircularProgressIndicator(),
+          const SizedBox(height: 40),
+          const CircularProgressIndicator(),
         ],
       )),
     );

@@ -28,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    futureAgendaRapat = AgendaRapatService().getAgendaRapat();
+    futureAgendaRapat =
+        AgendaRapatService().getAgendaRapat() as Future<List<AgendaRapatModel>>;
   }
 
   @override
@@ -43,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
             return Future.delayed(
                 const Duration(milliseconds: 500),
                 () => setState(() {
-                      futureAgendaRapat = AgendaRapatService().getAgendaRapat();
+                      futureAgendaRapat = AgendaRapatService().getAgendaRapat()
+                          as Future<List<AgendaRapatModel>>;
                     }));
           },
           child: Column(
@@ -91,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontSize: 14,
                                 )),
                             subtitle: Text(
-                              '${agendaItems[index].deskripsi}',
+                              agendaItems[index].agendaRapat,
                               // subtitle: Text(
                               //   '${agenda[index]}',
                               overflow: TextOverflow.ellipsis,

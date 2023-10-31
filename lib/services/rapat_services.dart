@@ -3,7 +3,6 @@ import 'dart:convert';
 import "package:dio/dio.dart";
 import 'package:meeting_check/models/agendarapat_model.dart';
 import '../services/secret.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RapatServices {
   Future<Map<String, dynamic>> getAgendaRapatById(String idAgenda) async {
@@ -40,7 +39,7 @@ class RapatServices {
       } else {
         throw Exception('Failed to load data');
       }
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       print('DioException occurred: ${error.response}');
       throw Exception(error.response);
     }

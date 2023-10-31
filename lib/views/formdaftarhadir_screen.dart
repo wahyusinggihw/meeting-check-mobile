@@ -4,10 +4,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:meeting_check/services/rapat_services.dart';
-import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/alertdialog.dart';
 import 'package:meeting_check/views/widgets/button.dart';
-import 'package:meeting_check/views/widgets/form.dart';
 import 'package:meeting_check/views/widgets/tandatangan.dart';
 import 'package:signature/signature.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,10 +19,6 @@ class FormDaftarHadir extends StatefulWidget {
 }
 
 class _FormDaftarHadirState extends State<FormDaftarHadir> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nipController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 1,
     penColor: Colors.black,
@@ -139,17 +133,22 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                     Text('Agenda Rapat',
                         style: Theme.of(context).textTheme.titleMedium),
                     SizedBox(height: 30),
-                    detailRapatAgenda('Judul Rapat', 'rapatData.agendaRapat'),
+                    detailRapatAgenda('Judul Rapat', rapatData.agendaRapat),
                     Divider(
                       color: Colors.grey,
                       thickness: 1,
                     ),
-                    detailRapatAgenda('Jam', 'rapatData.jam'),
+                    detailRapatAgenda('Tanggal', rapatData.tanggal),
                     Divider(
                       color: Colors.grey,
                       thickness: 1,
                     ),
-                    detailRapatAgenda('Tempat', 'rapatData.tempat'),
+                    detailRapatAgenda('Jam', rapatData.jam),
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 1,
+                    ),
+                    detailRapatAgenda('Tempat', rapatData.tempat),
                     Divider(
                       color: Colors.grey,
                       thickness: 1,
@@ -165,7 +164,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'Tempat ddad Quisque in lacus mollis, varius sem viverra, bibendum nunc. Sed dignissim facilisis pretium. Quisque in lacus mollis, varius sem viverra, bibendum nunc. Sed dignissim facilisis pretium.',
+                          rapatData.deskripsi,
                           textAlign: TextAlign.justify,
                           style: TextStyle(
                             fontSize: 14,
@@ -207,7 +206,10 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                               ),
                               IconButton(
                                 onPressed: () => _controller.clear(),
-                                icon: const Icon(Icons.delete),
+                                icon: const Icon(
+                                  Icons.refresh,
+                                  color: Colors.red,
+                                ),
                               ),
                             ],
                           ),
@@ -276,22 +278,28 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
     // You can send it to the server or store it as needed
 
     // print('Base64 Signature: $base64Signature');
-    var statusAbsen = await rapatServices.absensiStore(
-      nip: user['nip'],
-      kodeRapat: rapat['data']['kode_rapat'],
-      noHp: user['no_hp'],
-      nama: user['nama_lengkap'],
-      alamat: user['alamat'],
-      asalInstansi: user['ket_ukerja'],
-      signatureData: base64Signature,
-    );
-    print(statusAbsen);
-    if (statusAbsen['status'] == false) {
+    // print('errorkan' + rapat['error']);
+    if (rapat['error'] != false) {
       Navigator.pop(context);
-      errorDialog(context, 'Error', statusAbsen['message']);
+      errorDialog(context, 'Gagal', rapat['message']);
     } else {
-      successSnackbar(context, 'Berhasil absen');
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      var statusAbsen = await rapatServices.absensiStore(
+        nip: user['nip'],
+        kodeRapat: rapat['data']['kode_rapat'],
+        noHp: user['no_hp'],
+        nama: user['nama_lengkap'],
+        alamat: user['alamat'],
+        asalInstansi: user['ket_ukerja'],
+        signatureData: base64Signature,
+      );
+
+      if (statusAbsen['error'] != false) {
+        Navigator.pop(context);
+        errorDialog(context, 'Gagal', statusAbsen['message']);
+      } else {
+        successSnackbar(context, 'Berhasil absen', duration: 4);
+        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      }
     }
   }
 

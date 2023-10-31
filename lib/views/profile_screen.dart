@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:meeting_check/services/login_services.dart';
-import 'package:meeting_check/services/rapat_services.dart';
-import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/button.dart';
 // shared prefs
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String no = '';
   String instansi = '';
 
+  @override
   void initState() {
     super.initState();
     _loadUserData();
@@ -53,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         // verticalDirection: VerticalDirection.up,
         children: [
-          Center(
+          const Center(
             child: CircleAvatar(
               radius: 60,
               backgroundImage: AssetImage('assets/images/avatar.jpg'),
@@ -66,19 +65,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Text(
               name,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 color: Colors.black,
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           userInfo(context, 'NIP', nip),
           userInfo(context, 'NO', no),
           userInfo(context, 'Instansi', instansi),
-          Spacer(),
+          const Spacer(),
           secondaryButton(
               text: 'Keluar',
               onPressed: () {
@@ -110,7 +109,7 @@ Widget userInfo(BuildContext context, String title, String value) => Padding(
               Expanded(
                 child: Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                     color: Colors.grey,
@@ -120,7 +119,7 @@ Widget userInfo(BuildContext context, String title, String value) => Padding(
               Expanded(
                 child: Text(
                   value,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     height: 1.4,
                     overflow: TextOverflow.ellipsis,
@@ -135,25 +134,25 @@ Widget userInfo(BuildContext context, String title, String value) => Padding(
 
 Widget buildUserInfoDisplay(String getValue, String title, Widget editPage) =>
     Padding(
-        padding: EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.only(bottom: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
                 color: Colors.grey,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 1,
             ),
             Container(
                 width: 350,
                 height: 40,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     border: Border(
                         bottom: BorderSide(
                   color: Colors.grey,
@@ -167,9 +166,9 @@ Widget buildUserInfoDisplay(String getValue, String title, Widget editPage) =>
                           },
                           child: Text(
                             getValue,
-                            style: TextStyle(fontSize: 16, height: 1.4),
+                            style: const TextStyle(fontSize: 16, height: 1.4),
                           ))),
-                  Icon(
+                  const Icon(
                     Icons.keyboard_arrow_right,
                     color: Colors.grey,
                     size: 40.0,

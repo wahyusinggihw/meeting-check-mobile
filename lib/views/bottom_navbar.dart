@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:meeting_check/services/rapat_services.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/home_screen.dart';
@@ -20,7 +19,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int index = 0;
-  String _scanBarcode = 'Unknown';
+
   final screens = const [
     HomeScreen(),
     QrScreen(),
@@ -54,13 +53,13 @@ class _MyHomePageState extends State<MyHomePage> {
         // print(rapat['agendaRapat'].agendaRapat);
         if (rapat['error'] != true) {
           successSnackbar(context, 'Silahkan melakukan tanda tangan',
-              duration: 5);
+              duration: 4);
           Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
             'idRapat': uuid,
             'rapat': rapat['agendaRapat'],
           });
         } else {
-          errorDialog(context, 'Error', rapat['message']);
+          errorDialog(context, 'Gagal', rapat['message']);
         }
 
         // print("idRapat:" + qrCodeResult);
@@ -97,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
           selectedIndex: index,
           onDestinationSelected: (index) => setState(() => this.index = index),
           destinations: [
-            NavigationDestination(
+            const NavigationDestination(
               icon: Icon(Icons.home_rounded),
               label: 'Home',
             ),
@@ -107,23 +106,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 InkWell(
                     onTap: () {
                       scanQRCode();
-                      // if (_scanBarcode != '-1') {
-                      // Navigator.pushNamed(context, '/success-qr', arguments: {
-                      //   'qr': _scanBarcode,
-                      //   'status': 'Terimakasih telah mengisi daftar hadir!'
-                      // });
-                      // } else {
-                      //   Navigator.pushNamed(context, '/qr-error',
-                      //       arguments: {'status': 'Kode Qr tidak valid'});
-                      // }
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.qr_code_scanner_rounded),
                     )),
               ],
             ),
-            NavigationDestination(
+            const NavigationDestination(
               icon: Icon(Icons.person),
               label: 'Profile',
             ),

@@ -51,7 +51,7 @@ class QrErrorScreen extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             Text(args['status']),
-            Spacer(),
+            const Spacer(),
             ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor:
