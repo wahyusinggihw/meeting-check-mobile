@@ -17,101 +17,62 @@ class _DetailRapatState extends State<DetailRapat> {
         centerTitle: true,
         title: Text('Detail Rapat'),
       ),
-      body: SingleChildScrollView(
+      body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Center(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Color.fromARGB(255, 255, 255, 255),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromARGB(68, 0, 0, 0),
-                    offset: Offset(0, 10),
-                    blurRadius: 20,
+          child: Card(
+            surfaceTintColor: Colors.white,
+            elevation: 8, // Atur elevasi kartu sesuai kebutuhan
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text(
+                    args['agenda'].agendaRapat,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 30),
+                  detailRapatAgenda('Tanggal', args['agenda'].tanggal),
+                  Divider(
+                    color: Colors.grey,
+                    thickness: 1,
+                  ),
+                  detailRapatAgenda('Jam', args['agenda'].jam),
+                  Divider(
+                    color: Colors.grey,
+                    thickness: 1,
+                  ),
+                  detailRapatAgenda('Tempat', args['agenda'].tempat),
+                  Divider(
+                    color: Colors.grey,
+                    thickness: 1,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Deskripsi',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        args['agenda'].deskripsi,
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: 10),
-                    Text(
-                      args['agenda'].agendaRapat,
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.normal),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 50),
-                    detailRapatAgenda('Tanggal', args['agenda'].tanggal),
-                    // line
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                    ),
-                    detailRapatAgenda('Jam', args['agenda'].jam),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                    ),
-                    detailRapatAgenda('Tempat', args['agenda'].tempat),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: Text(
-                                  'Deskripsi',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.2,
-                          ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Container(
-                                  child: Text(
-                                    args['agenda'].deskripsi,
-                                    textAlign: TextAlign.justify,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
               ),
             ),
           ),
@@ -122,7 +83,7 @@ class _DetailRapatState extends State<DetailRapat> {
 }
 
 Widget detailRapatAgenda(String title, String value) => Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20),
+      padding: const EdgeInsets.only(left: 0, right: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

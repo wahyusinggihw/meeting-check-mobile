@@ -100,81 +100,146 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
 
   Widget buildForm(idRapat, rapatData) {
     RapatServices rapatServices = RapatServices();
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        FutureBuilder<dynamic>(
-          future: rapatServices.getRapatById(
-              idRapat), // Replace 'kodeRapat' with the actual value
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else if (!snapshot.hasData || snapshot.data == null) {
-              return Text('No data available.');
-            } else {
-              final responseData = snapshot.data!['data'];
-              // return Text('Judul Rapat: $judulRapat');
-              return buildRapatForm(rapatData);
-            }
-          },
-        ),
-      ],
+    return FutureBuilder<dynamic>(
+      future: rapatServices
+          .getRapatById(idRapat), // Replace 'kodeRapat' with the actual value
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData || snapshot.data == null) {
+          return Text('No data available.');
+        } else {
+          final responseData = snapshot.data!['data'];
+          // return Text('Judul Rapat: $judulRapat');
+          return buildRapatForm(rapatData);
+        }
+      },
     );
   }
 
   Widget buildRapatForm(rapatData) {
-    return Padding(
-      padding: MediaQuery.of(context).size.width > 600
-          ? const EdgeInsets.symmetric(horizontal: 100, vertical: 50)
-          : const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Agenda Rapat',
-                style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 20),
-            const SizedBox(height: 10),
-            formDaftarHadir('Judul Rapat', rapatData.agendaRapat),
-            const SizedBox(height: 10),
-            formDaftarHadir('Jam', rapatData.jam),
-            const SizedBox(height: 10),
-            formDaftarHadir('Tempat', rapatData.tempat),
-            const SizedBox(height: 10),
-            formDaftarHadir('Agenda', rapatData.deskripsi),
-            const SizedBox(height: 10),
-            Container(
-              height: 48,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: primaryColor)),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: MediaQuery.of(context).size.width > 600
+            ? const EdgeInsets.symmetric(horizontal: 100, vertical: 50)
+            : const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Card(
+              surfaceTintColor: Colors.white,
+              elevation: 8,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: tandaTanganForm(),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Text('Agenda Rapat',
+                        style: Theme.of(context).textTheme.titleMedium),
+                    SizedBox(height: 30),
+                    detailRapatAgenda('Judul Rapat', 'rapatData.agendaRapat'),
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 1,
+                    ),
+                    detailRapatAgenda('Jam', 'rapatData.jam'),
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 1,
+                    ),
+                    detailRapatAgenda('Tempat', 'rapatData.tempat'),
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 1,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Deskripsi',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Tempat ddad Quisque in lacus mollis, varius sem viverra, bibendum nunc. Sed dignissim facilisis pretium. Quisque in lacus mollis, varius sem viverra, bibendum nunc. Sed dignissim facilisis pretium.',
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Form(
+                        child: Column(
+                          children: <Widget>[
+                            Stack(
+                              alignment: AlignmentDirectional.topEnd,
+                              children: [
+                                Signature(
+                                    controller: _controller,
+                                    width: MediaQuery.of(context).size.width,
+                                    height:
+                                        MediaQuery.of(context).size.height / 4,
+                                    backgroundColor: const Color.fromARGB(
+                                        255, 223, 220, 220)),
+                                IconButton(
+                                    onPressed: () => _controller.clear(),
+                                    icon: const Icon(Icons.delete)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    primaryButton(
+                        text: 'Submit',
+                        onPressed: () async {
+                          await _controller.toPngBytes();
+                          successSnackbar(context,
+                              'Berhasil disimpan, silahkan submit form',
+                              duration: 5);
+                          Navigator.pop(context);
+                        }),
+                  ],
+                ),
               ),
             ),
-            Center(
-              child: primaryButton(
-                  text: 'Submit',
-                  onPressed: () {
-                    if (_controller.isEmpty) {
-                      // Show an error snackbar if the signature is empty
-                      errorSnackbar(context, 'Tanda tangan belum diisi');
-                    } else {
-                      submitAbsen(rapatData.idAgenda);
-                    }
-                  }),
-            )
-          ],
+          ),
         ),
       ),
     );
   }
+
+  Widget detailRapatAgenda(String title, String value) => Padding(
+        padding: const EdgeInsets.only(left: 0, right: 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            Container(
+              child: Text(
+                value,
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
 
   submitAbsen(uuid) async {
     RapatServices rapatServices = RapatServices();
@@ -211,61 +276,52 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
     }
   }
 
-  Widget tandaTanganForm() =>
-      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        const Text(
-          "Tanda Tangan",
-        ),
-        IconButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      actionsAlignment: MainAxisAlignment.center,
-                      backgroundColor: Colors.white,
-                      scrollable: true,
-                      title: Text('Tanda Tangan'),
-                      content: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Form(
-                          child: Column(
-                            children: <Widget>[
-                              Stack(
-                                alignment: AlignmentDirectional.topEnd,
-                                children: [
-                                  Signature(
-                                      controller: _controller,
-                                      width: 200,
-                                      height: 200,
-                                      backgroundColor: Colors.white),
-                                  IconButton(
-                                      onPressed: () => _controller.clear(),
-                                      icon: const Icon(Icons.delete)),
-                                ],
-                              ),
+  Widget tandaTanganForm() => primaryButton(
+        text: 'TTD',
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  actionsAlignment: MainAxisAlignment.center,
+                  backgroundColor: Colors.white,
+                  scrollable: true,
+                  title: Text('Tanda Tangan'),
+                  content: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
+                      child: Column(
+                        children: <Widget>[
+                          Stack(
+                            alignment: AlignmentDirectional.topEnd,
+                            children: [
+                              Signature(
+                                  controller: _controller,
+                                  width: 200,
+                                  height: 200,
+                                  backgroundColor: Colors.white),
+                              IconButton(
+                                  onPressed: () => _controller.clear(),
+                                  icon: const Icon(Icons.delete)),
                             ],
                           ),
-                        ),
+                        ],
                       ),
-                      actions: [
-                        primaryButton(
-                            text: "Submit",
-                            onPressed: () async {
-                              await _controller.toPngBytes();
-                              successSnackbar(context,
-                                  'Berhasil disimpan, silahkan submit form',
-                                  duration: 5);
-                              Navigator.pop(context);
-                            })
-                      ],
-                    );
-                  });
-            },
-            icon: Icon(
-              Icons.create,
-              color: primaryColor,
-              size: 20,
-            ))
-      ]);
+                    ),
+                  ),
+                  actions: [
+                    primaryButton(
+                        text: "Submit",
+                        onPressed: () async {
+                          await _controller.toPngBytes();
+                          successSnackbar(context,
+                              'Berhasil disimpan, silahkan submit form',
+                              duration: 5);
+                          Navigator.pop(context);
+                        })
+                  ],
+                );
+              });
+        },
+      );
 }
