@@ -173,27 +173,44 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                         ),
                       ],
                     ),
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 1,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Tanda Tangan',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Form(
-                        child: Column(
-                          children: <Widget>[
-                            Stack(
-                              alignment: AlignmentDirectional.topEnd,
-                              children: [
-                                Signature(
-                                    controller: _controller,
-                                    width: MediaQuery.of(context).size.width,
-                                    height:
-                                        MediaQuery.of(context).size.height / 4,
-                                    backgroundColor: const Color.fromARGB(
-                                        255, 223, 220, 220)),
-                                IconButton(
-                                    onPressed: () => _controller.clear(),
-                                    icon: const Icon(Icons.delete)),
-                              ],
-                            ),
-                          ],
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        height: MediaQuery.of(context).size.height / 4,
+                        child: ClipRect(
+                          child: Stack(
+                            alignment: AlignmentDirectional.topEnd,
+                            children: [
+                              Signature(
+                                controller: _controller,
+                                width: double.infinity,
+                                height: double.infinity,
+                                backgroundColor:
+                                    Color.fromARGB(255, 238, 236, 236),
+                              ),
+                              IconButton(
+                                onPressed: () => _controller.clear(),
+                                icon: const Icon(Icons.delete),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

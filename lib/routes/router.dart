@@ -15,7 +15,7 @@ class RouteGenerator {
       case '/':
         return MaterialPageRoute(
             builder: (_) => const MyHomePage(
-                  title: 'MeetingCheck',
+                  title: 'DaftarHadir',
                 ));
       case '/splash':
         return MaterialPageRoute(builder: (_) => const SplashScreen());
@@ -43,7 +43,7 @@ class RouteGenerator {
       default:
         return MaterialPageRoute(
             builder: (_) => const MyHomePage(
-                  title: 'MeetingCheck',
+                  title: 'DaftarHadir',
                 ));
     }
   }

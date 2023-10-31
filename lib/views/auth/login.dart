@@ -31,8 +31,9 @@ class _LoginState extends State<Login> {
           : ListView(
               physics: const BouncingScrollPhysics(),
               children: [
-                SizedBox(height: currentHeight / 6),
-                Image.asset('assets/images/logo.png', height: 100, width: 100),
+                // SizedBox(height: currentHeight / 20),
+                Image.asset('assets/images/menulogin.png',
+                    height: 300, width: 300),
                 const SizedBox(height: 20),
                 const Center(
                   child: Text(
