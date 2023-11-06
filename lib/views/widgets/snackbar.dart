@@ -10,7 +10,7 @@ successSnackbar(BuildContext context, String text, {int duration = 2}) {
   );
 }
 
-errorSnackbar(BuildContext context, String text) {
+errorSnackbar(BuildContext context, String text, {int duration = 2}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: Colors.red,

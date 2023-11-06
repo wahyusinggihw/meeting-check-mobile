@@ -4,11 +4,14 @@ import 'package:meeting_check/routes/router.dart' as router;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:meeting_check/providers/login_provider.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  runApp(const MyApp());
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -23,7 +26,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initialization();
-    _checkIfLoggedIn();
   }
 
   void initialization() async {
@@ -31,33 +33,14 @@ class _MyAppState extends State<MyApp> {
     // the splash screen is displayed.  Remove the following example because
     // delaying the user experience is a bad design practice!
     // ignore_for_file: avoid_print
-    print('ready in 3...');
-    await Future.delayed(const Duration(seconds: 1));
-    print('ready in 2...');
-    await Future.delayed(const Duration(seconds: 1));
-    print('ready in 1...');
-    await Future.delayed(const Duration(seconds: 1));
-    print('go!');
+    // print('ready in 3...');
+    // await Future.delayed(const Duration(seconds: 1));
+    // print('ready in 2...');
+    // await Future.delayed(const Duration(seconds: 1));
+    // print('ready in 1...');
+    // await Future.delayed(const Duration(seconds: 1));
+    // print('go!');
     FlutterNativeSplash.remove();
-  }
-
-  bool isAuth = false;
-
-  void _checkIfLoggedIn() async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var islogin = localStorage.getBool('islogin');
-    if (islogin != null) {
-      setState(() {
-        isAuth = true;
-      });
-    }
-    // if (token != null) {
-    //     setState(() {
-    //       isAuth = true;
-    //     });
-    //   if (mounted) {
-    //   }
-    // }
   }
 
   // This widget is the root of your application.
@@ -65,7 +48,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Meeting Check',
+      title: 'DaftarHadir',
       theme: ThemeData(
         // colorScheme: ColorScheme.fromSeed(
         //   seedColor: const Color(0xffEFF2F5),
@@ -104,7 +87,7 @@ class _MyAppState extends State<MyApp> {
             surfaceTintColor: Colors.white),
         useMaterial3: true,
       ),
-      initialRoute: isAuth ? '/' : '/login',
+      initialRoute: '/splash',
       onGenerateRoute: router.RouteGenerator.generateRoute,
       // home: const MyHomePage(title: 'MeetingCheck'),
     );

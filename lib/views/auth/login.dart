@@ -18,6 +18,7 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nipController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
   bool _isloading = false;
 
   @override
@@ -55,6 +56,7 @@ class _LoginState extends State<Login> {
                           TextFormField(
                             cursorColor: secondaryColor,
                             controller: _nipController,
+                            keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
                                 fillColor: secondaryColor,
                                 focusColor: secondaryColor,
@@ -77,18 +79,35 @@ class _LoginState extends State<Login> {
                           const SizedBox(height: 20),
                           TextFormField(
                             controller: _passwordController,
-                            decoration: const InputDecoration(
-                                fillColor: secondaryColor,
-                                focusColor: secondaryColor,
-                                hintText: 'Password',
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15))),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15)),
-                                    borderSide:
-                                        BorderSide(color: primaryColor))),
+                            obscureText: !_isPasswordVisible,
+                            keyboardType: TextInputType.visiblePassword,
+                            decoration: InputDecoration(
+                              fillColor: secondaryColor,
+                              focusColor: secondaryColor,
+                              hintText: 'Password',
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                borderSide: BorderSide(color: primaryColor),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isPasswordVisible = !_isPasswordVisible;
+                                  });
+                                },
+                              ),
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Masukkan password';
@@ -102,14 +121,14 @@ class _LoginState extends State<Login> {
                               child: primaryButton(
                                   text: 'Masuk',
                                   onPressed: () {
-                                    _login(
-                                        '750119911225002', '750119911225002');
-                                    // if (_formKey.currentState!.validate()) {
-                                    //   String username = _nipController.text;
-                                    //   String password =
-                                    //       _passwordController.text;
-                                    //   // _login('75010201', '75010201');
-                                    // }
+                                    // _login(
+                                    //     '750119911225002', '750119911225002');
+                                    if (_formKey.currentState!.validate()) {
+                                      String username = _nipController.text;
+                                      String password =
+                                          _passwordController.text;
+                                      _login(username, password);
+                                    }
                                   }))
                         ],
                       ),
@@ -135,8 +154,8 @@ class _LoginState extends State<Login> {
     var response = await loginService.login(data);
 
     // Check the login response
-    print(response['status']);
-    if (response['status'] == true) {
+    // print('isError:' + response['error']);
+    if (response['error'] == false) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
 
       // Save user data in local storage
@@ -144,19 +163,22 @@ class _LoginState extends State<Login> {
       localStorage.setString('user', jsonEncode(user));
       localStorage.setBool('islogin', true);
 
+      setState(() {
+        _isloading = false;
+      });
       // Show a success message
       successSnackbar(context, response['message'], duration: 5);
 
       // Navigate to the home screen
       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-    } else {
+    } else if (response['error'] == true) {
       // Login failed
       setState(() {
         _isloading = false;
       });
 
       // Show an error message
-      errorSnackbar(context, response['message']);
+      errorSnackbar(context, response['message'], duration: 4);
     }
   }
 }
