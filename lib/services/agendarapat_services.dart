@@ -9,8 +9,14 @@ import 'package:meeting_check/services/secret.dart';
 class AgendaRapatService {
   Future<List<AgendaRapatModel>> getAgendaRapat() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var user = jsonDecode(localStorage.getString('user').toString());
-    final Response response;
+    final String? userData = localStorage.getString('user');
+
+    if (userData == null) {
+      // Handle the case where 'user' data is null, which could happen if the user is not logged in.
+      return [];
+    }
+
+    final Map<String, dynamic> user = jsonDecode(userData);
     final Dio dio = Dio(
       BaseOptions(
         headers: {
@@ -28,20 +34,22 @@ class AgendaRapatService {
       }
     }
 
-    String url = '$apiURL/api/agenda-rapat/' + _idInstansi();
+    String url = '$apiURL/api/agenda-rapat/get-by-instansi/' + _idInstansi();
     print(url);
     try {
-      response = await dio.get(url);
+      final Response response = await dio.get(url);
       if (response.statusCode == 200) {
-        // print(response.statusMessage);
-        final List<dynamic> data = response.data['data'] as List<dynamic>;
-        return data.map((json) => AgendaRapatModel.fromJson(json)).toList();
+        if (response.data['data'] == null) {
+          return [];
+        } else {
+          final List<dynamic> data = response.data['data'] as List<dynamic>;
+          return data.map((json) => AgendaRapatModel.fromJson(json)).toList();
+        }
       } else {
         throw Exception('Failed to load data');
       }
-      // return AgendaRapatModel.fromJson(response.data);
     } on DioException catch (error, stacktrace) {
-      print('Exception occured: $error stackTrace: $stacktrace');
+      print('Exception occurred: $error stackTrace: $stacktrace');
       throw Exception(error.response);
     }
   }
