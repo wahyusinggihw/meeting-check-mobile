@@ -41,6 +41,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   google_fonts: ^6.1.0
+  provider: ^6.0.5
   shared_preferences: ^2.2.2
   signature: ^5.4.0
 
