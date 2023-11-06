@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
-
-import 'package:meeting_check/models/user_model.dart';
 import 'package:meeting_check/services/secret.dart';
 import "package:dio/dio.dart";
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +16,7 @@ class LoginService {
       ),
     );
 
-    final String url = '$apiURL/api/login';
+    const String url = '$apiURL/api/login';
 
     try {
       final response = await dio.post(
@@ -37,14 +34,14 @@ class LoginService {
           return {'error': true, 'message': message};
         }
         return {
-          'status': true,
+          'error': false,
           'message': responseData['message'],
           'data': responseData['data']
         };
       } else {
         throw Exception('Failed to load data');
       }
-    } on DioError catch (error, stacktrace) {
+    } on DioException catch (error, stacktrace) {
       print('DioException occurred: $error stackTrace: $stacktrace');
       throw Exception(error.response);
     }
@@ -52,7 +49,6 @@ class LoginService {
 
   logout() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    localStorage.remove('user');
-    localStorage.remove('islogin');
+    localStorage.clear();
   }
 }
