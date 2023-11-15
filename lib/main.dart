@@ -3,8 +3,8 @@ import 'package:meeting_check/routes/router.dart' as router;
 // import 'package:meeting_check/views/bottom_navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:meeting_check/providers/login_provider.dart';
+import 'package:meeting_check/views/colors.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -53,16 +53,22 @@ class _MyAppState extends State<MyApp> {
         // colorScheme: ColorScheme.fromSeed(
         //   seedColor: const Color(0xffEFF2F5),
         // ),
+        colorScheme: const ColorScheme.light(
+          primary: primaryColor,
+          secondary: secondaryColor,
+          surface: Colors.white,
+          onSurface: Colors.black,
+        ),
         textTheme: TextTheme(
           titleLarge: GoogleFonts.poppins(
             fontSize: 24,
             fontWeight: FontWeight.w700,
-            color: const Color(0xff0357AD),
+            color: primaryColor,
           ),
           titleMedium: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.normal,
-            color: const Color(0xff0357AD),
+            color: primaryColor,
           ),
           bodyMedium: GoogleFonts.poppins(
             fontSize: 12,
@@ -83,9 +89,10 @@ class _MyAppState extends State<MyApp> {
         ),
         navigationBarTheme: const NavigationBarThemeData(
             backgroundColor: Colors.white,
-            indicatorColor: Color(0xff0357AD),
+            indicatorColor: primaryColor,
             surfaceTintColor: Colors.white),
         useMaterial3: true,
+        dialogBackgroundColor: Colors.white,
       ),
       initialRoute: '/splash',
       onGenerateRoute: router.RouteGenerator.generateRoute,

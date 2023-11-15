@@ -30,11 +30,15 @@ class AgendaRapatService {
 
     _idInstansi() {
       if (user != null) {
-        return user['kode_ukerja'];
+        /*
+        kode_ukerja di api instansi dan agenda-rapat mempunyai panjang berbeda
+        kode_ukerja di api instansi 8 digit, sedangkan di api getAsn dan NonAsn 10 digit
+        */
+        return user['kode_ukerja'].substring(0, 8);
       }
     }
 
-    String url = '$apiURL/api/agenda-rapat/get-by-instansi/' + _idInstansi();
+    String url = '$apiURL/api/agenda-rapat/instansi/' + _idInstansi();
     print(url);
     try {
       final Response response = await dio.get(url);

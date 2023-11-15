@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:meeting_check/views/auth/login.dart';
-import 'package:meeting_check/views/bottom_navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,22 +19,24 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void isLogin() async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    bool? isLogin = sp.getBool('islogin') ?? false;
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    bool? isLogin = localStorage.getBool('islogin') ?? false;
 
     if (isLogin) {
       Timer(const Duration(seconds: 2), () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const MyHomePage(
-                      title: 'DaftarHadir',
-                    )));
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/',
+          (route) => false,
+        );
       });
     } else {
       Timer(const Duration(seconds: 2), () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const Login()));
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/login',
+          (route) => false,
+        );
       });
     }
   }

@@ -4,8 +4,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:meeting_check/services/rapat_services.dart';
+import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/alertdialog.dart';
 import 'package:meeting_check/views/widgets/button.dart';
+import 'package:meeting_check/views/widgets/flushbar.dart';
 import 'package:meeting_check/views/widgets/tandatangan.dart';
 import 'package:signature/signature.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -80,7 +82,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
   Widget build(BuildContext context) {
     final Map<String, dynamic>? arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    final String idRapat = arguments?['idRapat'] ?? '';
+    final String kodeRapat = arguments?['kodeRapat'] ?? '';
     var rapatData = arguments?['rapat'];
 
     return Scaffold(
@@ -88,15 +90,15 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         centerTitle: true,
         title: const Text('Form Daftar Hadir'),
       ),
-      body: buildForm(idRapat, rapatData),
+      body: buildForm(kodeRapat, rapatData),
     );
   }
 
-  Widget buildForm(idRapat, rapatData) {
+  Widget buildForm(kodeRapat, rapatData) {
     RapatServices rapatServices = RapatServices();
     return FutureBuilder<dynamic>(
-      future: rapatServices
-          .getRapatById(idRapat), // Replace 'kodeRapat' with the actual value
+      future: rapatServices.getRapatByKode(
+          kodeRapat), // Replace 'kodeRapat' with the actual value
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -202,13 +204,13 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                                 width: double.infinity,
                                 height: double.infinity,
                                 backgroundColor:
-                                    Color.fromARGB(255, 238, 236, 236),
+                                    Color.fromARGB(255, 255, 255, 255),
                               ),
                               IconButton(
                                 onPressed: () => _controller.clear(),
                                 icon: const Icon(
                                   Icons.refresh,
-                                  color: Colors.red,
+                                  color: secondaryColor,
                                 ),
                               ),
                             ],
@@ -222,9 +224,10 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                           await _controller.toPngBytes();
                           if (_controller.isEmpty) {
                             // Show an error snackbar if the signature is empty
-                            errorSnackbar(context, 'Tanda tangan belum diisi');
+                            await errorFlushbar(
+                                context, 'Tanda tangan belum diisi');
                           } else {
-                            submitAbsen(rapatData.idAgenda);
+                            submitAbsen(rapatData.kodeRapat);
                           }
                         }),
                   ],
@@ -262,11 +265,11 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         ),
       );
 
-  submitAbsen(uuid) async {
+  submitAbsen(kodeRapat) async {
     RapatServices rapatServices = RapatServices();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var user = jsonDecode(localStorage.getString('user').toString());
-    var rapat = await rapatServices.getRapatById(uuid);
+    var rapat = await rapatServices.getRapatByKode(kodeRapat);
 
     // Capture the signature as an image (PNG)
     Uint8List? signatureImage = await _controller.toPngBytes();
@@ -279,8 +282,8 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
 
     // print('Base64 Signature: $base64Signature');
     // print('errorkan' + rapat['error']);
-    if (rapat['error'] != false) {
-      Navigator.pop(context);
+    if (rapat['error'] == true) {
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
       errorDialog(context, 'Gagal', rapat['message']);
     } else {
       var statusAbsen = await rapatServices.absensiStore(
@@ -294,11 +297,12 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
       );
 
       if (statusAbsen['error'] != false) {
-        Navigator.pop(context);
+        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
         errorDialog(context, 'Gagal', statusAbsen['message']);
       } else {
-        successSnackbar(context, 'Berhasil absen', duration: 4);
         Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+        successFlushbar(context, 'Berhasil absen',
+            duration: const Duration(seconds: 5));
       }
     }
   }

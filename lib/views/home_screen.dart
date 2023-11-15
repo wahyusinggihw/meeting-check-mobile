@@ -61,13 +61,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         if (snapshot.hasData) {
                           final agendaItems = snapshot.data;
                           if (agendaItems!.isEmpty) {
-                            return Center(
-                              child: Text(
-                                'Tidak ada agenda rapat tersedia',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                ),
+                            return const Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.event_note,
+                                    color: secondaryColor,
+                                    size: 100,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Text(
+                                    'Tidak ada agenda rapat tersedia',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
                           }
@@ -91,10 +102,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       1),
                                   onTap: () {
                                     Navigator.pushNamed(
-                                        context, '/detail-rapat', arguments: {
-                                      'title': 'Detail Rapat',
-                                      'agenda': agendaItems[index]
-                                    });
+                                        context, '/form-daftarhadir',
+                                        arguments: {
+                                          'title': 'Detail Rapat',
+                                          'kodeRapat':
+                                              agendaItems[index].kodeRapat,
+                                          'rapat': agendaItems[index]
+                                        });
                                   },
                                   leading: const Icon(Icons.event_note,
                                       color: secondaryColor),

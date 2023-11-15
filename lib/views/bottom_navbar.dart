@@ -6,7 +6,7 @@ import 'package:meeting_check/views/profile_screen.dart';
 import 'package:meeting_check/views/qr_screen.dart';
 import 'package:meeting_check/views/widgets/alertdialog.dart';
 import 'dart:async';
-import 'package:meeting_check/views/widgets/snackbar.dart';
+import 'package:meeting_check/views/widgets/flushbar.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -43,21 +43,21 @@ class _MyHomePageState extends State<MyHomePage> {
         // QR code scanned successfully, now parse the URL to extract kode_rapat
         Uri uri = Uri.parse(codeScanner);
         // String? kodeRapat = uri.queryParameters['kode_rapat'];
-        String? uuid = uri.pathSegments[3];
-
+        String? kodeRapat = uri.pathSegments[2];
+        print(kodeRapat);
         setState(() {
-          qrCodeResult = uuid ?? "kode_rapat not found";
+          qrCodeResult = kodeRapat;
         });
-        var rapat = await rapatServices.getAgendaRapatById(uuid);
+        var rapat = await rapatServices.getAgendaRapatByKode(kodeRapat);
         print(rapat['error']);
         // print(rapat['agendaRapat'].agendaRapat);
         if (rapat['error'] != true) {
-          successSnackbar(context, 'Silahkan melakukan tanda tangan',
-              duration: 4);
           Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
-            'idRapat': uuid,
+            'kodeRapat': kodeRapat,
             'rapat': rapat['agendaRapat'],
           });
+          await successFlushbar(context, 'Silahkan melakukan tanda tangan',
+              duration: Duration(seconds: 5));
         } else {
           errorDialog(context, 'Gagal', rapat['message']);
         }

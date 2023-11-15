@@ -5,7 +5,7 @@ import 'package:meeting_check/models/agendarapat_model.dart';
 import '../services/secret.dart';
 
 class RapatServices {
-  Future<Map<String, dynamic>> getAgendaRapatById(String idAgenda) async {
+  Future<Map<String, dynamic>> getAgendaRapatByKode(String kodeRapat) async {
     final Dio dio = Dio(
       BaseOptions(
         headers: {
@@ -17,7 +17,7 @@ class RapatServices {
       ),
     );
 
-    final String url = '$apiURL/api/agenda-rapat/get-by-id/$idAgenda';
+    final String url = '$apiURL/api/agenda-rapat/scan/$kodeRapat';
 
     try {
       final response = await dio.get(url);
@@ -45,7 +45,7 @@ class RapatServices {
     }
   }
 
-  getRapatById(idAgenda) async {
+  getRapatByKode(kodeRapat) async {
     final Response response;
     final Dio dio = Dio(
       BaseOptions(
@@ -57,8 +57,8 @@ class RapatServices {
         },
       ),
     );
-    String url = '$apiURL/api/agenda-rapat/get-by-id/$idAgenda';
-    print(idAgenda);
+    String url = '$apiURL/api/agenda-rapat/scan/$kodeRapat';
+    print(kodeRapat);
     try {
       response = await dio.get(url);
       if (response.statusCode == 200) {
@@ -78,8 +78,8 @@ class RapatServices {
     }
   }
 
-  getStatusRapat(idAgenda) {
-    var $data = getRapatById(idAgenda);
+  getStatusRapat(kodeRapat) {
+    var $data = getRapatByKode(kodeRapat);
     return $data;
   }
 
@@ -103,7 +103,7 @@ class RapatServices {
         },
       ),
     );
-    String url = '$apiURL/api/form-absensi-store';
+    String url = '$apiURL/api/daftar-hadir/store';
     // print(signatureData);
     try {
       response = await dio.post(

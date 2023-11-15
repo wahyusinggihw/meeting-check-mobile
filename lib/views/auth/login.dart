@@ -170,7 +170,7 @@ class _LoginState extends State<Login> {
       successSnackbar(context, response['message'], duration: 5);
 
       // Navigate to the home screen
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
     } else if (response['error'] == true) {
       // Login failed
       setState(() {
