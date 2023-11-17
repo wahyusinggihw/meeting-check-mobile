@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'package:meeting_check/services/agendarapat_services.dart';
 import 'package:meeting_check/services/secret.dart';
 import "package:dio/dio.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
+  AgendaRapatService agendaRapatService = AgendaRapatService();
   Future<Map<String, dynamic>> login(Map<String, dynamic> data) async {
     final Dio dio = Dio(
       BaseOptions(
@@ -15,6 +18,8 @@ class LoginService {
         },
       ),
     );
+
+    agendaRapatService.handleHttp(dio);
 
     const String url = '$apiURL/api/login';
 
@@ -42,7 +47,7 @@ class LoginService {
         throw Exception('Failed to load data');
       }
     } on DioException catch (error, stacktrace) {
-      print('DioException occurred: $error stackTrace: $stacktrace');
+      log('DioException occurred: $error stackTrace: $stacktrace');
       throw Exception(error.response);
     }
   }

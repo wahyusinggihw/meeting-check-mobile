@@ -1,12 +1,27 @@
 import 'dart:convert';
-
+import 'dart:developer';
+import 'dart:io';
+import 'package:dio/io.dart';
 import 'package:meeting_check/models/agendarapat_model.dart';
 import "package:dio/dio.dart";
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:meeting_check/services/secret.dart';
 
 class AgendaRapatService {
+  handleHttp(dio) {
+    dio.httpClientAdapter = IOHttpClientAdapter(
+      createHttpClient: () {
+        // Don't trust any certificate just because their root cert is trusted.
+        final HttpClient client =
+            HttpClient(context: SecurityContext(withTrustedRoots: false));
+        // You can test the intermediate / root cert here. We just ignore it.
+        client.badCertificateCallback =
+            ((X509Certificate cert, String host, int port) => true);
+        return client;
+      },
+    );
+  }
+
   Future<List<AgendaRapatModel>> getAgendaRapat() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     final String? userData = localStorage.getString('user');
@@ -28,18 +43,15 @@ class AgendaRapatService {
       ),
     );
 
-    _idInstansi() {
-      if (user != null) {
-        /*
-        kode_ukerja di api instansi dan agenda-rapat mempunyai panjang berbeda
-        kode_ukerja di api instansi 8 digit, sedangkan di api getAsn dan NonAsn 10 digit
-        */
-        return user['kode_ukerja'].substring(0, 8);
-      }
+    handleHttp(dio);
+
+    idInstansi() {
+      return user['kode_ukerja'].substring(0, 8);
     }
 
-    String url = '$apiURL/api/agenda-rapat/instansi/' + _idInstansi();
-    print(url);
+    // ignore: prefer_interpolation_to_compose_strings
+    String url = '$apiURL/api/agenda-rapat/instansi/' + idInstansi();
+    // log(url);
     try {
       final Response response = await dio.get(url);
       if (response.statusCode == 200) {
@@ -53,51 +65,8 @@ class AgendaRapatService {
         throw Exception('Failed to load data');
       }
     } on DioException catch (error, stacktrace) {
-      print('Exception occurred: $error stackTrace: $stacktrace');
+      log('Exception occurred: $error stackTrace: $stacktrace');
       throw Exception(error.response);
     }
   }
-
-  // Future<Map<String, List<AgendaRapatModel>>> getAgendaRapat() async {
-  //   SharedPreferences localStorage = await SharedPreferences.getInstance();
-  //   var user = jsonDecode(localStorage.getString('user').toString());
-  //   final Response response;
-  //   final Dio dio = Dio(
-  //     BaseOptions(
-  //       headers: {
-  //         'Authorization':
-  //             'Basic ${base64Encode(utf8.encode('$apiUsername:$apiPassword'))}',
-  //         'Content-Type': 'application/json',
-  //         'Accept': 'application/json',
-  //       },
-  //     ),
-  //   );
-
-  //   _idInstansi() {
-  //     if (user != null) {
-  //       return user['kode_ukerja'];
-  //     }
-  //   }
-
-  //   String url = '$apiURL/api/agenda-rapat/' + _idInstansi();
-  //   print(url);
-  //   try {
-  //     response = await dio.get(url);
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> data = response.data['data'];
-
-  //       final List<dynamic> tersediaList = data['tersedia'] as List<dynamic>;
-  //       final List<AgendaRapatModel> tersediaAgendaList = tersediaList
-  //           .map((json) => AgendaRapatModel.fromJson(json))
-  //           .toList();
-
-  //       return {'tersedia': tersediaAgendaList};
-  //     } else {
-  //       throw Exception('Failed to load data');
-  //     }
-  //   } on DioException catch (error, stacktrace) {
-  //     print('Exception occurred: $error stackTrace: $stacktrace');
-  //     throw Exception(error.response);
-  //   }
-  // }
 }

@@ -29,6 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     RapatServices rapatServices = RapatServices();
+    // ignore: unused_local_variable
     String qrCodeResult = "Not yet scanned";
 
     Future<void> scanQRCode() async {
@@ -43,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // QR code scanned successfully, now parse the URL to extract kode_rapat
         Uri uri = Uri.parse(codeScanner);
         // String? kodeRapat = uri.queryParameters['kode_rapat'];
-        String? kodeRapat = uri.pathSegments[2];
+        String? kodeRapat = uri.pathSegments.last;
         print(kodeRapat);
         setState(() {
           qrCodeResult = kodeRapat;

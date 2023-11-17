@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:developer';
 // dio
 import "package:dio/dio.dart";
 import 'package:meeting_check/models/agendarapat_model.dart';
+import 'package:meeting_check/services/agendarapat_services.dart';
 import '../services/secret.dart';
 
 class RapatServices {
+  AgendaRapatService agendaRapatService = AgendaRapatService();
   Future<Map<String, dynamic>> getAgendaRapatByKode(String kodeRapat) async {
     final Dio dio = Dio(
       BaseOptions(
@@ -16,6 +19,8 @@ class RapatServices {
         },
       ),
     );
+
+    agendaRapatService.handleHttp(dio);
 
     final String url = '$apiURL/api/agenda-rapat/scan/$kodeRapat';
 
@@ -40,7 +45,7 @@ class RapatServices {
         throw Exception('Failed to load data');
       }
     } on DioException catch (error) {
-      print('DioException occurred: ${error.response}');
+      log('DioException occurred: ${error.response}');
       throw Exception(error.response);
     }
   }
@@ -57,8 +62,9 @@ class RapatServices {
         },
       ),
     );
+    agendaRapatService.handleHttp(dio);
     String url = '$apiURL/api/agenda-rapat/scan/$kodeRapat';
-    print(kodeRapat);
+    // print(kodeRapat);
     try {
       response = await dio.get(url);
       if (response.statusCode == 200) {
@@ -73,7 +79,7 @@ class RapatServices {
       }
       // return AgendaRapatModel.fromJson(response.data);
     } on DioException catch (error, stacktrace) {
-      print('Exception occured: $error stackTrace: $stacktrace');
+      log('Exception occured: $error stackTrace: $stacktrace');
       throw Exception(error.response);
     }
   }
@@ -103,6 +109,7 @@ class RapatServices {
         },
       ),
     );
+    agendaRapatService.handleHttp(dio);
     String url = '$apiURL/api/daftar-hadir/store';
     // print(signatureData);
     try {
@@ -130,7 +137,7 @@ class RapatServices {
       }
       // return AgendaRapatModel.fromJson(response.data);
     } on DioException catch (error, stacktrace) {
-      print('Exception occured: $error stackTrace: $stacktrace');
+      log('Exception occured: $error stackTrace: $stacktrace');
       throw Exception(error.response);
     }
   }
