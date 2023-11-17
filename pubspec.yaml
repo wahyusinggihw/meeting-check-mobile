@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  another_flushbar: ^1.12.30
   cupertino_icons: ^1.0.2
   dio: ^5.3.3
   flutter:
@@ -38,8 +39,7 @@ dependencies:
   google_fonts: ^6.1.0
   provider: ^6.0.5
   shared_preferences: ^2.2.2
-  signature: ^5.4.0
-  another_flushbar: ^1.12.30
+  syncfusion_flutter_signaturepad: ^23.1.44
 
 dev_dependencies:
   flutter_lints: ^2.0.0

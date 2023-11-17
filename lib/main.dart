@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:meeting_check/providers/agendarapat_provider.dart';
 import 'package:meeting_check/routes/router.dart' as router;
-// import 'package:meeting_check/views/bottom_navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-// import 'package:meeting_check/providers/login_provider.dart';
 import 'package:meeting_check/views/colors.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(
-    const MyApp(),
+    ChangeNotifierProvider(
+      create: (context) => AgendaRapatProvider(),
+      child: const MyApp(),
+    ),
   );
 }
 
@@ -29,17 +32,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void initialization() async {
-    // This is where you can initialize the resources needed by your app while
-    // the splash screen is displayed.  Remove the following example because
-    // delaying the user experience is a bad design practice!
-    // ignore_for_file: avoid_print
-    // print('ready in 3...');
-    // await Future.delayed(const Duration(seconds: 1));
-    // print('ready in 2...');
-    // await Future.delayed(const Duration(seconds: 1));
-    // print('ready in 1...');
-    // await Future.delayed(const Duration(seconds: 1));
-    // print('go!');
+    AgendaRapatProvider agendaProvider =
+        Provider.of<AgendaRapatProvider>(context, listen: false);
+    agendaProvider.fetchAgendaRapat();
     FlutterNativeSplash.remove();
   }
 

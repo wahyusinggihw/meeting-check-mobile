@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:meeting_check/models/agendarapat_model.dart';
-import 'package:meeting_check/services/agendarapat_services.dart';
+import 'package:meeting_check/providers/agendarapat_provider.dart';
 import 'package:meeting_check/views/colors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,26 +11,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // getagenda rapat
-  List<String> agenda = <String>[
-    'Pertemuan membahas kalender kerja kominfo tahun 2022 dan lain-lain',
-    'Koordianasi dengan kepala dinas terkait',
-    'Rapat koordinasi bersama sekretaris daerah',
-  ];
-
-  late Future<List<AgendaRapatModel>> futureAgendaRapat;
-
   String idInstansi = '';
 
   @override
-  void initState() {
-    super.initState();
-    futureAgendaRapat =
-        AgendaRapatService().getAgendaRapat() as Future<List<AgendaRapatModel>>;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    AgendaRapatProvider agendaProvider =
+        Provider.of<AgendaRapatProvider>(context, listen: false);
     return Scaffold(
       body: Padding(
         padding: MediaQuery.of(context).size.width > 600
@@ -44,8 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Future.delayed(
                 const Duration(milliseconds: 500),
                 () => setState(() {
-                      futureAgendaRapat = AgendaRapatService().getAgendaRapat()
-                          as Future<List<AgendaRapatModel>>;
+                      agendaProvider.fetchAgendaRapat();
                     }));
           },
           child: Column(
@@ -54,91 +36,86 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Text('Agenda Rapat',
                   style: Theme.of(context).textTheme.titleMedium),
-              Expanded(
-                  child: FutureBuilder<List<AgendaRapatModel>>(
-                      future: futureAgendaRapat,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          final agendaItems = snapshot.data;
-                          if (agendaItems!.isEmpty) {
-                            return const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.event_note,
-                                    color: secondaryColor,
-                                    size: 100,
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                    'Tidak ada agenda rapat tersedia',
-                                    style: TextStyle(
+              Consumer<AgendaRapatProvider>(
+                  builder: (context, agendaProvider, child) {
+                return Expanded(
+                  child: agendaProvider.agendaRapatList.isEmpty
+                      ? const Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.event_note,
+                                color: secondaryColor,
+                                size: 100,
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'Tidak ada agenda rapat tersedia',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: agendaProvider.agendaRapatList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              elevation: 4,
+                              margin: const EdgeInsets.all(10),
+                              child: ListTile(
+                                shape: ShapeBorder.lerp(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    1),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, '/form-daftarhadir',
+                                      arguments: {
+                                        'title': 'Detail Rapat',
+                                        'kodeRapat': agendaProvider
+                                            .agendaRapatList[index].kodeRapat,
+                                        'rapat': agendaProvider
+                                            .agendaRapatList[index]
+                                      });
+                                },
+                                leading: const Icon(Icons.event_note,
+                                    color: secondaryColor),
+                                tileColor: Colors.white,
+                                title: Text(
+                                    agendaProvider
+                                        .agendaRapatList[index].agendaRapat,
+                                    style: const TextStyle(
                                       color: Colors.black,
-                                      fontSize: 16,
-                                    ),
+                                      fontSize: 14,
+                                    )),
+                                subtitle: Text(
+                                  '${agendaProvider.agendaRapatList[index].jam}, ${agendaProvider.agendaRapatList[index].tanggal}',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                    color: secondaryColor,
+                                    fontSize: 12,
                                   ),
-                                ],
+                                ),
+                                trailing: const Icon(Icons.arrow_forward_ios,
+                                    color: primaryColor, size: 15),
                               ),
                             );
-                          }
-                          return ListView.builder(
-                            itemCount: agendaItems.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                elevation: 4,
-                                margin: const EdgeInsets.all(10),
-                                child: ListTile(
-                                  shape: ShapeBorder.lerp(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      1),
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, '/form-daftarhadir',
-                                        arguments: {
-                                          'title': 'Detail Rapat',
-                                          'kodeRapat':
-                                              agendaItems[index].kodeRapat,
-                                          'rapat': agendaItems[index]
-                                        });
-                                  },
-                                  leading: const Icon(Icons.event_note,
-                                      color: secondaryColor),
-                                  tileColor: Colors.white,
-                                  title: Text(
-                                      '${agendaItems[index].jam}, ${agendaItems[index].tanggal}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                      )),
-                                  subtitle: Text(
-                                    agendaItems[index].agendaRapat,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                      color: secondaryColor,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  trailing: const Icon(Icons.arrow_forward_ios,
-                                      color: primaryColor, size: 15),
-                                ),
-                              );
-                            },
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        }
-                        return const Center(child: CircularProgressIndicator());
-                      }))
+                          },
+                        ),
+                );
+              })
             ],
           ),
         ),
