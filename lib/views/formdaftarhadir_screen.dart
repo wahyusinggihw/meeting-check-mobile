@@ -1,6 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:meeting_check/services/rapat_services.dart';
@@ -8,10 +7,8 @@ import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/alertdialog.dart';
 import 'package:meeting_check/views/widgets/button.dart';
 import 'package:meeting_check/views/widgets/flushbar.dart';
-import 'package:meeting_check/views/widgets/tandatangan.dart';
-import 'package:signature/signature.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:meeting_check/views/widgets/snackbar.dart';
+import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
 class FormDaftarHadir extends StatefulWidget {
   const FormDaftarHadir({super.key});
@@ -21,62 +18,7 @@ class FormDaftarHadir extends StatefulWidget {
 }
 
 class _FormDaftarHadirState extends State<FormDaftarHadir> {
-  final SignatureController _controller = SignatureController(
-    penStrokeWidth: 1,
-    penColor: Colors.black,
-    exportBackgroundColor: Colors.transparent,
-    exportPenColor: Colors.black,
-    onDrawStart: () => log('onDrawStart called!'),
-    onDrawEnd: () => log('onDrawEnd called!'),
-  );
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.addListener(() => log('Value changed'));
-  }
-
-  @override
-  void dispose() {
-    // IMPORTANT to dispose of the controller
-    _controller.dispose();
-    super.dispose();
-  }
-
-  Future<void> exportImage(BuildContext context) async {
-    if (_controller.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          key: Key('snackbarPNG'),
-          content: Text('No content'),
-        ),
-      );
-      return;
-    }
-
-    final Uint8List? data =
-        await _controller.toPngBytes(height: 1000, width: 1000);
-    if (data == null) {
-      return;
-    }
-
-    if (!mounted) return;
-
-    await push(
-      context,
-      Scaffold(
-        appBar: AppBar(
-          title: const Text('PNG Image'),
-        ),
-        body: Center(
-          child: Container(
-            color: Colors.grey[300],
-            child: Image.memory(data),
-          ),
-        ),
-      ),
-    );
-  }
+  final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -84,38 +26,39 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     final String kodeRapat = arguments?['kodeRapat'] ?? '';
     var rapatData = arguments?['rapat'];
-
+    bool isSigned = false;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Form Daftar Hadir'),
       ),
-      body: buildForm(kodeRapat, rapatData),
+      body: buildForm(kodeRapat, rapatData, isSigned),
     );
   }
 
-  Widget buildForm(kodeRapat, rapatData) {
+  Widget buildForm(kodeRapat, rapatData, isSigned) {
     RapatServices rapatServices = RapatServices();
     return FutureBuilder<dynamic>(
       future: rapatServices.getRapatByKode(
           kodeRapat), // Replace 'kodeRapat' with the actual value
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (!snapshot.hasData || snapshot.data == null) {
-          return Text('No data available.');
+          return const Text('No data available.');
         } else {
+          // ignore: unused_local_variable
           final responseData = snapshot.data!['data'];
           // return Text('Judul Rapat: $judulRapat');
-          return buildRapatForm(rapatData);
+          return buildRapatForm(rapatData, isSigned);
         }
       },
     );
   }
 
-  Widget buildRapatForm(rapatData) {
+  Widget buildRapatForm(rapatData, isSigned) {
     return SingleChildScrollView(
       child: Padding(
         padding: MediaQuery.of(context).size.width > 600
@@ -134,52 +77,57 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                   children: <Widget>[
                     Text('Agenda Rapat',
                         style: Theme.of(context).textTheme.titleMedium),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
+                    detailRapatAgenda('Kode Rapat', rapatData.kodeRapat),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 1,
+                    ),
                     detailRapatAgenda('Judul Rapat', rapatData.agendaRapat),
-                    Divider(
+                    const Divider(
                       color: Colors.grey,
                       thickness: 1,
                     ),
                     detailRapatAgenda('Tanggal', rapatData.tanggal),
-                    Divider(
+                    const Divider(
                       color: Colors.grey,
                       thickness: 1,
                     ),
                     detailRapatAgenda('Jam', rapatData.jam),
-                    Divider(
+                    const Divider(
                       color: Colors.grey,
                       thickness: 1,
                     ),
                     detailRapatAgenda('Tempat', rapatData.tempat),
-                    Divider(
+                    const Divider(
                       color: Colors.grey,
                       thickness: 1,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Deskripsi',
                           style: TextStyle(
                             fontSize: 14,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           rapatData.deskripsi,
                           textAlign: TextAlign.justify,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                           ),
                         ),
                       ],
                     ),
-                    Divider(
+                    const Divider(
                       color: Colors.grey,
                       thickness: 1,
                     ),
-                    SizedBox(height: 8),
-                    Text(
+                    const SizedBox(height: 8),
+                    const Text(
                       'Tanda Tangan',
                       style: TextStyle(
                         fontSize: 14,
@@ -199,15 +147,19 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                           child: Stack(
                             alignment: AlignmentDirectional.topEnd,
                             children: [
-                              Signature(
-                                controller: _controller,
-                                width: double.infinity,
-                                height: double.infinity,
+                              SfSignaturePad(
+                                key: _signaturePadKey,
                                 backgroundColor:
-                                    Color.fromARGB(255, 255, 255, 255),
+                                    const Color.fromARGB(255, 255, 255, 255),
+                                onDrawEnd: () {
+                                  isSigned = true;
+                                },
                               ),
                               IconButton(
-                                onPressed: () => _controller.clear(),
+                                onPressed: () {
+                                  _signaturePadKey.currentState!.clear();
+                                  isSigned = false;
+                                },
                                 icon: const Icon(
                                   Icons.refresh,
                                   color: secondaryColor,
@@ -221,13 +173,15 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                     primaryButton(
                         text: 'Submit',
                         onPressed: () async {
-                          await _controller.toPngBytes();
-                          if (_controller.isEmpty) {
+                          // ...
+                          if (!isSigned) {
                             // Show an error snackbar if the signature is empty
                             await errorFlushbar(
                                 context, 'Tanda tangan belum diisi');
                           } else {
-                            submitAbsen(rapatData.kodeRapat);
+                            var image =
+                                await _signaturePadKey.currentState!.toImage();
+                            submitAbsen(rapatData.kodeRapat, image);
                           }
                         }),
                   ],
@@ -245,40 +199,42 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 14,
-                ),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 14,
               ),
             ),
-            Container(
-              child: Text(
-                value,
-                style: TextStyle(
-                  fontSize: 14,
-                ),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 14,
               ),
             ),
           ],
         ),
       );
 
-  submitAbsen(kodeRapat) async {
+  submitAbsen(kodeRapat, signatureImage) async {
     RapatServices rapatServices = RapatServices();
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var user = jsonDecode(localStorage.getString('user').toString());
     var rapat = await rapatServices.getRapatByKode(kodeRapat);
 
-    // Capture the signature as an image (PNG)
-    Uint8List? signatureImage = await _controller.toPngBytes();
+    List<int> bytes = await signatureImage
+        .toByteData(format: ui.ImageByteFormat.png)
+        .then((data) => data!.buffer.asUint8List());
+    String base64Image = base64Encode(bytes);
+    String getBase64Image(String base64String) {
+      String format = 'data:image/png;base64,';
+      if (base64String.contains(format)) {
+        return base64String;
+      } else {
+        return format + base64String;
+      }
+    }
 
-    // Encode the image as base64
-    String base64Signature = base64Encode(signatureImage as List<int>);
-
-    // Now you have the user's signature as base64
-    // You can send it to the server or store it as needed
+    String base64Signature = getBase64Image(base64Image);
 
     // print('Base64 Signature: $base64Signature');
     // print('errorkan' + rapat['error']);
@@ -306,53 +262,4 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
       }
     }
   }
-
-  Widget tandaTanganForm() => primaryButton(
-        text: 'TTD',
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  actionsAlignment: MainAxisAlignment.center,
-                  backgroundColor: Colors.white,
-                  scrollable: true,
-                  title: Text('Tanda Tangan'),
-                  content: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Form(
-                      child: Column(
-                        children: <Widget>[
-                          Stack(
-                            alignment: AlignmentDirectional.topEnd,
-                            children: [
-                              Signature(
-                                  controller: _controller,
-                                  width: 200,
-                                  height: 200,
-                                  backgroundColor: Colors.white),
-                              IconButton(
-                                  onPressed: () => _controller.clear(),
-                                  icon: const Icon(Icons.delete)),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  actions: [
-                    primaryButton(
-                        text: "Submit",
-                        onPressed: () async {
-                          await _controller.toPngBytes();
-                          successSnackbar(context,
-                              'Berhasil disimpan, silahkan submit form',
-                              duration: 5);
-                          Navigator.pop(context);
-                        })
-                  ],
-                );
-              });
-        },
-      );
 }
