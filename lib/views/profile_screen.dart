@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:meeting_check/providers/agendarapat_provider.dart';
 import 'package:meeting_check/services/login_services.dart';
 import 'package:meeting_check/views/widgets/button.dart';
+import 'package:provider/provider.dart';
 // shared prefs
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,6 +43,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AgendaRapatProvider agendaProvider =
+        Provider.of<AgendaRapatProvider>(context, listen: false);
     // SharedPreferences localStorage = await SharedPreferences.getInstance();
     return Scaffold(
         body: Padding(
@@ -85,6 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 LoginService().logout();
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/login', (route) => false);
+                agendaProvider.clearAgendaRapat();
               })
         ],
       ),

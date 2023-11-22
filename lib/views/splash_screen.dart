@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     bool? isLogin = localStorage.getBool('islogin') ?? false;
 
     if (isLogin) {
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(milliseconds: 500), () {
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/',
@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
         );
       });
     } else {
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(milliseconds: 500), () {
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/login',

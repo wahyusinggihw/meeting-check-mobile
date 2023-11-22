@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:meeting_check/services/rapat_services.dart';
 import 'package:meeting_check/views/colors.dart';
@@ -45,12 +47,12 @@ class _MyHomePageState extends State<MyHomePage> {
         Uri uri = Uri.parse(codeScanner);
         // String? kodeRapat = uri.queryParameters['kode_rapat'];
         String? kodeRapat = uri.pathSegments.last;
-        print(kodeRapat);
+        log(kodeRapat);
         setState(() {
           qrCodeResult = kodeRapat;
         });
         var rapat = await rapatServices.getAgendaRapatByKode(kodeRapat);
-        print(rapat['error']);
+        log(rapat['error']);
         // print(rapat['agendaRapat'].agendaRapat);
         if (rapat['error'] != true) {
           Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
@@ -58,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
             'rapat': rapat['agendaRapat'],
           });
           await successFlushbar(context, 'Silahkan melakukan tanda tangan',
-              duration: Duration(seconds: 5));
+              duration: const Duration(seconds: 5));
         } else {
           errorDialog(context, 'Gagal', rapat['message']);
         }
