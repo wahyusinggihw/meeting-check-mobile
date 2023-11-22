@@ -4,9 +4,10 @@ import 'dart:developer';
 import "package:dio/dio.dart";
 import 'package:meeting_check/models/agendarapat_model.dart';
 import 'package:meeting_check/services/agendarapat_services.dart';
+import 'package:meeting_check/services/services.dart';
 import '../services/secret.dart';
 
-class RapatServices {
+class RapatServices extends Services {
   AgendaRapatService agendaRapatService = AgendaRapatService();
   Future<Map<String, dynamic>> getAgendaRapatByKode(String kodeRapat) async {
     final Dio dio = Dio(
@@ -20,7 +21,7 @@ class RapatServices {
       ),
     );
 
-    agendaRapatService.handleHttp(dio);
+    handleHttp(dio);
 
     final String url = '$apiURL/api/agenda-rapat/scan/$kodeRapat';
 
@@ -62,7 +63,7 @@ class RapatServices {
         },
       ),
     );
-    agendaRapatService.handleHttp(dio);
+    handleHttp(dio);
     String url = '$apiURL/api/agenda-rapat/scan/$kodeRapat';
     // print(kodeRapat);
     try {
@@ -120,6 +121,7 @@ class RapatServices {
           'nip': nip,
           'no_hp': noHp,
           'nama': nama,
+          'status': "pegawai",
           'alamat': alamat,
           'asal_instansi': asalInstansi,
           'signatureData': signatureData

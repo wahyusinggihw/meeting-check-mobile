@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
   void initialization() async {
     AgendaRapatProvider agendaProvider =
         Provider.of<AgendaRapatProvider>(context, listen: false);
-    agendaProvider.fetchAgendaRapat();
+    await agendaProvider.fetchAgendaRapat();
     FlutterNativeSplash.remove();
   }
 

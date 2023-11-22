@@ -11,4 +11,9 @@ class AgendaRapatProvider extends ChangeNotifier {
     _agendaRapatList = await AgendaRapatService().getAgendaRapat();
     notifyListeners();
   }
+
+  clearAgendaRapat() {
+    _agendaRapatList = [];
+    notifyListeners();
+  }
 }

@@ -9,10 +9,10 @@ class Services {
 // start handle http
 
   constructor() {
-    handleHttp();
+    handleHttp(dio);
   }
 
-  handleHttp() {
+  handleHttp(dio) {
     dio.httpClientAdapter = IOHttpClientAdapter(
       createHttpClient: () {
         // Don't trust any certificate just because their root cert is trusted.

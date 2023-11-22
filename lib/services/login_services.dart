@@ -3,9 +3,10 @@ import 'dart:developer';
 import 'package:meeting_check/services/agendarapat_services.dart';
 import 'package:meeting_check/services/secret.dart';
 import "package:dio/dio.dart";
+import 'package:meeting_check/services/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginService {
+class LoginService extends Services {
   AgendaRapatService agendaRapatService = AgendaRapatService();
   Future<Map<String, dynamic>> login(Map<String, dynamic> data) async {
     final Dio dio = Dio(
@@ -19,7 +20,7 @@ class LoginService {
       ),
     );
 
-    agendaRapatService.handleHttp(dio);
+    handleHttp(dio);
 
     const String url = '$apiURL/api/login';
 

@@ -85,11 +85,11 @@ class _LoginState extends State<Login> {
                               fillColor: secondaryColor,
                               focusColor: secondaryColor,
                               hintText: 'Password',
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15)),
                               ),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15)),
                                 borderSide: BorderSide(color: primaryColor),
