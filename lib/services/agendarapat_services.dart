@@ -43,10 +43,15 @@ class AgendaRapatService extends Services {
         if (response.data['data'] == null) {
           return [];
         } else {
-          final Map<String, dynamic> data =
-              response.data['data'] as Map<String, dynamic>;
-          return data.entries
-              .map((entry) => AgendaRapatModel.fromJson(entry.value))
+          // final Map<String, dynamic> data =
+          //     response.data['data'] as Map<String, dynamic>;
+          // return data.entries
+          //     .map((entry) => AgendaRapatModel.fromJson(entry.value))
+          //     .toList();
+          final List<dynamic> dataList = response.data['data'] as List<dynamic>;
+          return dataList
+              .map((entry) =>
+                  AgendaRapatModel.fromJson(entry as Map<String, dynamic>))
               .toList();
         }
       } else {
