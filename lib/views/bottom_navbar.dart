@@ -52,9 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
           qrCodeResult = kodeRapat;
         });
         var rapat = await rapatServices.getAgendaRapatByKode(kodeRapat);
-        log(rapat['error']);
+        // log(rapat['error']);
+        print(rapat['error']);
         // print(rapat['agendaRapat'].agendaRapat);
-        if (rapat['error'] != true) {
+        if (rapat['error'] == true) {
+          errorDialog(context, 'Gagal', rapat['message']);
+        } else if (rapat['error'] == false) {
           Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
             'kodeRapat': kodeRapat,
             'rapat': rapat['agendaRapat'],
@@ -62,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
           await successFlushbar(context, 'Silahkan melakukan tanda tangan',
               duration: const Duration(seconds: 5));
         } else {
-          errorDialog(context, 'Gagal', rapat['message']);
+          errorDialog(context, 'Gagal', 'Terjadi kesalahan');
         }
 
         // print("idRapat:" + qrCodeResult);

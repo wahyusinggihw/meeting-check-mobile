@@ -246,9 +246,9 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         nip: user['nip'],
         kodeRapat: rapat['data']['kode_rapat'],
         noHp: user['no_hp'],
-        nama: user['nama_lengkap'],
+        nama: user['nama'],
         alamat: user['alamat'],
-        asalInstansi: user['ket_ukerja'],
+        asalInstansi: user['instansi'],
         signatureData: base64Signature,
       );
 
