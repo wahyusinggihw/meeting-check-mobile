@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:meeting_check/services/login_services.dart';
+import 'package:meeting_check/services/auth_services.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/button.dart';
 import 'package:meeting_check/views/widgets/snackbar.dart';
@@ -150,8 +150,8 @@ class _LoginState extends State<Login> {
     };
 
     // Call the login service to attempt login
-    LoginService loginService = LoginService();
-    var response = await loginService.login(data);
+    AuthService authService = AuthService();
+    var response = await authService.login(data);
 
     // Check the login response
     // print('isError:' + response['error']);

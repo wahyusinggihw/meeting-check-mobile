@@ -11,7 +11,7 @@ Widget primaryButton({required String text, required Function onPressed}) {
       onPressed();
     },
     child: Container(
-      width: 100,
+      width: 150,
       alignment: Alignment.bottomCenter,
       child: Text(
         text,
@@ -34,7 +34,7 @@ Widget secondaryButton({required String text, required Function onPressed}) {
       onPressed();
     },
     child: Container(
-      width: 100,
+      width: 150,
       alignment: Alignment.bottomCenter,
       child: Text(
         text,

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:meeting_check/providers/agendarapat_provider.dart';
-import 'package:meeting_check/services/login_services.dart';
+import 'package:meeting_check/services/auth_services.dart';
 import 'package:meeting_check/views/widgets/button.dart';
 import 'package:provider/provider.dart';
 // shared prefs
@@ -33,10 +33,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (user != null) {
       setState(() {
-        name = user['nama_lengkap'];
+        name = user['nama'];
         nip = user['nip'];
         no = user['no_hp'];
-        instansi = user['ket_ukerja'];
+        instansi = user['instansi'];
       });
     }
   }
@@ -83,10 +83,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           userInfo(context, 'Instansi', instansi),
           const Spacer(),
           secondaryButton(
+              text: 'Ganti Password',
+              onPressed: () {
+                Navigator.pushNamed(context, '/change-password');
+              }),
+          secondaryButton(
               text: 'Keluar',
               onPressed: () {
                 // RapatServices().extractCode();
-                LoginService().logout();
+                AuthService().logout();
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/login', (route) => false);
                 agendaProvider.clearAgendaRapat();
