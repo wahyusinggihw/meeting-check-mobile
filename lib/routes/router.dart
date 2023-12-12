@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:meeting_check/views/auth/change_password.dart';
 import 'package:meeting_check/views/auth/login.dart';
 import 'package:meeting_check/views/bottom_navbar.dart';
 import 'package:meeting_check/views/profile_screen.dart';
 import 'package:meeting_check/views/qr_screen.dart';
 import 'package:meeting_check/views/detail_rapat.dart';
-import 'package:meeting_check/views/qrsuccess_screen.dart';
+import 'package:meeting_check/views/success_screen.dart';
 import 'package:meeting_check/views/splash_screen.dart';
-import 'package:meeting_check/views/qrerror_screen.dart';
+import 'package:meeting_check/views/error_screen.dart';
 import 'package:meeting_check/views/formdaftarhadir_screen.dart';
 
 class RouteGenerator {
@@ -33,13 +34,16 @@ class RouteGenerator {
       case '/login':
         return MaterialPageRoute(
             builder: (context) => const Login(), settings: settings);
+      case '/change-password':
+        return MaterialPageRoute(
+            builder: (context) => const ChangePassword(), settings: settings);
       // error
-      case '/error-qr':
+      case '/error':
         return MaterialPageRoute(
-            builder: (_) => const QrErrorScreen(), settings: settings);
-      case '/success-qr':
+            builder: (_) => const ErrorScreen(), settings: settings);
+      case '/success':
         return MaterialPageRoute(
-            builder: (_) => const QrSuccessScreen(), settings: settings);
+            builder: (_) => const SuccessScreen(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => const MyHomePage(
