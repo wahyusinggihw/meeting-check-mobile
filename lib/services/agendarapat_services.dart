@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:meeting_check/models/agendarapat_model.dart';
-import "package:dio/dio.dart";
+import 'package:dio/dio.dart';
 import 'package:meeting_check/services/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:meeting_check/services/secret.dart';
@@ -43,8 +43,11 @@ class AgendaRapatService extends Services {
         if (response.data['data'] == null) {
           return [];
         } else {
-          final List<dynamic> data = response.data['data'] as List<dynamic>;
-          return data.map((json) => AgendaRapatModel.fromJson(json)).toList();
+          final Map<String, dynamic> data =
+              response.data['data'] as Map<String, dynamic>;
+          return data.entries
+              .map((entry) => AgendaRapatModel.fromJson(entry.value))
+              .toList();
         }
       } else {
         throw Exception('Failed to load data');
