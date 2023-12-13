@@ -99,58 +99,101 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     );
                                   } else {
-                                    return Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      elevation: 4,
-                                      margin: const EdgeInsets.all(10),
-                                      child: ListTile(
-                                        shape: ShapeBorder.lerp(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
-                                            1),
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, '/form-daftarhadir',
-                                              arguments: {
-                                                'title': 'Detail Rapat',
-                                                'kodeRapat': agendaProvider
-                                                    .agendaRapatList[index]
-                                                    .kodeRapat,
-                                                'rapat': agendaProvider
-                                                    .agendaRapatList[index]
-                                              });
-                                        },
-                                        leading: const Icon(Icons.event_note,
-                                            color: secondaryColor),
-                                        tileColor: Colors.white,
-                                        title: Text(
-                                            agendaProvider
-                                                .agendaRapatList[index]
-                                                .agendaRapat,
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                            )),
-                                        subtitle: Text(
-                                          '${agendaProvider.agendaRapatList[index].jam}, ${agendaProvider.agendaRapatList[index].tanggal}',
+                                    return ListTile(
+                                      shape: ShapeBorder.lerp(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          1),
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, '/form-daftarhadir',
+                                            arguments: {
+                                              'title': 'Detail Rapat',
+                                              'kodeRapat': agendaProvider
+                                                  .agendaRapatList[index]
+                                                  .kodeRapat,
+                                              'rapat': agendaProvider
+                                                  .agendaRapatList[index]
+                                            });
+                                      },
+                                      // isThreeLine: true,
+                                      leading: kodeRapat(agendaProvider
+                                          .agendaRapatList[index].kodeRapat),
+                                      // leading: Icon(Icons.event_note,
+                                      //     color: secondaryColor),
+                                      tileColor: Colors.white,
+                                      title: Text(
+                                          agendaProvider.agendaRapatList[index]
+                                              .agendaRapat,
+                                          maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
                                           style: const TextStyle(
-                                            color: secondaryColor,
-                                            fontSize: 12,
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                          )),
+                                      subtitle: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            agendaProvider
+                                                .agendaRapatList[index].tempat,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style: const TextStyle(
+                                              color: secondaryColor,
+                                              fontSize: 12,
+                                            ),
                                           ),
-                                        ),
-                                        trailing: const Icon(
-                                            Icons.arrow_forward_ios,
-                                            color: primaryColor,
-                                            size: 15),
+                                          const SizedBox(height: 5),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                  Icons.calendar_today_rounded,
+                                                  color: secondaryColor,
+                                                  size: 15),
+                                              const SizedBox(width: 2),
+                                              Text(
+                                                agendaProvider
+                                                    .agendaRapatList[index]
+                                                    .tanggal,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                  color: secondaryColor,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 20),
+                                              const Icon(
+                                                  Icons.access_time_rounded,
+                                                  color: secondaryColor,
+                                                  size: 15),
+                                              const SizedBox(width: 2),
+                                              Text(
+                                                agendaProvider
+                                                    .agendaRapatList[index].jam,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                  color: secondaryColor,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
                                       ),
+                                      trailing: const Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: primaryColor,
+                                          size: 15),
                                     );
                                   }
                                 },
@@ -215,60 +258,107 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     );
                                   } else {
-                                    return Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      elevation: 4,
-                                      margin: const EdgeInsets.all(10),
-                                      child: ListTile(
-                                        shape: ShapeBorder.lerp(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
-                                            1),
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, '/form-daftarhadir',
-                                              arguments: {
-                                                'title': 'Detail Rapat',
-                                                'kodeRapat': agendaProvider
-                                                    .agendaRapatSelesaiList[
-                                                        index]
-                                                    .kodeRapat,
-                                                'rapat': agendaProvider
-                                                        .agendaRapatSelesaiList[
-                                                    index]
-                                              });
-                                        },
-                                        leading: const Icon(Icons.event_note,
-                                            color: secondaryColor),
-                                        tileColor: Colors.white,
-                                        title: Text(
+                                    return ListTile(
+                                      shape: ShapeBorder.lerp(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          1),
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, '/form-daftarhadir',
+                                            arguments: {
+                                              'title': 'Detail Rapat',
+                                              'kodeRapat': agendaProvider
+                                                  .agendaRapatSelesaiList[index]
+                                                  .kodeRapat,
+                                              'rapat': agendaProvider
+                                                  .agendaRapatSelesaiList[index]
+                                            });
+                                      },
+                                      // isThreeLine: true,
+                                      leading: kodeRapat(agendaProvider
+                                          .agendaRapatSelesaiList[index]
+                                          .kodeRapat),
+                                      // leading: Icon(Icons.event_note,
+                                      //     color: secondaryColor),
+                                      tileColor: Colors.white,
+                                      title: Text(
+                                          agendaProvider
+                                              .agendaRapatSelesaiList[index]
+                                              .agendaRapat,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                          )),
+                                      subtitle: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
                                             agendaProvider
                                                 .agendaRapatSelesaiList[index]
-                                                .agendaRapat,
+                                                .tempat,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
                                             style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                            )),
-                                        subtitle: Text(
-                                          '${agendaProvider.agendaRapatSelesaiList[index].jam}, ${agendaProvider.agendaRapatSelesaiList[index].tanggal}',
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: const TextStyle(
-                                            color: secondaryColor,
-                                            fontSize: 12,
+                                              color: secondaryColor,
+                                              fontSize: 12,
+                                            ),
                                           ),
-                                        ),
-                                        trailing: const Icon(
-                                            Icons.arrow_forward_ios,
-                                            color: primaryColor,
-                                            size: 15),
+                                          const SizedBox(height: 5),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                  Icons.calendar_today_rounded,
+                                                  color: secondaryColor,
+                                                  size: 15),
+                                              const SizedBox(width: 2),
+                                              Text(
+                                                agendaProvider
+                                                    .agendaRapatSelesaiList[
+                                                        index]
+                                                    .tanggal,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                  color: secondaryColor,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 20),
+                                              const Icon(
+                                                  Icons.access_time_rounded,
+                                                  color: secondaryColor,
+                                                  size: 15),
+                                              const SizedBox(width: 2),
+                                              Text(
+                                                agendaProvider
+                                                    .agendaRapatSelesaiList[
+                                                        index]
+                                                    .jam,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                  color: secondaryColor,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
                                       ),
+                                      trailing: const Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: primaryColor,
+                                          size: 15),
                                     );
                                   }
                                 },
@@ -283,6 +373,43 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           )),
+    );
+  }
+
+  Widget kodeRapat(String value) {
+    // the value is 123-456, i want to separate to two sections
+    // 123
+    // 456
+    final List<String> split = value.split('-');
+    final String firstSection = split[0];
+    final String secondSection = split[1];
+    return Container(
+      width: 60,
+      height: 60,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: secondaryColor),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 0, right: 0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              firstSection,
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            Text(
+              secondSection,
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
