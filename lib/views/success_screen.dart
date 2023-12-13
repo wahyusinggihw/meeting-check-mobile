@@ -9,18 +9,16 @@ class SuccessScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: AppBar(
-        elevation: 2.0,
+        automaticallyImplyLeading: false,
+        // titleSpacing: 0.0,
         backgroundColor: primaryColor,
         titleTextStyle: const TextStyle(
-          color: Colors.black87,
+          color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
-        centerTitle: true,
-        // shape: BeveledRectangleBorder(
-        //   borderRadius: BorderRadius.circular(2),
-        // ),
-        title: const Text('MeetingCheck'),
+        centerTitle: false,
+        title: const Text('Formulir Daftar Hadir'),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -74,7 +72,26 @@ class SuccessScreen extends StatelessWidget {
                                 style: Theme.of(context).textTheme.titleSmall,
                               ),
                             ],
-                          )
+                          ),
+                          const SizedBox(height: 70),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Image.asset(
+                              'assets/images/logo-2.png',
+                              width: 150,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Anda telah melakukan presensi pada kegiatan ini',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              // color: secondaryColor,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                         ],
                       ),
                     ],
