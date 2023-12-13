@@ -46,8 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Agenda Rapat',
-                                style: Theme.of(context).textTheme.titleMedium),
+                            // Text('Agenda Rapat',
+                            //     style: Theme.of(context).textTheme.titleMedium),
                             Expanded(
                               child: Consumer<AgendaRapatProvider>(
                                   builder: (context, agendaProvider, child) {
@@ -166,24 +166,26 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Agenda Rapat',
-                                style: Theme.of(context).textTheme.titleMedium),
+                            // Text('Agenda Rapat',
+                            //     style: Theme.of(context).textTheme.titleMedium),
                             Expanded(
                               child: Consumer<AgendaRapatProvider>(
                                   builder: (context, agendaProvider, child) {
                                 return RefreshIndicator(
                                   onRefresh: () async {
-                                    await agendaProvider.fetchAgendaRapat();
+                                    await agendaProvider
+                                        .fetchAgendaRapatSelesai();
                                   },
                                   child: ListView.builder(
                                     itemCount: agendaProvider
-                                            .agendaRapatList.isEmpty
+                                            .agendaRapatSelesaiList.isEmpty
                                         ? 1
-                                        : agendaProvider.agendaRapatList.length,
+                                        : agendaProvider
+                                            .agendaRapatSelesaiList.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       if (agendaProvider
-                                          .agendaRapatList.isEmpty) {
+                                          .agendaRapatSelesaiList.isEmpty) {
                                         return Padding(
                                           padding: EdgeInsets.only(
                                               top: MediaQuery.of(context)
@@ -239,10 +241,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   arguments: {
                                                     'title': 'Detail Rapat',
                                                     'kodeRapat': agendaProvider
-                                                        .agendaRapatList[index]
+                                                        .agendaRapatSelesaiList[
+                                                            index]
                                                         .kodeRapat,
                                                     'rapat': agendaProvider
-                                                        .agendaRapatList[index]
+                                                            .agendaRapatSelesaiList[
+                                                        index]
                                                   });
                                             },
                                             leading: const Icon(
@@ -251,14 +255,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                             tileColor: Colors.white,
                                             title: Text(
                                                 agendaProvider
-                                                    .agendaRapatList[index]
+                                                    .agendaRapatSelesaiList[
+                                                        index]
                                                     .agendaRapat,
                                                 style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 14,
                                                 )),
                                             subtitle: Text(
-                                              '${agendaProvider.agendaRapatList[index].jam}, ${agendaProvider.agendaRapatList[index].tanggal}',
+                                              '${agendaProvider.agendaRapatSelesaiList[index].jam}, ${agendaProvider.agendaRapatSelesaiList[index].tanggal}',
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               style: const TextStyle(
