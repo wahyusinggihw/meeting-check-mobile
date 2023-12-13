@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         dialogBackgroundColor: Colors.white,
       ),
-      initialRoute: '/splash',
+      initialRoute: '/success',
       onGenerateRoute: router.RouteGenerator.generateRoute,
       // home: const MyHomePage(title: 'MeetingCheck'),
     );

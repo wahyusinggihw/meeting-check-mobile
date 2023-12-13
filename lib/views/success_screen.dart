@@ -7,9 +7,10 @@ class SuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: primaryColor,
       appBar: AppBar(
         elevation: 2.0,
-        backgroundColor: Colors.white,
+        backgroundColor: primaryColor,
         titleTextStyle: const TextStyle(
           color: Colors.black87,
           fontSize: 20,
@@ -21,54 +22,68 @@ class SuccessScreen extends StatelessWidget {
         // ),
         title: const Text('MeetingCheck'),
       ),
-      body: Padding(
-        padding: MediaQuery.of(context).size.width > 600
-            ? const EdgeInsets.symmetric(horizontal: 100, vertical: 50)
-            : const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.2),
-              child: const Icon(
-                Icons.check_outlined,
-                size: 100,
-                color: primaryColor,
-              ),
-            ),
-            const Text(
-              'Berhasil',
-              style: TextStyle(
-                color: primaryColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 40),
-            Text('Lorem'),
-            const Spacer(),
-            ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(secondaryColor),
-                ),
-                onPressed: () => Navigator.pop(context),
-                child: Container(
-                  width: 100,
-                  alignment: Alignment.bottomCenter,
-                  child: const Text(
-                    'Keluar',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: MediaQuery.of(context).size.width > 600
+              ? const EdgeInsets.symmetric(horizontal: 100, vertical: 50)
+              : const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: MediaQuery.of(context).size.width > 600
+                  ? const EdgeInsets.symmetric(horizontal: 100, vertical: 15)
+                  : const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      // Text('Agenda Rapat',
+                      //     style: Theme.of(context).textTheme.titleMedium),
+                      // const SizedBox(height: 30),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'lorem',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.calendar_today_rounded,
+                                  color: secondaryColor, size: 15),
+                              const SizedBox(width: 2),
+                              Text(
+                                'lorem',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                              const SizedBox(width: 50),
+                              const Icon(Icons.access_time_rounded,
+                                  color: secondaryColor, size: 15),
+                              const SizedBox(width: 2),
+                              Text(
+                                'lorem',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
                   ),
-                ))
-          ],
-        )),
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
