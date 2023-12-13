@@ -11,6 +11,7 @@ class AgendaRapatSelesaiModel {
   String jam;
   String deskripsi;
   String linkRapat;
+  bool hadir;
   dynamic createdAt;
 
   AgendaRapatSelesaiModel({
@@ -26,6 +27,7 @@ class AgendaRapatSelesaiModel {
     required this.jam,
     required this.deskripsi,
     required this.linkRapat,
+    required this.hadir,
     required this.createdAt,
   });
 
@@ -43,6 +45,7 @@ class AgendaRapatSelesaiModel {
         jam: json["jam"],
         deskripsi: json["deskripsi"],
         linkRapat: json["link_rapat"],
+        hadir: json["hadir"],
         createdAt: json["created_at"],
       );
 }

@@ -64,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             return RefreshIndicator(
                               onRefresh: () async {
                                 await agendaProvider.fetchAgendaRapat();
+                                await agendaProvider.fetchAgendaRapatSelesai();
                               },
                               child: ListView.builder(
                                 itemCount:
@@ -113,16 +114,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   BorderRadius.circular(15)),
                                           1),
                                       onTap: () {
-                                        Navigator.pushNamed(
-                                            context, '/form-daftarhadir',
-                                            arguments: {
-                                              'title': 'Detail Rapat',
-                                              'kodeRapat': agendaProvider
-                                                  .agendaRapatList[index]
-                                                  .kodeRapat,
-                                              'rapat': agendaProvider
-                                                  .agendaRapatList[index]
-                                            });
+                                        bool riwayatKehadiran = agendaProvider
+                                            .agendaRapatList[index].hadir;
+                                        if (!riwayatKehadiran) {
+                                          Navigator.pushNamed(
+                                              context, '/form-daftarhadir',
+                                              arguments: {
+                                                'title': 'Detail Rapat',
+                                                'kodeRapat': agendaProvider
+                                                    .agendaRapatList[index]
+                                                    .kodeRapat,
+                                                'rapat': agendaProvider
+                                                    .agendaRapatList[index]
+                                              });
+                                        } else {
+                                          Navigator.pushNamed(
+                                              context, '/success');
+                                        }
                                       },
                                       // isThreeLine: true,
                                       leading: kodeRapat(agendaProvider
@@ -158,8 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           const SizedBox(height: 5),
                                           Row(
                                             children: [
-                                              const Icon(
-                                                  Icons.calendar_today_rounded,
+                                              const Icon(Icons.calendar_month,
                                                   color: secondaryColor,
                                                   size: 15),
                                               const SizedBox(width: 2),
@@ -194,10 +201,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                           )
                                         ],
                                       ),
-                                      trailing: const Icon(
-                                          Icons.arrow_forward_ios,
+                                      trailing: Icon(
+                                          agendaProvider
+                                                  .agendaRapatList[index].hadir
+                                              ? Icons.check_circle
+                                              : Icons.arrow_forward_ios,
                                           color: primaryColor,
-                                          size: 15),
+                                          size: 20),
                                     );
                                   }
                                 },
@@ -220,6 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               builder: (context, agendaProvider, child) {
                             return RefreshIndicator(
                               onRefresh: () async {
+                                await agendaProvider.fetchAgendaRapat();
                                 await agendaProvider.fetchAgendaRapatSelesai();
                               },
                               child: ListView.builder(
@@ -272,16 +283,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   BorderRadius.circular(15)),
                                           1),
                                       onTap: () {
-                                        Navigator.pushNamed(
-                                            context, '/form-daftarhadir',
-                                            arguments: {
-                                              'title': 'Detail Rapat',
-                                              'kodeRapat': agendaProvider
-                                                  .agendaRapatSelesaiList[index]
-                                                  .kodeRapat,
-                                              'rapat': agendaProvider
-                                                  .agendaRapatSelesaiList[index]
-                                            });
+                                        bool riwayatKehadiran = agendaProvider
+                                            .agendaRapatSelesaiList[index]
+                                            .hadir;
+                                        if (!riwayatKehadiran) {
+                                          Navigator.pushNamed(
+                                              context, '/form-daftarhadir',
+                                              arguments: {
+                                                'title': 'Detail Rapat',
+                                                'kodeRapat': agendaProvider
+                                                    .agendaRapatSelesaiList[
+                                                        index]
+                                                    .kodeRapat,
+                                                'rapat': agendaProvider
+                                                        .agendaRapatSelesaiList[
+                                                    index]
+                                              });
+                                        } else {
+                                          Navigator.pushNamed(
+                                              context, '/success');
+                                        }
                                       },
                                       // isThreeLine: true,
                                       leading: kodeRapat(agendaProvider
@@ -359,10 +380,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                           )
                                         ],
                                       ),
-                                      trailing: const Icon(
-                                          Icons.arrow_forward_ios,
+                                      trailing: Icon(
+                                          agendaProvider
+                                                  .agendaRapatSelesaiList[index]
+                                                  .hadir
+                                              ? Icons.check_circle
+                                              : Icons.arrow_forward_ios,
                                           color: primaryColor,
-                                          size: 15),
+                                          size: 20),
                                     );
                                   }
                                 },
