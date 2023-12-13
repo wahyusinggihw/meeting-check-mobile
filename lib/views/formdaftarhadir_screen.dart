@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:meeting_check/providers/agendarapat_provider.dart';
 import 'package:meeting_check/services/rapat_services.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/alertdialog.dart';
 import 'package:meeting_check/views/widgets/button.dart';
 import 'package:meeting_check/views/widgets/flushbar.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:intl/intl.dart';
@@ -180,7 +182,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                       } else {
                         var image =
                             await _signaturePadKey.currentState!.toImage();
-                        submitAbsen(rapatData.kodeRapat, image);
+                        submitAbsen(rapatData.kodeRapat, image, context);
                       }
                     }),
               ],
@@ -212,8 +214,11 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         ),
       );
 
-  submitAbsen(kodeRapat, signatureImage) async {
+  submitAbsen(kodeRapat, signatureImage, context) async {
     RapatServices rapatServices = RapatServices();
+    AgendaRapatProvider agendaProvider =
+        Provider.of<AgendaRapatProvider>(context, listen: false);
+
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var user = jsonDecode(localStorage.getString('user').toString());
     var rapat = await rapatServices.getRapatByKode(kodeRapat);
@@ -253,9 +258,11 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
         errorDialog(context, 'Gagal', statusAbsen['message']);
       } else {
-        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-        successFlushbar(context, 'Berhasil absen',
-            duration: const Duration(seconds: 5));
+        await agendaProvider.fetchAgendaRapat();
+        await agendaProvider.fetchAgendaRapatSelesai();
+        Navigator.pushReplacementNamed(context, '/success');
+        // successFlushbar(context, 'Berhasil absen',
+        //     duration: const Duration(seconds: 5));
       }
     }
   }

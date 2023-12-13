@@ -23,7 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int index = 0;
 
   final titles = const [
-    'Home',
+    'Daftar Rapat',
     'QR Code',
     'Profile',
   ];
@@ -82,13 +82,14 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // leading: const Icon(Icons.menu_rounded),
         actions: [
-          IconButton(
-            onPressed: () {
-              // Navigator.pushNamed(context, '/login');
-            },
-            icon: const Icon(Icons.search),
-            color: Colors.white,
-          ),
+          if (index != 2)
+            IconButton(
+              onPressed: () {
+                // Navigator.pushNamed(context, '/login');
+              },
+              icon: const Icon(Icons.search),
+              color: Colors.white,
+            ),
         ],
         // elevation: 2.0,
         backgroundColor: primaryColor,

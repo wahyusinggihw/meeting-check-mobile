@@ -35,8 +35,13 @@ class AgendaRapatService extends Services {
       return user['kode_ukerja'].substring(0, 8);
     }
 
+    nip() {
+      return user['nip'];
+    }
+
     // ignore: prefer_interpolation_to_compose_strings
-    String url = '$apiURL/api/agenda-rapat/instansi/' + idInstansi();
+    String url =
+        '$apiURL/api/agenda-rapat/instansi/' + idInstansi() + '?nip=' + nip();
     // log(url);
     try {
       final Response response = await dio.get(url);
@@ -91,8 +96,15 @@ class AgendaRapatService extends Services {
       return user['kode_ukerja'].substring(0, 8);
     }
 
+    nip() {
+      return user['nip'];
+    }
+
     // ignore: prefer_interpolation_to_compose_strings
-    String url = '$apiURL/api/agenda-rapat/instansi/selesai/' + idInstansi();
+    String url = '$apiURL/api/agenda-rapat/instansi/selesai/' +
+        idInstansi() +
+        '?nip=' +
+        nip();
     // log(url);
     try {
       final Response response = await dio.get(url);
