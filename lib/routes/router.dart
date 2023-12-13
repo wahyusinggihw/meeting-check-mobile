@@ -24,7 +24,10 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) => const QrScreen(), settings: settings);
       case '/profile':
-        return MaterialPageRoute(builder: (_) => const ProfileScreen());
+        return MaterialPageRoute(
+            builder: (_) => const ProfileScreen(
+                  title: 'Profile',
+                ));
       case '/detail-rapat':
         return MaterialPageRoute(
             builder: (context) => const DetailRapat(), settings: settings);

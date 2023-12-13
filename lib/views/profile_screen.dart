@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final String title;
+  const ProfileScreen({Key? key, required this.title}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();

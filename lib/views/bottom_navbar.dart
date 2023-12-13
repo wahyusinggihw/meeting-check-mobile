@@ -11,7 +11,6 @@ import 'dart:async';
 import 'package:meeting_check/views/widgets/flushbar.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
@@ -23,10 +22,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int index = 0;
 
+  final titles = const [
+    'Home',
+    'QR Code',
+    'Profile',
+  ];
+
   final screens = const [
     HomeScreen(),
     QrScreen(),
-    ProfileScreen(),
+    ProfileScreen(title: 'Profile'),
   ];
 
   @override
@@ -96,7 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
         // shape: BeveledRectangleBorder(
         //   borderRadius: BorderRadius.circular(2),
         // ),
-        title: Text(widget.title),
+        // title: Text(widget.title),
+        title: Text(titles[index]),
       ),
       body: screens[index],
       bottomNavigationBar: NavigationBarTheme(
@@ -127,7 +133,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.qr_code_scanner_rounded),
-                      
                     )),
               ],
             ),
