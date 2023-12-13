@@ -34,12 +34,12 @@ class _LoginState extends State<Login> {
                 // SizedBox(height: currentHeight / 20),
                 Image.asset('assets/images/menulogin.png',
                     height: 300, width: 300),
-                const SizedBox(height: 20),
+                const SizedBox(height: 0),
                 const Center(
-                  child: Text(
-                    'Silahkan masuk',
-                    style: TextStyle(color: Colors.black),
-                  ),
+                  // child: Text(
+                  //   'Silahkan masuk',
+                  //   style: TextStyle(color: Colors.black),
+                  // ),
                 ),
                 Form(
                     key: _formKey,
@@ -53,72 +53,83 @@ class _LoginState extends State<Login> {
                         // mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextFormField(
-                            cursorColor: secondaryColor,
-                            controller: _nipController,
-                            keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
+                          Container(
+                            height: 50,
+                            child: TextFormField(
+                              cursorColor: secondaryColor,
+                              controller: _nipController,
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                
+                                  fillColor: secondaryColor,
+                                  focusColor: secondaryColor,
+                                  labelText: 'NIP / NIPT',
+                                  hintText: 'NIPTT',
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                      borderSide:
+                                          BorderSide(color: primaryColor))),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Masukkan NIPTT anda';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            height: 50,
+                            child: TextFormField(
+                              controller: _passwordController,
+                              obscureText: !_isPasswordVisible,
+                              keyboardType: TextInputType.visiblePassword,
+                              decoration: InputDecoration(
                                 fillColor: secondaryColor,
                                 focusColor: secondaryColor,
-                                hintText: 'NIPTT',
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15))),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15)),
-                                    borderSide:
-                                        BorderSide(color: primaryColor))),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Masukkan NIPTT anda';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          TextFormField(
-                            controller: _passwordController,
-                            obscureText: !_isPasswordVisible,
-                            keyboardType: TextInputType.visiblePassword,
-                            decoration: InputDecoration(
-                              fillColor: secondaryColor,
-                              focusColor: secondaryColor,
-                              hintText: 'Password',
-                              border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
-                                borderSide: BorderSide(color: primaryColor),
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _isPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.grey,
+                                labelText: 'Password',
+                                hintText: 'Password',
+                                border: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    _isPasswordVisible = !_isPasswordVisible;
-                                  });
-                                },
+                                focusedBorder: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  borderSide: BorderSide(color: primaryColor),
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: primaryColor,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPasswordVisible = !_isPasswordVisible;
+                                    });
+                                  },
+                                ),
                               ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Masukkan password';
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Masukkan password';
-                              }
-                              return null;
-                            },
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 40),
                           // const Spacer(),
                           Center(
+                            
                               child: primaryButton(
+
                                   text: 'Masuk',
                                   onPressed: () {
                                     // _login(

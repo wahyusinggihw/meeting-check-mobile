@@ -11,6 +11,7 @@ import 'dart:async';
 import 'package:meeting_check/views/widgets/flushbar.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
@@ -74,14 +75,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 2.0,
-        backgroundColor: Colors.white,
+        // leading: const Icon(Icons.menu_rounded),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Navigator.pushNamed(context, '/login');
+            },
+            icon: const Icon(Icons.search),
+            color: Colors.white,
+          ),
+        ],
+        // elevation: 2.0,
+        backgroundColor: primaryColor,
         titleTextStyle: const TextStyle(
-          color: Colors.black87,
+          color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
-        centerTitle: true,
+        centerTitle: false,
         // shape: BeveledRectangleBorder(
         //   borderRadius: BorderRadius.circular(2),
         // ),
@@ -116,6 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.qr_code_scanner_rounded),
+                      
                     )),
               ],
             ),
