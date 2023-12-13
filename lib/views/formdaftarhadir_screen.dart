@@ -30,6 +30,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
     var rapatData = arguments?['rapat'];
     bool isSigned = false;
     return Scaffold(
+      backgroundColor: primaryColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         // titleSpacing: 0.0,
@@ -40,9 +41,18 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
           fontWeight: FontWeight.bold,
         ),
         centerTitle: false,
-        title: Text('Daftar Hadir'),
+        title: const Text('Formulir Daftar Hadir'),
       ),
-      body: buildForm(kodeRapat, rapatData, isSigned),
+      body: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            color: Colors.white,
+          ),
+          child: buildForm(kodeRapat, rapatData, isSigned)),
     );
   }
 
@@ -92,7 +102,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Rapat Uji Kesesuaian Tahap Awal Pengembangan Aplikasi Daftar Hadir Pemkab Buleleng 2',
+                      rapatData.agendaRapat,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Row(

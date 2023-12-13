@@ -23,9 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
             height: kToolbarHeight,
             tabBar: TabBar(
               tabs: [
-                Tab(text: 'Tersedia'),
-                Tab(text: 'Selesai'),
+                Tab(text: 'TERSEDIA'),
+                Tab(text: 'SELESAI'),
               ],
+              labelStyle: TextStyle(
+                fontSize: 14,
+                // fontWeight: FontWeight.bold,
+              ),
               indicator: UnderlineTabIndicator(
                 borderSide: BorderSide(width: 2.0, color: primaryColor),
                 insets: EdgeInsets.symmetric(horizontal: 2.0),

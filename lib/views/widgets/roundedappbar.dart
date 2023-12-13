@@ -7,7 +7,7 @@ class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
   const RoundedAppBar({
     Key? key,
     required this.height,
-    required this.tabBar,
+    required this.tabBar, 
   }) : super(key: key);
 
   @override
