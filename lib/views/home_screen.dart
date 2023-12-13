@@ -26,6 +26,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 Tab(text: 'Tersedia'),
                 Tab(text: 'Selesai'),
               ],
+              indicator: UnderlineTabIndicator(
+                borderSide: BorderSide(width: 2.0, color: primaryColor),
+                insets: EdgeInsets.symmetric(horizontal: 2.0),
+              ),
             ),
           ),
           backgroundColor: primaryColor,
@@ -48,8 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Agenda Rapat',
-                            style: Theme.of(context).textTheme.titleMedium),
+                        // Text('Agenda Rapat',
+                        //     style: Theme.of(context).textTheme.titleMedium),
                         Expanded(
                           child: Consumer<AgendaRapatProvider>(
                               builder: (context, agendaProvider, child) {
