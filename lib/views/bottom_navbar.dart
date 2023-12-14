@@ -79,32 +79,49 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        // leading: const Icon(Icons.menu_rounded),
-        actions: [
-          if (index != 2)
-            IconButton(
-              onPressed: () {
-                // Navigator.pushNamed(context, '/login');
-              },
-              icon: const Icon(Icons.search),
-              color: Colors.white,
-            ),
-        ],
-        // elevation: 2.0,
-        backgroundColor: primaryColor,
-        titleTextStyle: const TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-        centerTitle: false,
-        // shape: BeveledRectangleBorder(
-        //   borderRadius: BorderRadius.circular(2),
-        // ),
-        // title: Text(widget.title),
-        title: Text(titles[index]),
-      ),
+      // APPBAR DIPANGGIL PADA MASING MASING HALAMAN, KARENA ADA YANG MEMBUTUHKAN SEARCH FORM DAN TIDAK KUSUSNYA HALAMAN HOME
+
+      // appBar: AppBar(
+      //   // leading: const Icon(Icons.menu_rounded),
+      //   actions: [
+      //     if (index != 2)
+      //       if (!showSearchForm)
+      //         IconButton(
+      //           onPressed: () {
+      //             setState(() {
+      //               showSearchForm = true;
+      //             });
+      //           },
+      //           icon: const Icon(Icons.search),
+      //           color: Colors.white,
+      //         ),
+      //   ],
+      //   // elevation: 2.0,
+      //   backgroundColor: primaryColor,
+      //   titleTextStyle: const TextStyle(
+      //     color: Colors.white,
+      //     fontSize: 20,
+      //     fontWeight: FontWeight.bold,
+      //   ),
+      //   centerTitle: false,
+      //   // shape: BeveledRectangleBorder(
+      //   //   borderRadius: BorderRadius.circular(2),
+      //   // ),
+      //   // title: Text(widget.title),
+      //   title: showSearchForm
+      //       ? TextField(
+      //           controller: searchController,
+      //           // Implement your search form here
+      //           decoration: const InputDecoration(
+      //             icon: Icon(Icons.search),
+      //             hintText: 'Cari...',
+      //             hintStyle: TextStyle(color: Colors.white),
+      //           ),
+      //           style: const TextStyle(color: Colors.white),
+      //           onChanged: search,
+      //         )
+      //       : Text(titles[index]),
+      // ),
       body: screens[index],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
@@ -128,12 +145,21 @@ class _MyHomePageState extends State<MyHomePage> {
               alignment: Alignment.center,
               children: [
                 InkWell(
+                    radius: 30,
+                    borderRadius: BorderRadius.circular(100),
                     onTap: () {
                       scanQRCode();
                     },
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Icon(Icons.qr_code_scanner_rounded),
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundColor: primaryColor,
+                        child: Icon(
+                          Icons.qr_code_scanner_rounded,
+                          size: 30,
+                        ),
+                      ),
                     )),
               ],
             ),

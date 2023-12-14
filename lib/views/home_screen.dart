@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meeting_check/models/agendarapat_model.dart';
 import 'package:meeting_check/providers/agendarapat_provider.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/roundedappbar.dart';
@@ -13,28 +14,102 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String idInstansi = '';
+  List<AgendaRapatModel> agendaList = [];
+  bool showSearchForm = false;
+  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    AgendaRapatProvider agendaProvider =
+        Provider.of<AgendaRapatProvider>(context, listen: false);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: const RoundedAppBar(
-            height: kToolbarHeight,
-            tabBar: TabBar(
-              tabs: [
-                Tab(text: 'TERSEDIA'),
-                Tab(text: 'SELESAI'),
-              ],
-              labelStyle: TextStyle(
-                fontSize: 14,
-                // fontWeight: FontWeight.bold,
-              ),
-              indicator: UnderlineTabIndicator(
-                borderSide: BorderSide(width: 2.0, color: primaryColor),
-                insets: EdgeInsets.symmetric(horizontal: 2.0),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            bottom: const RoundedAppBar(
+              height: kToolbarHeight,
+              tabBar: TabBar(
+                tabs: [
+                  Tab(text: 'TERSEDIA'),
+                  Tab(text: 'SELESAI'),
+                ],
+                labelStyle: TextStyle(
+                  fontSize: 14,
+                  // fontWeight: FontWeight.bold,
+                ),
+                indicator: UnderlineTabIndicator(
+                  borderSide: BorderSide(width: 2.0, color: primaryColor),
+                  insets: EdgeInsets.symmetric(horizontal: 2.0),
+                ),
               ),
             ),
+            // leading: const Icon(Icons.menu_rounded),
+            actions: [
+              if (showSearchForm)
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 4, 0, 4),
+                    child: TextField(
+                      autofocus: true,
+                      cursorColor: Colors.white,
+                      controller: searchController,
+                      onChanged: (value) {
+                        agendaProvider.searchAgendaRapat(value);
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Cari...',
+                        hintStyle: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        focusColor: primaryColorLight,
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              agendaProvider.searchAgendaRapat('');
+                              searchController.clear();
+                              showSearchForm = !showSearchForm;
+                            });
+                          },
+                          icon: const Icon(Icons.close),
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              else
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      showSearchForm = !showSearchForm;
+                    });
+                  },
+                  icon: const Icon(Icons.search),
+                  color: Colors.white,
+                ),
+            ],
+            // elevation: 2.0,
+            backgroundColor: primaryColor,
+            titleTextStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            centerTitle: false,
+            // shape: BeveledRectangleBorder(
+            //   borderRadius: BorderRadius.circular(2),
+            // ),
+            // title: Text(widget.title),
+            title: Text('Daftar Rapat'),
           ),
           backgroundColor: primaryColor,
           body: Container(
@@ -67,12 +142,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 await agendaProvider.fetchAgendaRapatSelesai();
                               },
                               child: ListView.builder(
-                                itemCount:
-                                    agendaProvider.agendaRapatList.isEmpty
-                                        ? 1
-                                        : agendaProvider.agendaRapatList.length,
+                                itemCount: agendaProvider
+                                        .searchedAgendaRapatList.isEmpty
+                                    ? 1
+                                    : agendaProvider
+                                        .searchedAgendaRapatList.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  if (agendaProvider.agendaRapatList.isEmpty) {
+                                  if (agendaProvider
+                                      .searchedAgendaRapatList.isEmpty) {
                                     return Padding(
                                       padding: EdgeInsets.only(
                                           top: MediaQuery.of(context)
@@ -115,17 +192,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                           1),
                                       onTap: () {
                                         bool riwayatKehadiran = agendaProvider
-                                            .agendaRapatList[index].hadir;
+                                            .searchedAgendaRapatList[index]
+                                            .hadir;
                                         if (!riwayatKehadiran) {
                                           Navigator.pushNamed(
                                               context, '/form-daftarhadir',
                                               arguments: {
                                                 'title': 'Detail Rapat',
                                                 'kodeRapat': agendaProvider
-                                                    .agendaRapatList[index]
+                                                    .searchedAgendaRapatList[
+                                                        index]
                                                     .kodeRapat,
                                                 'rapat': agendaProvider
-                                                    .agendaRapatList[index]
+                                                        .searchedAgendaRapatList[
+                                                    index]
                                               });
                                         } else {
                                           Navigator.pushNamed(
@@ -134,12 +214,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       // isThreeLine: true,
                                       leading: kodeRapat(agendaProvider
-                                          .agendaRapatList[index].kodeRapat),
+                                          .searchedAgendaRapatList[index]
+                                          .kodeRapat),
                                       // leading: Icon(Icons.event_note,
                                       //     color: secondaryColor),
                                       tileColor: Colors.white,
                                       title: Text(
-                                          agendaProvider.agendaRapatList[index]
+                                          agendaProvider
+                                              .searchedAgendaRapatList[index]
                                               .agendaRapat,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
@@ -155,7 +237,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Text(
                                             agendaProvider
-                                                .agendaRapatList[index].tempat,
+                                                .searchedAgendaRapatList[index]
+                                                .tempat,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             style: const TextStyle(
@@ -172,7 +255,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const SizedBox(width: 2),
                                               Text(
                                                 agendaProvider
-                                                    .agendaRapatList[index]
+                                                    .searchedAgendaRapatList[
+                                                        index]
                                                     .tanggal,
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
@@ -189,7 +273,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const SizedBox(width: 2),
                                               Text(
                                                 agendaProvider
-                                                    .agendaRapatList[index].jam,
+                                                    .searchedAgendaRapatList[
+                                                        index]
+                                                    .jam,
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
                                                 style: const TextStyle(
@@ -203,7 +289,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       trailing: Icon(
                                           agendaProvider
-                                                  .agendaRapatList[index].hadir
+                                                  .searchedAgendaRapatList[
+                                                      index]
+                                                  .hadir
                                               ? Icons.check_circle
                                               : Icons.arrow_forward_ios,
                                           color: primaryColor,
@@ -218,6 +306,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
+
+                  // AGENDA SELESAI
                   Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -235,13 +325,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               child: ListView.builder(
                                 itemCount: agendaProvider
-                                        .agendaRapatSelesaiList.isEmpty
+                                        .searchedAgendaRapatSelesaiList.isEmpty
                                     ? 1
                                     : agendaProvider
-                                        .agendaRapatSelesaiList.length,
+                                        .searchedAgendaRapatSelesaiList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   if (agendaProvider
-                                      .agendaRapatSelesaiList.isEmpty) {
+                                      .searchedAgendaRapatSelesaiList.isEmpty) {
                                     return Padding(
                                       padding: EdgeInsets.only(
                                           top: MediaQuery.of(context)
@@ -284,7 +374,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           1),
                                       onTap: () {
                                         bool riwayatKehadiran = agendaProvider
-                                            .agendaRapatSelesaiList[index]
+                                            .searchedAgendaRapatSelesaiList[
+                                                index]
                                             .hadir;
                                         if (!riwayatKehadiran) {
                                           Navigator.pushNamed(
@@ -292,11 +383,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               arguments: {
                                                 'title': 'Detail Rapat',
                                                 'kodeRapat': agendaProvider
-                                                    .agendaRapatSelesaiList[
+                                                    .searchedAgendaRapatSelesaiList[
                                                         index]
                                                     .kodeRapat,
                                                 'rapat': agendaProvider
-                                                        .agendaRapatSelesaiList[
+                                                        .searchedAgendaRapatSelesaiList[
                                                     index]
                                               });
                                         } else {
@@ -306,14 +397,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       // isThreeLine: true,
                                       leading: kodeRapat(agendaProvider
-                                          .agendaRapatSelesaiList[index]
+                                          .searchedAgendaRapatSelesaiList[index]
                                           .kodeRapat),
                                       // leading: Icon(Icons.event_note,
                                       //     color: secondaryColor),
                                       tileColor: Colors.white,
                                       title: Text(
                                           agendaProvider
-                                              .agendaRapatSelesaiList[index]
+                                              .searchedAgendaRapatSelesaiList[
+                                                  index]
                                               .agendaRapat,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
@@ -329,7 +421,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Text(
                                             agendaProvider
-                                                .agendaRapatSelesaiList[index]
+                                                .searchedAgendaRapatSelesaiList[
+                                                    index]
                                                 .tempat,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
@@ -348,7 +441,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const SizedBox(width: 2),
                                               Text(
                                                 agendaProvider
-                                                    .agendaRapatSelesaiList[
+                                                    .searchedAgendaRapatSelesaiList[
                                                         index]
                                                     .tanggal,
                                                 overflow: TextOverflow.ellipsis,
@@ -366,7 +459,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const SizedBox(width: 2),
                                               Text(
                                                 agendaProvider
-                                                    .agendaRapatSelesaiList[
+                                                    .searchedAgendaRapatSelesaiList[
                                                         index]
                                                     .jam,
                                                 overflow: TextOverflow.ellipsis,
@@ -382,7 +475,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       trailing: Icon(
                                           agendaProvider
-                                                  .agendaRapatSelesaiList[index]
+                                                  .searchedAgendaRapatSelesaiList[
+                                                      index]
                                                   .hadir
                                               ? Icons.check_circle
                                               : Icons.arrow_forward_ios,
