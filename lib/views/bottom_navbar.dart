@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -10,6 +13,8 @@ import 'package:meeting_check/views/widgets/alertdialog.dart';
 import 'dart:async';
 import 'package:meeting_check/views/widgets/flushbar.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:meeting_check/views/widgets/snackbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -63,13 +68,22 @@ class _MyHomePageState extends State<MyHomePage> {
         // print(rapat['agendaRapat'].agendaRapat);
         if (rapat['error'] == true) {
           errorDialog(context, 'Gagal', rapat['message']);
+          // Navigator.pushReplacementNamed(context, '/qr-success', arguments: {
+          //     'rapat': rapat['agendaRapat'],
+          //   });
         } else if (rapat['error'] == false) {
+          if (rapat['hadir'] == true) {
+            Navigator.pushNamed(context, '/qr-success', arguments: {
+              'rapat': rapat['agendaRapat'],
+            });
+            return;
+          }
           Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
             'kodeRapat': kodeRapat,
-            'rapat': rapat['agendaRapat'],
+            'rapat': rapat['formData'],
           });
-          await successFlushbar(context, 'Silahkan melakukan tanda tangan',
-              duration: const Duration(seconds: 5));
+          await successSnackbar(context, 'Silahkan melakukan tanda tangan',
+              duration: 5);
         } else {
           errorDialog(context, 'Gagal', 'Terjadi kesalahan');
         }
@@ -79,49 +93,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Scaffold(
-      // APPBAR DIPANGGIL PADA MASING MASING HALAMAN, KARENA ADA YANG MEMBUTUHKAN SEARCH FORM DAN TIDAK KUSUSNYA HALAMAN HOME
-
-      // appBar: AppBar(
-      //   // leading: const Icon(Icons.menu_rounded),
-      //   actions: [
-      //     if (index != 2)
-      //       if (!showSearchForm)
-      //         IconButton(
-      //           onPressed: () {
-      //             setState(() {
-      //               showSearchForm = true;
-      //             });
-      //           },
-      //           icon: const Icon(Icons.search),
-      //           color: Colors.white,
-      //         ),
-      //   ],
-      //   // elevation: 2.0,
-      //   backgroundColor: primaryColor,
-      //   titleTextStyle: const TextStyle(
-      //     color: Colors.white,
-      //     fontSize: 20,
-      //     fontWeight: FontWeight.bold,
-      //   ),
-      //   centerTitle: false,
-      //   // shape: BeveledRectangleBorder(
-      //   //   borderRadius: BorderRadius.circular(2),
-      //   // ),
-      //   // title: Text(widget.title),
-      //   title: showSearchForm
-      //       ? TextField(
-      //           controller: searchController,
-      //           // Implement your search form here
-      //           decoration: const InputDecoration(
-      //             icon: Icon(Icons.search),
-      //             hintText: 'Cari...',
-      //             hintStyle: TextStyle(color: Colors.white),
-      //           ),
-      //           style: const TextStyle(color: Colors.white),
-      //           onChanged: search,
-      //         )
-      //       : Text(titles[index]),
-      // ),
       body: screens[index],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(

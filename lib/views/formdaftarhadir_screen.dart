@@ -244,7 +244,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
     } else {
       var statusAbsen = await rapatServices.absensiStore(
         nip: user['nip'],
-        kodeRapat: rapat['data']['kode_rapat'],
+        kodeRapat: rapat['data'][0]['kode_rapat'],
         noHp: user['no_hp'],
         nama: user['nama'],
         alamat: user['alamat'],
@@ -252,15 +252,15 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         signatureData: base64Signature,
       );
 
-      if (statusAbsen['error'] != false) {
-        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-        errorDialog(context, 'Gagal', statusAbsen['message']);
-      } else {
+      print(rapat['data'][0]['agenda_rapat']);
+      print(statusAbsen['error']);
+
+      // response return error if user already absen
+      if (statusAbsen['error'] == false) {
         await agendaProvider.fetchAgendaRapat();
         await agendaProvider.fetchAgendaRapatSelesai();
-        Navigator.pushReplacementNamed(context, '/success');
-        // successFlushbar(context, 'Berhasil absen',
-        //     duration: const Duration(seconds: 5));
+        Navigator.pushReplacementNamed(context, '/qr-success',
+            arguments: {'rapat': rapat['data'][0]});
       }
     }
   }
