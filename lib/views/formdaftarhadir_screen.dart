@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:meeting_check/providers/agendarapat_provider.dart';
+import 'package:meeting_check/services/helpers.dart';
 import 'package:meeting_check/services/rapat_services.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/alertdialog.dart';
@@ -12,8 +13,6 @@ import 'package:meeting_check/views/widgets/flushbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 class FormDaftarHadir extends StatefulWidget {
   const FormDaftarHadir({super.key});
@@ -78,11 +77,8 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
   }
 
   Widget buildRapatForm(rapatData, isSigned) {
-    // Intl.defaultLocale = 'id';
-    // DateTime dateTime = DateFormat("dd-MM-yyyy").parse(rapatData.tanggal);
-    // String formattedDate = DateFormat("dd MMMM yyyy", 'id').format(dateTime);
+    var tanggal = formatDate(rapatData.tanggal);
 
-    // String formattedJam = dateFormat.format(rapatData.tanggal);
     return SingleChildScrollView(
       child: Padding(
         padding: MediaQuery.of(context).size.width > 600
@@ -110,7 +106,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                             color: secondaryColor, size: 15),
                         const SizedBox(width: 2),
                         Text(
-                          rapatData.tanggal,
+                          tanggal,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                         const SizedBox(width: 50),

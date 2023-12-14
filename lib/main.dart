@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,7 @@ class _MyAppState extends State<MyApp> {
         Provider.of<AgendaRapatProvider>(context, listen: false);
     await agendaProvider.fetchAgendaRapat();
     await agendaProvider.fetchAgendaRapatSelesai();
+    initializeDateFormatting();
     FlutterNativeSplash.remove();
   }
 

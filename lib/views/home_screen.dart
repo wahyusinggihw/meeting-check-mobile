@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meeting_check/models/agendarapat_model.dart';
 import 'package:meeting_check/providers/agendarapat_provider.dart';
+import 'package:meeting_check/services/helpers.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/roundedappbar.dart';
 import 'package:provider/provider.dart';
@@ -260,10 +261,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   size: 15),
                                               const SizedBox(width: 2),
                                               Text(
-                                                agendaProvider
+                                                formatDate(agendaProvider
                                                     .searchedAgendaRapatList[
                                                         index]
-                                                    .tanggal,
+                                                    .tanggal),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
                                                 style: const TextStyle(
@@ -456,10 +457,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   size: 15),
                                               const SizedBox(width: 2),
                                               Text(
-                                                agendaProvider
+                                                formatDate(agendaProvider
                                                     .searchedAgendaRapatSelesaiList[
                                                         index]
-                                                    .tanggal,
+                                                    .tanggal),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
                                                 style: const TextStyle(
