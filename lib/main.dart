@@ -57,6 +57,11 @@ class _MyAppState extends State<MyApp> {
           onSurface: Colors.black,
         ),
         textTheme: TextTheme(
+          headlineMedium: GoogleFonts.roboto(
+            fontSize: 24,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
           titleLarge: GoogleFonts.roboto(
             fontSize: 24,
             fontWeight: FontWeight.w700,
