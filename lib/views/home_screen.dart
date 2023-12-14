@@ -99,11 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
             // elevation: 2.0,
             backgroundColor: primaryColor,
-            titleTextStyle: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            titleTextStyle: Theme.of(context).textTheme.headlineMedium,
             centerTitle: false,
             // shape: BeveledRectangleBorder(
             //   borderRadius: BorderRadius.circular(2),

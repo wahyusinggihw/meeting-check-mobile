@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:meeting_check/providers/agendarapat_provider.dart';
 import 'package:meeting_check/services/auth_services.dart';
+import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/button.dart';
 import 'package:provider/provider.dart';
 // shared prefs
@@ -17,6 +18,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  ScrollController scrollController = ScrollController();
   String name = '';
   String nip = '';
   String no = '';
@@ -44,101 +46,242 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
     AgendaRapatProvider agendaProvider =
         Provider.of<AgendaRapatProvider>(context, listen: false);
     // SharedPreferences localStorage = await SharedPreferences.getInstance();
     return Scaffold(
-        body: Padding(
-      padding: MediaQuery.of(context).size.width > 600
-          ? const EdgeInsets.symmetric(horizontal: 100, vertical: 50)
-          : const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        // verticalDirection: VerticalDirection.up,
-        children: [
-          const Center(
-            child: CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage('assets/images/avatar.jpg'),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Center(
-            child: Text(
-              name,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.black,
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        titleTextStyle: Theme.of(context).textTheme.headlineMedium,
+        centerTitle: false,
+        title: const Text('Profil Saya'),
+      ),
+      backgroundColor: primaryColor,
+      body: height > 600
+          ? Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 70),
+                  child: Container(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height,
+                    ),
+                    // height: MediaQuery.of(context).size.height,
+                    // height: MediaQuery.of(context).size.height * 0.7,
+                    // padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                      color: Colors.white,
+                    ),
+                    child: Padding(
+                      padding: MediaQuery.of(context).size.width > 600
+                          ? const EdgeInsets.fromLTRB(100, 30, 100, 0)
+                          : const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
+                      child: Column(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        // verticalDirection: VerticalDirection.up,
+                        children: [
+                          const SizedBox(
+                            height: 80,
+                          ),
+                          Center(
+                            child: Text(
+                              name,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          userInfo(context, 'NIP', nip),
+                          userInfo(context, 'NO', no),
+                          userInfo(context, 'Instansi', instansi),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          // secondaryButton(
+                          //     text: 'Ganti Password',
+                          //     onPressed: () {
+                          //       Navigator.pushNamed(context, '/change-password');
+                          //     }),
+                          primaryButton(
+                              text: 'Keluar',
+                              onPressed: () {
+                                // RapatServices().extractCode();
+                                AuthService().logout();
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, '/login', (route) => false);
+                                agendaProvider.clearAgendaRapat();
+                              }),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  child: Container(
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 5,
+                      ),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/avatar.jpg'),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : SingleChildScrollView(
+              controller: scrollController,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 70),
+                    child: Container(
+                      constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height / 1.5,
+                      ),
+                      // height: MediaQuery.of(context).size.height,
+                      // height: MediaQuery.of(context).size.height * 0.7,
+                      // padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                        color: Colors.white,
+                      ),
+                      child: Padding(
+                        padding: MediaQuery.of(context).size.width > 600
+                            ? const EdgeInsets.fromLTRB(100, 30, 100, 0)
+                            : const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                        child: Column(
+                          // mainAxisAlignment: MainAxisAlignment.center,
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          // verticalDirection: VerticalDirection.up,
+                          children: [
+                            const SizedBox(
+                              height: 80,
+                            ),
+                            Center(
+                              child: Text(
+                                name,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            userInfo(context, 'NIP', nip),
+                            userInfo(context, 'NO', no),
+                            userInfo(context, 'Instansi', instansi),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            // secondaryButton(
+                            //     text: 'Ganti Password',
+                            //     onPressed: () {
+                            //       Navigator.pushNamed(context, '/change-password');
+                            //     }),
+                            primaryButton(
+                                text: 'Keluar',
+                                onPressed: () {
+                                  // RapatServices().extractCode();
+                                  AuthService().logout();
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context, '/login', (route) => false);
+                                  agendaProvider.clearAgendaRapat();
+                                }),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    child: Container(
+                      width: 150,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 5,
+                        ),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/avatar.jpg'),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          userInfo(context, 'NIP', nip),
-          userInfo(context, 'NO', no),
-          userInfo(context, 'Instansi', instansi),
-          const Spacer(),
-          secondaryButton(
-              text: 'Ganti Password',
-              onPressed: () {
-                Navigator.pushNamed(context, '/change-password');
-              }),
-          secondaryButton(
-              text: 'Keluar',
-              onPressed: () {
-                // RapatServices().extractCode();
-                AuthService().logout();
-                Navigator.pushNamedAndRemoveUntil(
-                    context, '/login', (route) => false);
-                agendaProvider.clearAgendaRapat();
-              })
-        ],
-      ),
-    ));
+    );
   }
 }
 
-Widget userInfo(BuildContext context, String title, String value) => Padding(
-      padding: MediaQuery.of(context).size.width > 600
-          ? const EdgeInsets.symmetric(horizontal: 100, vertical: 40)
-          : const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey,
-                  ),
+Widget userInfo(BuildContext context, String title, String value) => Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.white,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey,
                 ),
               ),
-              Expanded(
-                child: Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    height: 1.4,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+            ),
+            Expanded(
+              child: Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 16,
+                  height: 1.4,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -157,9 +300,9 @@ Widget buildUserInfoDisplay(String getValue, String title, Widget editPage) =>
                 color: Colors.grey,
               ),
             ),
-            const SizedBox(
-              height: 1,
-            ),
+            // const SizedBox(
+            //   height: 1,
+            // ),
             Container(
                 width: 350,
                 height: 40,
