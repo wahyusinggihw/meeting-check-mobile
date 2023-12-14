@@ -5,6 +5,7 @@ import 'package:meeting_check/views/bottom_navbar.dart';
 import 'package:meeting_check/views/profile_screen.dart';
 import 'package:meeting_check/views/qr_screen.dart';
 import 'package:meeting_check/views/detail_rapat.dart';
+import 'package:meeting_check/views/qrsuccess_screen.dart';
 import 'package:meeting_check/views/success_screen.dart';
 import 'package:meeting_check/views/splash_screen.dart';
 import 'package:meeting_check/views/error_screen.dart';
@@ -47,6 +48,9 @@ class RouteGenerator {
       case '/success':
         return MaterialPageRoute(
             builder: (_) => const SuccessScreen(), settings: settings);
+      case '/qr-success':
+        return MaterialPageRoute(
+            builder: (_) => const QrSuccessScreen(), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => const MyHomePage(
