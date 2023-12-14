@@ -209,7 +209,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                               });
                                         } else {
                                           Navigator.pushNamed(
-                                              context, '/success');
+                                              context, '/success',
+                                              arguments: {
+                                                'title': 'Detail Rapat',
+                                                'kodeRapat': agendaProvider
+                                                    .searchedAgendaRapatList[
+                                                        index]
+                                                    .kodeRapat,
+                                                'rapat': agendaProvider
+                                                        .searchedAgendaRapatList[
+                                                    index]
+                                              });
                                         }
                                       },
                                       // isThreeLine: true,
@@ -392,7 +402,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                               });
                                         } else {
                                           Navigator.pushNamed(
-                                              context, '/success');
+                                              context, '/success',
+                                              arguments: {
+                                                'title': 'Detail Rapat',
+                                                'kodeRapat': agendaProvider
+                                                    .searchedAgendaRapatSelesaiList[
+                                                        index]
+                                                    .kodeRapat,
+                                                'rapat': agendaProvider
+                                                        .searchedAgendaRapatSelesaiList[
+                                                    index]
+                                              });
                                         }
                                       },
                                       // isThreeLine: true,

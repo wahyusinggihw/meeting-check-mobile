@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -133,6 +134,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                   'Tanda Tangan',
                   style: TextStyle(
                     fontSize: 14,
+                    color: textColor,
                   ),
                 ),
                 Container(

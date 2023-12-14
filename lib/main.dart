@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           titleMedium: GoogleFonts.roboto(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: textColor,
           ),
           titleSmall: GoogleFonts.roboto(
             fontSize: 12,
