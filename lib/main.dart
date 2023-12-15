@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meeting_check/providers/agendarapat_provider.dart';
+import 'package:meeting_check/providers/search_provider.dart';
 import 'package:meeting_check/routes/router.dart' as router;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -11,8 +12,15 @@ void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => AgendaRapatProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AgendaRapatProvider>(
+          create: (context) => AgendaRapatProvider(),
+        ),
+        ChangeNotifierProvider<SearchHistoryModel>(
+          create: (context) => SearchHistoryModel(),
+        ),
+      ],
       child: const MyApp(),
     ),
   );

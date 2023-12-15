@@ -1,51 +1,77 @@
 // agenda_rapat_provider.dart
 import 'package:flutter/material.dart';
 import 'package:meeting_check/models/agendarapat_model.dart';
+import 'package:meeting_check/models/agendarapatsearch_model.dart';
 import 'package:meeting_check/models/agendarapatselesai_model.dart';
 import 'package:meeting_check/services/agendarapat_services.dart';
 
 class AgendaRapatProvider extends ChangeNotifier {
   List<AgendaRapatModel> _agendaRapatList = [];
   List<AgendaRapatModel> get agendaRapatList => _agendaRapatList;
+
   List<AgendaRapatSelesaiModel> _agendaRapatSelesaiList = [];
   List<AgendaRapatSelesaiModel> get agendaRapatSelesaiList =>
       _agendaRapatSelesaiList;
+
+  List<AgendaRapatSearchModel> _agendaRapatSearchList = [];
+  List<AgendaRapatSearchModel> get agendaRapatSearchList =>
+      _agendaRapatSearchList;
   String searchQuery = '';
+
   // searched
   List<AgendaRapatModel> searchedAgendaRapatList = [];
   List<AgendaRapatSelesaiModel> searchedAgendaRapatSelesaiList = [];
+  List<AgendaRapatSearchModel> searchedAgendaRapatSearchList = [];
 
   Future<void> fetchAgendaRapat() async {
     _agendaRapatList = await AgendaRapatService().getAgendaRapat();
-    // notifyListeners();
-    updateData();
+    notifyListeners();
+    // updateData();
   }
 
   Future<void> fetchAgendaRapatSelesai() async {
     _agendaRapatSelesaiList =
         await AgendaRapatService().getAgendaRapatSelesai();
+    notifyListeners();
+    // updateSelesaiData();
+  }
+
+  Future<void> fetchAgendaRapatSearch() async {
+    _agendaRapatSearchList = await AgendaRapatService().getAgendaRapatSearch();
     // notifyListeners();
-    updateSelesaiData();
+    updateSearchData();
   }
 
   // Updated the updateData method to properly filter the list.
-  updateData() {
-    if (searchQuery.isEmpty) {
-      searchedAgendaRapatList = _agendaRapatList;
-    } else {
-      searchedAgendaRapatList = _agendaRapatList
-          .where((element) =>
-              element.agendaRapat.toLowerCase().contains(searchQuery))
-          .toList();
-    }
-    notifyListeners();
-  }
+  // updateData() {
+  //   if (searchQuery.isEmpty) {
+  //     searchedAgendaRapatList = _agendaRapatList;
+  //   } else {
+  //     searchedAgendaRapatList = _agendaRapatList
+  //         .where((element) =>
+  //             element.agendaRapat.toLowerCase().contains(searchQuery))
+  //         .toList();
+  //   }
+  //   notifyListeners();
+  // }
 
-  updateSelesaiData() {
+  // updateSelesaiData() {
+  //   if (searchQuery.isEmpty) {
+  //     searchedAgendaRapatSelesaiList = _agendaRapatSelesaiList;
+  //   } else {
+  //     searchedAgendaRapatSelesaiList = _agendaRapatSelesaiList
+  //         .where((element) =>
+  //             element.agendaRapat.toLowerCase().contains(searchQuery))
+  //         .toList();
+  //   }
+  //   notifyListeners();
+  // }
+
+  updateSearchData() {
     if (searchQuery.isEmpty) {
-      searchedAgendaRapatSelesaiList = _agendaRapatSelesaiList;
+      searchedAgendaRapatSearchList = _agendaRapatSearchList;
     } else {
-      searchedAgendaRapatSelesaiList = _agendaRapatSelesaiList
+      searchedAgendaRapatSearchList = _agendaRapatSearchList
           .where((element) =>
               element.agendaRapat.toLowerCase().contains(searchQuery))
           .toList();
@@ -55,8 +81,9 @@ class AgendaRapatProvider extends ChangeNotifier {
 
   searchAgendaRapat(String query) {
     searchQuery = query;
-    updateData();
-    updateSelesaiData();
+    // updateData();
+    // updateSelesaiData();
+    updateSearchData();
   }
 
   clearAgendaRapat() {
@@ -64,3 +91,71 @@ class AgendaRapatProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+
+// // agenda_rapat_provider.dart
+// import 'package:flutter/material.dart';
+// import 'package:meeting_check/models/agendarapat_model.dart';
+// import 'package:meeting_check/models/agendarapatselesai_model.dart';
+// import 'package:meeting_check/services/agendarapat_services.dart';
+
+// class AgendaRapatProvider extends ChangeNotifier {
+//   List<AgendaRapatModel> _agendaRapatList = [];
+//   List<AgendaRapatModel> get agendaRapatList => _agendaRapatList;
+//   List<AgendaRapatSelesaiModel> _agendaRapatSelesaiList = [];
+//   List<AgendaRapatSelesaiModel> get agendaRapatSelesaiList =>
+//       _agendaRapatSelesaiList;
+//   String searchQuery = '';
+//   // searched
+//   List<AgendaRapatModel> searchedAgendaRapatList = [];
+//   List<AgendaRapatSelesaiModel> searchedAgendaRapatSelesaiList = [];
+
+//   Future<void> fetchAgendaRapat() async {
+//     _agendaRapatList = await AgendaRapatService().getAgendaRapat();
+//     // notifyListeners();
+//     updateData();
+//   }
+
+//   Future<void> fetchAgendaRapatSelesai() async {
+//     _agendaRapatSelesaiList =
+//         await AgendaRapatService().getAgendaRapatSelesai();
+//     // notifyListeners();
+//     updateSelesaiData();
+//   }
+
+//   // Updated the updateData method to properly filter the list.
+//   updateData() {
+//     if (searchQuery.isEmpty) {
+//       searchedAgendaRapatList = _agendaRapatList;
+//     } else {
+//       searchedAgendaRapatList = _agendaRapatList
+//           .where((element) =>
+//               element.agendaRapat.toLowerCase().contains(searchQuery))
+//           .toList();
+//     }
+//     notifyListeners();
+//   }
+
+//   updateSelesaiData() {
+//     if (searchQuery.isEmpty) {
+//       searchedAgendaRapatSelesaiList = _agendaRapatSelesaiList;
+//     } else {
+//       searchedAgendaRapatSelesaiList = _agendaRapatSelesaiList
+//           .where((element) =>
+//               element.agendaRapat.toLowerCase().contains(searchQuery))
+//           .toList();
+//     }
+//     notifyListeners();
+//   }
+
+//   searchAgendaRapat(String query) {
+//     searchQuery = query;
+//     updateData();
+//     updateSelesaiData();
+//   }
+
+//   clearAgendaRapat() {
+//     _agendaRapatList = [];
+//     notifyListeners();
+//   }
+// }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:meeting_check/services/helpers.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/button.dart';
 
+// ini untuk menangani sukses dari home screen
 class SuccessScreen extends StatelessWidget {
   const SuccessScreen({super.key});
 
@@ -57,7 +59,7 @@ class SuccessScreen extends StatelessWidget {
                             color: secondaryColor, size: 15),
                         const SizedBox(width: 2),
                         Text(
-                          rapatData.tanggal,
+                          formatDate(rapatData.tanggal),
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                         const SizedBox(width: 50),

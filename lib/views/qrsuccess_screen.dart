@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:meeting_check/services/helpers.dart';
 import 'package:meeting_check/views/colors.dart';
+import 'package:meeting_check/views/widgets/button.dart';
 
 class QrSuccessScreen extends StatelessWidget {
   const QrSuccessScreen({super.key});
@@ -13,6 +15,13 @@ class QrSuccessScreen extends StatelessWidget {
       backgroundColor: primaryColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
         // titleSpacing: 0.0,
         backgroundColor: primaryColor,
         titleTextStyle: Theme.of(context).textTheme.headlineMedium,
@@ -55,7 +64,7 @@ class QrSuccessScreen extends StatelessWidget {
                                 color: secondaryColor, size: 15),
                             const SizedBox(width: 2),
                             Text(
-                              rapatData['tanggal'],
+                              formatDate(rapatData['tanggal']),
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
                             const SizedBox(width: 50),
@@ -77,9 +86,13 @@ class QrSuccessScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 50, right: 50),
-                          child: Text(
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 50,
+                              right: 50,
+                              bottom:
+                                  MediaQuery.of(context).size.height / 2 - 50),
+                          child: const Text(
                             'Anda telah melakukan presensi pada kegiatan ini',
                             style: TextStyle(
                               fontFamily: 'Roboto',
@@ -91,6 +104,10 @@ class QrSuccessScreen extends StatelessWidget {
                             softWrap: true,
                             textAlign: TextAlign.center,
                           ),
+                        ),
+                        primaryButton(
+                          text: 'Kembali',
+                          onPressed: () => Navigator.pop(context),
                         ),
                       ],
                     ),
