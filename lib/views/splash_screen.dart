@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:meeting_check/views/colors.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -12,10 +13,26 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+    buildSignature: 'Unknown',
+    installerStore: 'Unknown',
+  );
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-
+    _initPackageInfo();
     isLogin();
   }
 
@@ -24,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
     bool? isLogin = localStorage.getBool('islogin') ?? false;
 
     if (isLogin) {
-      Timer(const Duration(seconds: 3), () {
+      Timer(const Duration(seconds: 4), () {
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/',
@@ -32,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
         );
       });
     } else {
-      Timer(const Duration(seconds: 3), () {
+      Timer(const Duration(seconds: 4), () {
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/login',
@@ -40,6 +57,11 @@ class _SplashScreenState extends State<SplashScreen> {
         );
       });
     }
+  }
+
+  getAppVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
   }
 
   @override
@@ -73,8 +95,8 @@ class _SplashScreenState extends State<SplashScreen> {
           const CircularProgressIndicator(),
           // build number version
           const SizedBox(height: 20),
-          const Text('v1.0.0',
-              style: TextStyle(
+          Text('V ${_packageInfo.version}',
+              style: const TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
