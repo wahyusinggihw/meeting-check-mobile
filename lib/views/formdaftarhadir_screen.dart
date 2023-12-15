@@ -34,8 +34,15 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         // titleSpacing: 0.0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
         backgroundColor: primaryColor,
         titleTextStyle: Theme.of(context).textTheme.headlineMedium,
         centerTitle: false,

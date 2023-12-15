@@ -46,6 +46,11 @@ class RapatServices extends Services {
       final response = await dio.get(url);
 
       if (response.statusCode == 200) {
+        if (response.data['error'] == true) {
+          // Error response
+          final String message = response.data['message'];
+          return {'error': true, 'message': message};
+        }
         final List<dynamic> responseDataList = response.data['data'];
 
         // Check if responseDataList is not empty before accessing the first item

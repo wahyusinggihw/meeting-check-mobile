@@ -12,15 +12,17 @@ class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    // EdgeInsets devicePadding = MediaQuery.of(context).padding;
     return Container(
       height: height,
-      width: MediaQuery.of(context).size.width,
+      width: deviceWidth > 600 ? deviceWidth / 1.1 : deviceWidth,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         ),
-        color: const Color.fromARGB(255, 158, 53, 53),
+        color: Colors.white,
       ),
       child: tabBar,
     );

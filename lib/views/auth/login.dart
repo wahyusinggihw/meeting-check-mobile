@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:meeting_check/providers/agendarapat_provider.dart';
 import 'package:meeting_check/services/auth_services.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/button.dart';
 import 'package:meeting_check/views/widgets/snackbar.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
@@ -36,11 +38,11 @@ class _LoginState extends State<Login> {
                     height: 300, width: 300),
                 const SizedBox(height: 0),
                 const Center(
-                  // child: Text(
-                  //   'Silahkan masuk',
-                  //   style: TextStyle(color: Colors.black),
-                  // ),
-                ),
+                    // child: Text(
+                    //   'Silahkan masuk',
+                    //   style: TextStyle(color: Colors.black),
+                    // ),
+                    ),
                 Form(
                     key: _formKey,
                     child: Padding(
@@ -60,7 +62,6 @@ class _LoginState extends State<Login> {
                               controller: _nipController,
                               keyboardType: TextInputType.number,
                               decoration: const InputDecoration(
-                                
                                   fillColor: secondaryColor,
                                   focusColor: secondaryColor,
                                   labelText: 'NIP / NIPT',
@@ -127,9 +128,7 @@ class _LoginState extends State<Login> {
                           const SizedBox(height: 40),
                           // const Spacer(),
                           Center(
-                            
                               child: primaryButton(
-
                                   text: 'Masuk',
                                   onPressed: () {
                                     // _login(
@@ -168,12 +167,14 @@ class _LoginState extends State<Login> {
     // print('isError:' + response['error']);
     if (response['error'] == false) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
-
+      AgendaRapatProvider agendaProvider =
+          Provider.of<AgendaRapatProvider>(context, listen: false);
       // Save user data in local storage
       Map user = response['data'];
       localStorage.setString('user', jsonEncode(user));
       localStorage.setBool('islogin', true);
-
+      await agendaProvider.fetchAgendaRapat();
+      await agendaProvider.fetchAgendaRapatSelesai();
       setState(() {
         _isloading = false;
       });

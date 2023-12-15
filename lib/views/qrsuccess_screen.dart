@@ -17,7 +17,7 @@ class QrSuccessScreen extends StatelessWidget {
         backgroundColor: primaryColor,
         titleTextStyle: Theme.of(context).textTheme.headlineMedium,
         centerTitle: false,
-        title: const Text('Formulir Daftar Hadir'),
+        title: const Text('Informasi Rapat'),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,

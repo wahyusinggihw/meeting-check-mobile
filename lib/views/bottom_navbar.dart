@@ -67,7 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
         print(rapat['error']);
         // print(rapat['agendaRapat'].agendaRapat);
         if (rapat['error'] == true) {
-          errorDialog(context, 'Gagal', rapat['message']);
+          // errorDialog(context, 'Gagal', rapat['message']);
+          Navigator.pushNamed(context, '/qr-failed');
+          // print('error qr');
           // Navigator.pushReplacementNamed(context, '/qr-success', arguments: {
           //     'rapat': rapat['agendaRapat'],
           //   });

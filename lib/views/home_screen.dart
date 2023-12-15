@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? const EdgeInsets.symmetric(horizontal: 100, vertical: 0)
                   : const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: TabBarView(
-                children: [ 
+                children: [
                   Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
