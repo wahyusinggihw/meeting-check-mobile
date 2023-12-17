@@ -192,7 +192,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                           // const Spacer(),
                           Center(
                               child: primaryButton(
-                                  text: 'Ubah Password',
+                                  child: const Text(
+                                    'Ubah Password',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                   onPressed: () {
                                     // _login(
                                     //     '750119911225002', '750119911225002');

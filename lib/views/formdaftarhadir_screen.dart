@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -9,7 +8,7 @@ import 'package:meeting_check/services/rapat_services.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:meeting_check/views/widgets/alertdialog.dart';
 import 'package:meeting_check/views/widgets/button.dart';
-import 'package:meeting_check/views/widgets/flushbar.dart';
+import 'package:meeting_check/views/widgets/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
@@ -173,12 +172,24 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                 // SizedBox(height: MediaQuery.of(context).size.height / 10),
                 const SizedBox(height: 20),
                 primaryButton(
-                    text: 'Submit',
+                    child: Container(
+                      height: 50,
+                      // width: 150,
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Submit',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                     onPressed: () async {
                       // ...
                       if (!isSigned) {
                         // Show an error snackbar if the signature is empty
-                        await errorFlushbar(
+                        await errorSnackbar(
                             context, 'Tanda tangan belum diisi');
                       } else {
                         var image =

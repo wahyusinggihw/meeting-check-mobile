@@ -75,7 +75,14 @@ class QrFailedScreen extends StatelessWidget {
                       ),
                     ),
                     primaryButton(
-                      text: 'Kembali',
+                      child: const Text(
+                        'Kembali',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],

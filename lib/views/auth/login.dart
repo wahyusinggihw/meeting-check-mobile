@@ -129,7 +129,14 @@ class _LoginState extends State<Login> {
                           // const Spacer(),
                           Center(
                               child: primaryButton(
-                                  text: 'Masuk',
+                                  child: const Text(
+                                    "Masuk",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                   onPressed: () {
                                     // _login(
                                     //     '750119911225002', '750119911225002');

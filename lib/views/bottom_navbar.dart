@@ -1,6 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -11,10 +9,8 @@ import 'package:meeting_check/views/profile_screen.dart';
 import 'package:meeting_check/views/qr_screen.dart';
 import 'package:meeting_check/views/widgets/alertdialog.dart';
 import 'dart:async';
-import 'package:meeting_check/views/widgets/flushbar.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:meeting_check/views/widgets/snackbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

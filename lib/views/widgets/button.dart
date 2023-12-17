@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meeting_check/views/colors.dart';
 
-Widget primaryButton({required String text, required Function onPressed}) {
+Widget primaryButton({required Widget child, required Function onPressed}) {
   return ElevatedButton(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -14,14 +14,7 @@ Widget primaryButton({required String text, required Function onPressed}) {
       height: 50,
       // width: 150,
       alignment: Alignment.center,
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontWeight: FontWeight.w700,
-          fontSize: 16,
-          color: Colors.white,
-        ),
-      ),
+      child: child,
     ),
   );
 }

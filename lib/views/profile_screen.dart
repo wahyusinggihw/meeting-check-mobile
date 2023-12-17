@@ -117,7 +117,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           //       Navigator.pushNamed(context, '/change-password');
                           //     }),
                           primaryButton(
-                              text: 'Keluar',
+                              child: const Text(
+                                "Keluar",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
                               onPressed: () {
                                 // RapatServices().extractCode();
                                 AuthService().logout();
@@ -210,7 +217,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             //       Navigator.pushNamed(context, '/change-password');
                             //     }),
                             primaryButton(
-                                text: 'Keluar',
+                                child: const Text(
+                                  'Keluar',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
                                 onPressed: () {
                                   // RapatServices().extractCode();
                                   AuthService().logout();

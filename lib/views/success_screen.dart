@@ -85,7 +85,7 @@ class SuccessScreen extends StatelessWidget {
                       padding: EdgeInsets.only(
                           left: 50,
                           right: 50,
-                          bottom: MediaQuery.of(context).size.height / 2 - 50),
+                          bottom: MediaQuery.of(context).size.height / 2 - 200),
                       child: const Text(
                         'Anda telah melakukan presensi pada kegiatan ini',
                         style: TextStyle(
@@ -100,7 +100,14 @@ class SuccessScreen extends StatelessWidget {
                       ),
                     ),
                     primaryButton(
-                      text: 'Kembali',
+                      child: const Text(
+                        'Kembali',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
                       onPressed: () => Navigator.pop(context),
                     ),
                     SizedBox(
