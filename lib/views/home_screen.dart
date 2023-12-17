@@ -55,17 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   agendaProvider.fetchAgendaRapatSearch();
                   showSearch(
-                      context: context,
-                      delegate: CustomSearchDelegate(
-                        hintText: 'Cari...',
-                        inputTheme: const InputDecorationTheme(
-                          hintStyle: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w300),
-                          border: InputBorder.none,
-                        ),
-                      ));
+                    context: context,
+                    delegate: CustomSearchDelegate(),
+                  );
                 },
                 icon: const Icon(Icons.search),
                 color: Colors.white,

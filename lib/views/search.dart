@@ -1,33 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:meeting_check/providers/agendarapat_provider.dart';
 import 'package:meeting_check/providers/search_provider.dart';
 import 'package:meeting_check/views/colors.dart';
 import 'package:provider/provider.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
-  final String? hintText;
-  final InputDecorationTheme? inputTheme;
+  // final String? hintText;
+  // final InputDecorationTheme? inputTheme;
 
-  CustomSearchDelegate({this.hintText, this.inputTheme});
+  // CustomSearchDelegate({this.hintText, this.inputTheme});
+
+  // @override
+  String? get searchFieldLabel => 'Cari...';
+
+  // @override
+  // InputDecorationTheme? get searchFieldDecorationTheme => inputTheme;
 
   @override
-  String? get searchFieldLabel => hintText;
+  // TextStyle? get searchFieldStyle => TextStyle(
+  //       color: Colors.white,
+  //       fontSize: 16,
+  //       fontFamily: 'Roboto',
+  //     );
 
   @override
-  InputDecorationTheme? get searchFieldDecorationTheme => inputTheme;
+  ThemeData appBarTheme(BuildContext context) {
+    final ThemeData theme = Theme.of(context).copyWith(
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: Colors.white,
+        selectionColor: Colors.white,
+        selectionHandleColor: Colors.white,
+      ),
+      textTheme: TextTheme(
+        // search input theme
+        headlineMedium: GoogleFonts.roboto(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
+        ),
+        titleLarge: GoogleFonts.roboto(
+          fontSize: 16,
+          fontWeight: FontWeight.normal,
+          color: Colors.white,
+        ),
+        titleMedium: GoogleFonts.roboto(
+          fontSize: 16,
+          fontWeight: FontWeight.normal,
+          color: textColor,
+        ),
+        titleSmall: GoogleFonts.roboto(
+          fontSize: 16,
+          fontWeight: FontWeight.normal,
+          color: secondaryColor,
+        ),
+        // search result theme
+        bodyMedium: GoogleFonts.roboto(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: const Color(0xff000000),
+        ),
+        bodySmall: GoogleFonts.roboto(
+          fontSize: 16,
+          fontWeight: FontWeight.normal,
+          color: Colors.black,
+        ),
+        bodyLarge: GoogleFonts.roboto(
+          fontSize: 16,
+          fontWeight: FontWeight.normal,
+          color: Colors.black,
+        ),
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: primaryColor,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle:
+            TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Roboto'),
+        border: InputBorder.none,
+        focusColor: Colors.white,
+      ),
+    );
+    return theme;
+  }
 
-  List<String> searchTerms = [
-    'Apple',
-    'Apricot',
-    'Avocado',
-    'Banana',
-    'Bilberry',
-  ];
+  // List<String> searchTerms = [
+  //   'Apple',
+  //   'Apricot',
+  //   'Avocado',
+  //   'Banana',
+  //   'Bilberry',
+  // ];
 
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
+        tooltip: 'Clear',
         onPressed: () {
           query = '';
           showSuggestions(context);
@@ -40,8 +111,14 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () => close(context, ''),
+      tooltip: 'Back',
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation,
+      ),
+      onPressed: () {
+        close(context, null);
+      },
     );
   }
 
@@ -118,7 +195,7 @@ class CustomSearchDelegate extends SearchDelegate {
                 const Padding(
                   padding: EdgeInsets.only(left: 16.0, top: 16.0, bottom: 1),
                   child: Text(
-                    'Histori',
+                    'Histori Pencarian',
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
