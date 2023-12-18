@@ -11,13 +11,13 @@ class CustomSearchDelegate extends SearchDelegate {
 
   // CustomSearchDelegate({this.hintText, this.inputTheme});
 
-  // @override
+  @override
   String? get searchFieldLabel => 'Cari...';
 
   // @override
   // InputDecorationTheme? get searchFieldDecorationTheme => inputTheme;
 
-  @override
+  // @override
   // TextStyle? get searchFieldStyle => TextStyle(
   //       color: Colors.white,
   //       fontSize: 16,
@@ -71,12 +71,12 @@ class CustomSearchDelegate extends SearchDelegate {
           color: Colors.black,
         ),
       ),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: primaryColor,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.white),
       ),
-      inputDecorationTheme: InputDecorationTheme(
+      inputDecorationTheme: const InputDecorationTheme(
         hintStyle:
             TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Roboto'),
         border: InputBorder.none,
@@ -146,18 +146,39 @@ class CustomSearchDelegate extends SearchDelegate {
                 agendaProvider.searchedAgendaRapatSearchList[index].hadir;
             // print(result.agendaRapat);
             return ListTile(
-              title: Row(children: [
-                Text(result.agendaRapat),
-                const SizedBox(width: 2),
-                riwayatKehadiran
-                    ? Icon(
-                        Icons.check_circle,
-                        size: 15,
-                        color: primaryColor,
-                      )
-                    : Text('')
-              ]),
-              // subtitle: Text(result.tanggal),
+              leading: const Icon(Icons.search, color: secondaryColor),
+              title: Row(
+                children: [
+                  Expanded(child: Text(result.agendaRapat)),
+                  const SizedBox(width: 2),
+                ],
+              ),
+              subtitle: Row(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.account_balance_rounded,
+                      size: 15, color: secondaryColor),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      result.namaInstansi,
+                      overflow: TextOverflow.fade,
+                      style: const TextStyle(
+                        color: secondaryColor,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              trailing: riwayatKehadiran
+                  ? const Icon(
+                      Icons.check_circle,
+                      size: 15,
+                      color: primaryColor,
+                    )
+                  : const Text(''),
               onTap: () {
                 if (!riwayatKehadiran) {
                   Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
@@ -172,7 +193,8 @@ class CustomSearchDelegate extends SearchDelegate {
                     'rapat': agendaProvider.searchedAgendaRapatSearchList[index]
                   });
                 }
-                updateSearchHistory(context, query, result.agendaRapat);
+                updateSearchHistory(
+                    context, result.agendaRapat, result.namaInstansi);
                 // close(context, result.agendaRapat);
               },
             );
@@ -189,49 +211,99 @@ class CustomSearchDelegate extends SearchDelegate {
     if (query.isEmpty) {
       return searchHistoryModel.searchHistory.isEmpty
           ? Container()
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 16.0, top: 16.0, bottom: 1),
-                  child: Text(
-                    'Histori Pencarian',
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto'),
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16.0,
+                      right: 16.0,
+                      top: 16.0,
+                      bottom: 1,
+                    ),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Histori Pencarian',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto',
+                          ),
+                        ),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {
+                            searchHistoryModel.clearSearchHistory();
+                          },
+                          child: const Text(
+                            'hapus',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Roboto',
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                // Display the last 3 search history with a delete button
-                for (var i = searchHistoryModel.searchHistory.length - 1;
-                    i >= 0 && i > searchHistoryModel.searchHistory.length - 4;
-                    i--)
-                  ListTile(
-                    title: Text(searchHistoryModel.searchHistory[i]),
-                    trailing: TextButton(
+                  // Display the last 3 search history with a delete button
+                  for (var i = searchHistoryModel.searchHistory.length - 1;
+                      i >= 0 &&
+                          i > searchHistoryModel.searchHistory.length - 11;
+                      i--)
+                    ListTile(
+                      title: Text(searchHistoryModel.searchHistory[i].title),
+                      subtitle: Row(
+                        children: [
+                          const Icon(
+                            Icons.account_balance_rounded,
+                            size: 15,
+                            color: secondaryColor,
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              searchHistoryModel.searchHistory[i].subtitle,
+                              style: const TextStyle(
+                                color: secondaryColor,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      leading: const Icon(Icons.history, color: secondaryColor),
+                      trailing: IconButton(
                         onPressed: () {
                           searchHistoryModel.removeSearchHistory(i);
                         },
-                        child: const Text(
-                          'hapus',
-                          style: TextStyle(color: secondaryColor),
-                        )),
-                    onTap: () {
-                      // Handle tapping on a history item
-                      query = searchHistoryModel.searchHistory[i];
-                      showResults(context);
-                    },
-                  ),
-              ],
+                        icon: const Icon(
+                          Icons.close,
+                        ),
+                      ),
+                      onTap: () {
+                        // Handle tapping on a history item
+                        query = searchHistoryModel.searchHistory[i].title
+                            .toLowerCase();
+                        showResults(context);
+                      },
+                    ),
+                ],
+              ),
             );
     } else {
       return buildResults(context);
     }
   }
 
-  void updateSearchHistory(BuildContext context, String query, String result) {
+  void updateSearchHistory(
+      BuildContext context, String title, String subtitle) {
     final searchHistoryModel =
         Provider.of<SearchHistoryModel>(context, listen: false);
-    searchHistoryModel.addSearchHistory(query);
+    searchHistoryModel.addSearchHistory(title, subtitle);
   }
 }
