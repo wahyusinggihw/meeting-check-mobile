@@ -166,7 +166,7 @@ class AgendaRapatService extends Services {
 
     // ignore: prefer_interpolation_to_compose_strings
     String url = '$apiURL/api/agenda-rapat/search?nip=' + nip();
-    log(url);
+    // log(url);
     try {
       final Response response = await dio.get(url);
       if (response.statusCode == 200) {
