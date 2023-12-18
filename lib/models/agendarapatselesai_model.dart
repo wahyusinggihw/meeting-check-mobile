@@ -4,6 +4,8 @@ class AgendaRapatSelesaiModel {
   String idAdmin;
   String idInstansi;
   String namaInstansi;
+  String idBidang;
+  String namaBidang;
   String kodeRapat;
   String agendaRapat;
   String tempat;
@@ -20,6 +22,8 @@ class AgendaRapatSelesaiModel {
     required this.idAdmin,
     required this.idInstansi,
     required this.namaInstansi,
+    required this.idBidang,
+    required this.namaBidang,
     required this.kodeRapat,
     required this.agendaRapat,
     required this.tempat,
@@ -38,6 +42,8 @@ class AgendaRapatSelesaiModel {
         idAdmin: json["id_admin"],
         idInstansi: json["id_instansi"],
         namaInstansi: json["nama_instansi"],
+        idBidang: json["id_bidang"],
+        namaBidang: json["nama_bidang"],
         kodeRapat: json["kode_rapat"],
         agendaRapat: json["agenda_rapat"],
         tempat: json["tempat"],
