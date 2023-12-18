@@ -80,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   : const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               child: TabBarView(
                 children: [
+                  // AGENDA TERSEDIA
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +95,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               await agendaProvider.fetchAgendaRapat();
                               await agendaProvider.fetchAgendaRapatSelesai();
                             },
-                            child: ListView.builder(
+                            child: ListView.separated(
+                              separatorBuilder: (context, index) => Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Divider(
+                                  color: Colors.grey[300],
+                                  height: 1,
+                                ),
+                              ),
                               itemCount: agendaProvider.agendaRapatList.isEmpty
                                   ? 1
                                   : agendaProvider.agendaRapatList.length,
@@ -121,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Text(
                                             'Tidak ada agenda rapat tersedia',
                                             style: TextStyle(
-                                              color: Colors.black,
+                                              color: secondaryColor,
                                               fontSize: 16,
                                             ),
                                           ),
@@ -170,7 +178,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         .agendaRapatList[index].kodeRapat),
                                     // leading: Icon(Icons.event_note,
                                     //     color: secondaryColor),
-                                    tileColor: Colors.white,
+                                    tileColor: Colors.transparent,
+                                    splashColor: Colors.red,
                                     title: Text(
                                         agendaProvider
                                             .agendaRapatList[index].agendaRapat,
@@ -247,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         }),
-                      )
+                      ),
                     ],
                   ),
 
@@ -266,7 +275,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               await agendaProvider.fetchAgendaRapat();
                               await agendaProvider.fetchAgendaRapatSelesai();
                             },
-                            child: ListView.builder(
+                            child: ListView.separated(
+                              separatorBuilder: (context, index) => Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8.0),
+                                child: Divider(
+                                  color: Colors.grey[300],
+                                  height: 1,
+                                ),
+                              ),
                               itemCount:
                                   agendaProvider.agendaRapatSelesaiList.isEmpty
                                       ? 1
@@ -296,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Text(
                                             'Tidak ada agenda rapat tersedia',
                                             style: TextStyle(
-                                              color: Colors.black,
+                                              color: secondaryColor,
                                               fontSize: 16,
                                             ),
                                           ),

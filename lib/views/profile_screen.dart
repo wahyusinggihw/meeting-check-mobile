@@ -100,7 +100,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   fontSize: 20,
-                                  color: Colors.black,
+                                  color: textColor,
+                                  fontWeight: FontWeight.w600,
+                                  // fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -202,6 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 style: const TextStyle(
                                   fontSize: 20,
                                   color: Colors.black,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
@@ -285,28 +288,31 @@ Widget userInfo(BuildContext context, String title, String value) => Container(
               TableCell(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      // color: Colors.grey,
-                    ),
-                  ),
-                ),
-              ),
-              TableCell(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    value,
-                    textAlign: TextAlign.justify,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      height: 1.4,
-                      // overflow: TextOverflow.fade,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: primaryColor
+                            // color: Colors.grey,
+                            ),
+                      ),
+                      // const SizedBox(height: 8),
+                      Text(
+                        value,
+                        textAlign: TextAlign.justify,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          height: 1.4,
+                          color: secondaryColor,
+                          // overflow: TextOverflow.fade,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -315,48 +321,3 @@ Widget userInfo(BuildContext context, String title, String value) => Container(
         ],
       ),
     );
-
-Widget buildUserInfoDisplay(String getValue, String title, Widget editPage) =>
-    Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey,
-              ),
-            ),
-            // const SizedBox(
-            //   height: 1,
-            // ),
-            Container(
-                width: 350,
-                height: 40,
-                decoration: const BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                  color: Colors.grey,
-                  width: 1,
-                ))),
-                child: Row(children: [
-                  Expanded(
-                      child: TextButton(
-                          onPressed: () {
-                            // navigateSecondPage(editPage);
-                          },
-                          child: Text(
-                            getValue,
-                            style: const TextStyle(fontSize: 16, height: 1.4),
-                          ))),
-                  const Icon(
-                    Icons.keyboard_arrow_right,
-                    color: Colors.grey,
-                    size: 40.0,
-                  )
-                ]))
-          ],
-        ));
