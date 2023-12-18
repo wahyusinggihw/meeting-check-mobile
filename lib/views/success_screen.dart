@@ -52,7 +52,7 @@ class SuccessScreen extends StatelessWidget {
                     Text(
                       rapatData.agendaRapat,
                       textAlign: TextAlign.justify,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         color: textColor,
                         // fontWeight: FontWeight.bold,
@@ -63,7 +63,7 @@ class SuccessScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.account_balance_rounded,
+                        const Icon(Icons.account_balance_rounded,
                             size: 15, color: secondaryColor),
                         const SizedBox(width: 2),
                         Expanded(
@@ -78,14 +78,15 @@ class SuccessScreen extends StatelessWidget {
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        const Icon(Icons.calendar_today_rounded,
+                        const Icon(Icons.calendar_month,
                             color: secondaryColor, size: 15),
                         const SizedBox(width: 2),
                         Text(
                           formatDate(rapatData.tanggal),
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        Spacer(),
+                        const SizedBox(width: 50),
+                        // const Spacer(),
                         const Icon(Icons.access_time_rounded,
                             color: secondaryColor, size: 15),
                         const SizedBox(width: 2),

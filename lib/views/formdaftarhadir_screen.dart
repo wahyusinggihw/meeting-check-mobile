@@ -49,7 +49,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
       ),
       body: Container(
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
@@ -104,7 +104,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                   children: [
                     Text(
                       rapatData.agendaRapat,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         color: textColor,
                         // fontWeight: FontWeight.bold,
@@ -113,26 +113,26 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                     // const SizedBox(width: 2),
                     Row(
                       children: [
-                        Icon(Icons.account_balance_rounded,
+                        const Icon(Icons.account_balance_rounded,
                             size: 15, color: secondaryColor),
                         const SizedBox(width: 2),
                         Text(
-                          rapatData.namaBidang,
+                          rapatData.namaInstansi,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ],
                     ),
                     Row(
                       children: [
-                        const Icon(Icons.calendar_today_rounded,
+                        const Icon(Icons.calendar_month,
                             color: secondaryColor, size: 15),
                         const SizedBox(width: 2),
                         Text(
                           tanggal,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        // const SizedBox(width: 50),
-                        Spacer(),
+                        const SizedBox(width: 50),
+                        // const Spacer(),
                         const Icon(Icons.access_time_rounded,
                             color: secondaryColor, size: 15),
                         const SizedBox(width: 2),
@@ -283,8 +283,8 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         signatureData: base64Signature,
       );
 
-      print(rapat['data'][0]['agenda_rapat']);
-      print(statusAbsen['error']);
+      // print(rapat['data'][0]['agenda_rapat']);
+      // print(statusAbsen['error']);
 
       // response return error if user already absen
       if (statusAbsen['error'] == false) {

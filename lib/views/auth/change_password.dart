@@ -81,7 +81,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                               border: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(15))),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(15)),
                                   borderSide: BorderSide(color: primaryColor)),
@@ -230,7 +230,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       'password': password,
       'new_password': newPassword,
     };
-    print(username);
+    // print(username);
     AuthService().changePassword(data).then((val) async {
       if (val['error'] == false) {
         successSnackbar(context, val['message'], duration: 5);

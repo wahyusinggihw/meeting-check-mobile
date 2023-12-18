@@ -74,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       // height: MediaQuery.of(context).size.height * 0.7,
                       // padding: EdgeInsets.symmetric(horizontal: 20.0),
                       width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),
@@ -150,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.white,
                           width: 5,
                         ),
-                        image: DecorationImage(
+                        image: const DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/images/avatar.jpg'),
                         ),
@@ -175,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       // height: MediaQuery.of(context).size.height * 0.7,
                       // padding: EdgeInsets.symmetric(horizontal: 20.0),
                       width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),
@@ -254,7 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.white,
                           width: 5,
                         ),
-                        image: DecorationImage(
+                        image: const DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/images/avatar.jpg'),
                         ),
@@ -275,7 +275,7 @@ Widget userInfo(BuildContext context, String title, String value) => Container(
         color: Colors.white,
       ),
       child: Table(
-        columnWidths: {
+        columnWidths: const {
           0: FlexColumnWidth(1), // Adjust the column width as needed
           1: FlexColumnWidth(1), // Adjust the column width as needed
         },

@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
         });
         var rapat = await rapatServices.getAgendaRapatByKode(kodeRapat);
         // log(rapat['error']);
-        print(rapat['error']);
+        // print(rapat['error']);
         // print(rapat['agendaRapat'].agendaRapat);
         if (rapat['error'] == true) {
           // errorDialog(context, 'Gagal', rapat['message']);

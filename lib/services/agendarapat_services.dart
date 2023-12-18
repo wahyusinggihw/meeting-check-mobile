@@ -40,8 +40,8 @@ class AgendaRapatService extends Services {
       return user['nip'];
     }
 
-    // ignore: prefer_interpolation_to_compose_strings
     String url =
+        // ignore: prefer_interpolation_to_compose_strings
         '$apiURL/api/agenda-rapat/instansi/' + idInstansi() + '?nip=' + nip();
     // log(url);
     try {

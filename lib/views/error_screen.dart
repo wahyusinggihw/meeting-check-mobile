@@ -48,7 +48,7 @@ class ErrorScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            Text("Lorem"),
+            const Text("Lorem"),
             const Spacer(),
             ElevatedButton(
                 style: ButtonStyle(

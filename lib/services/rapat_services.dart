@@ -39,8 +39,9 @@ class RapatServices extends Services {
       return user['nip'];
     }
 
+    //ignore: prefer_interpolation_to_compose_strings
     final String url = '$apiURL/api/agenda-rapat/scan/$kodeRapat?nip=' + nip();
-    print(url);
+    // print(url);
 
     try {
       final response = await dio.get(url);
@@ -63,7 +64,7 @@ class RapatServices extends Services {
             final String message = responseData['message'];
             return {'error': true, 'message': message};
           }
-          print(responseData['hadir']);
+          // print(responseData['hadir']);
           // Success response
           final AgendaRapatModel agendaRapat =
               AgendaRapatModel.fromJson(responseData);

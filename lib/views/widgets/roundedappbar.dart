@@ -17,7 +17,7 @@ class RoundedAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       height: height,
       width: deviceWidth > 600 ? deviceWidth / 1.1 : deviceWidth,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
