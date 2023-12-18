@@ -17,6 +17,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  double _containerHeight = 50;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nipController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -56,7 +57,7 @@ class _LoginState extends State<Login> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            height: 50,
+                            height: _containerHeight,
                             child: TextFormField(
                               cursorColor: secondaryColor,
                               controller: _nipController,
@@ -76,6 +77,10 @@ class _LoginState extends State<Login> {
                                           BorderSide(color: primaryColor))),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
+                                  setState(() {
+                                    _containerHeight =
+                                        75; // Ubah tinggi container jika validasi gagal
+                                  });
                                   return 'Masukkan NIPTT anda';
                                 }
                                 return null;
@@ -84,7 +89,7 @@ class _LoginState extends State<Login> {
                           ),
                           const SizedBox(height: 20),
                           Container(
-                            height: 50,
+                            height: _containerHeight,
                             child: TextFormField(
                               controller: _passwordController,
                               obscureText: !_isPasswordVisible,
@@ -119,6 +124,10 @@ class _LoginState extends State<Login> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
+                                  setState(() {
+                                    _containerHeight =
+                                        75; // Ubah tinggi container jika validasi gagal
+                                  });
                                   return 'Masukkan password';
                                 }
                                 return null;
@@ -201,33 +210,3 @@ class _LoginState extends State<Login> {
     }
   }
 }
-
-//   void _login(String username, String password) async {
-//     setState(() {
-//       _isloading = true;
-//     });
-//     var data = {
-//       'username': username,
-//       'password': password,
-//     };
-//     var response = await LoginService().login(data);
-//     print(response['status']);
-//     if (response['status'] == true) {
-//       SharedPreferences localStorage = await SharedPreferences.getInstance();
-
-//       Map user = response['data'];
-
-//       localStorage.setString('user', jsonEncode(user));
-//       localStorage.setBool('islogin', true);
-//       // localStorage.setString('token', response['token']);
-
-//       successSnackbar(context, response['message']);
-//       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-//     } else {
-//       setState(() {
-//         _isloading = false;
-//       });
-//       errorSnackbar(context, response['message']);
-//     }
-//   }
-// }

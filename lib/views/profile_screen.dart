@@ -305,7 +305,7 @@ Widget userInfo(BuildContext context, String title, String value) => Container(
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
                       height: 1.4,
-                      overflow: TextOverflow.clip,
+                      // overflow: TextOverflow.fade,
                     ),
                   ),
                 ),

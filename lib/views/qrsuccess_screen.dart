@@ -48,16 +48,31 @@ class QrSuccessScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    // Text('Agenda Rapat',
-                    //     style: Theme.of(context).textTheme.titleMedium),
-                    // const SizedBox(height: 30),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           rapatData['agenda_rapat'],
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: textColor,
+                          ),
                         ),
+                        const SizedBox(height: 2),
+                        Row(
+                          children: [
+                            Icon(Icons.account_balance_rounded,
+                                size: 15, color: secondaryColor),
+                            const SizedBox(width: 2),
+                            Expanded(
+                              child: Text(
+                                rapatData['nama_instansi'],
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 2),
                         Row(
                           children: [
                             const Icon(Icons.calendar_today_rounded,
@@ -67,7 +82,7 @@ class QrSuccessScreen extends StatelessWidget {
                               formatDate(rapatData['tanggal']),
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
-                            const SizedBox(width: 50),
+                            const Spacer(),
                             const Icon(Icons.access_time_rounded,
                                 color: secondaryColor, size: 15),
                             const SizedBox(width: 2),
@@ -90,7 +105,7 @@ class QrSuccessScreen extends StatelessWidget {
                           padding: EdgeInsets.only(
                               left: 50,
                               right: 50,
-                              bottom: MediaQuery.of(context).size.height / 4),
+                              bottom: MediaQuery.of(context).size.height / 5),
                           child: const Text(
                             'Anda telah melakukan presensi pada kegiatan ini',
                             style: TextStyle(

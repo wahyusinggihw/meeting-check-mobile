@@ -104,7 +104,23 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                   children: [
                     Text(
                       rapatData.agendaRapat,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: textColor,
+                        // fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    // const SizedBox(width: 2),
+                    Row(
+                      children: [
+                        Icon(Icons.account_balance_rounded,
+                            size: 15, color: secondaryColor),
+                        const SizedBox(width: 2),
+                        Text(
+                          rapatData.namaBidang,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ],
                     ),
                     Row(
                       children: [
@@ -115,7 +131,8 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                           tanggal,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        const SizedBox(width: 50),
+                        // const SizedBox(width: 50),
+                        Spacer(),
                         const Icon(Icons.access_time_rounded,
                             color: secondaryColor, size: 15),
                         const SizedBox(width: 2),

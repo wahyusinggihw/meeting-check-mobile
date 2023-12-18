@@ -60,7 +60,7 @@ class QrFailedScreen extends StatelessWidget {
                       padding: EdgeInsets.only(
                           left: 50,
                           right: 50,
-                          bottom: MediaQuery.of(context).size.height / 2),
+                          bottom: MediaQuery.of(context).size.height / 3),
                       child: const Text(
                         'Informasi rapat tidak valid',
                         style: TextStyle(

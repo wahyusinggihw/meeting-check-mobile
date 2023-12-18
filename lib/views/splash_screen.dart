@@ -95,15 +95,18 @@ class _SplashScreenState extends State<SplashScreen> {
           const CircularProgressIndicator(),
           // build number version
           const SizedBox(height: 20),
-          Text('V ${_packageInfo.version}',
-              style: const TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                color: primaryColor,
-              )),
         ],
       )),
+      bottomNavigationBar: Text(
+        textAlign: TextAlign.center,
+        'V ${_packageInfo.version}',
+        style: const TextStyle(
+          fontFamily: 'Roboto',
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+          color: primaryColor,
+        ),
+      ),
     );
   }
 }

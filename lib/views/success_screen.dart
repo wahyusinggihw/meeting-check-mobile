@@ -51,8 +51,31 @@ class SuccessScreen extends StatelessWidget {
                   children: [
                     Text(
                       rapatData.agendaRapat,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: textColor,
+                        // fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    const SizedBox(height: 2),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.account_balance_rounded,
+                            size: 15, color: secondaryColor),
+                        const SizedBox(width: 2),
+                        Expanded(
+                          child: Text(
+                            rapatData.namaInstansi,
+                            // textAlign: TextAlign.justify,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
                     Row(
                       children: [
                         const Icon(Icons.calendar_today_rounded,
@@ -62,7 +85,7 @@ class SuccessScreen extends StatelessWidget {
                           formatDate(rapatData.tanggal),
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        const SizedBox(width: 50),
+                        Spacer(),
                         const Icon(Icons.access_time_rounded,
                             color: secondaryColor, size: 15),
                         const SizedBox(width: 2),
@@ -85,7 +108,7 @@ class SuccessScreen extends StatelessWidget {
                       padding: EdgeInsets.only(
                           left: 50,
                           right: 50,
-                          bottom: MediaQuery.of(context).size.height / 4),
+                          bottom: MediaQuery.of(context).size.height / 5),
                       child: const Text(
                         'Anda telah melakukan presensi pada kegiatan ini',
                         style: TextStyle(
