@@ -42,11 +42,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (isLogin) {
       Timer(const Duration(seconds: 3), () {
-        // Navigator.pushNamedAndRemoveUntil(
-        //   context,
-        //   '/',
-        //   (route) => false,
-        // );
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/',
+          (route) => false,
+        );
       });
     } else {
       Timer(const Duration(seconds: 3), () {
