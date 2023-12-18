@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(
               padding: MediaQuery.of(context).size.width > 600
                   ? const EdgeInsets.symmetric(horizontal: 100, vertical: 0)
-                  : const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  : const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               child: TabBarView(
                 children: [
                   Container(
