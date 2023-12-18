@@ -42,11 +42,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (isLogin) {
       Timer(const Duration(seconds: 3), () {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/',
-          (route) => false,
-        );
+        // Navigator.pushNamedAndRemoveUntil(
+        //   context,
+        //   '/',
+        //   (route) => false,
+        // );
       });
     } else {
       Timer(const Duration(seconds: 3), () {
@@ -97,14 +97,17 @@ class _SplashScreenState extends State<SplashScreen> {
           const SizedBox(height: 20),
         ],
       )),
-      bottomNavigationBar: Text(
-        textAlign: TextAlign.center,
-        'V ${_packageInfo.version}',
-        style: const TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-          color: primaryColor,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom: 25),
+        child: Text(
+          textAlign: TextAlign.center,
+          'V ${_packageInfo.version}',
+          style: const TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: primaryColor,
+          ),
         ),
       ),
     );
