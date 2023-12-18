@@ -90,8 +90,7 @@ class QrSuccessScreen extends StatelessWidget {
                           padding: EdgeInsets.only(
                               left: 50,
                               right: 50,
-                              bottom:
-                                  MediaQuery.of(context).size.height / 2 - 50),
+                              bottom: MediaQuery.of(context).size.height / 4),
                           child: const Text(
                             'Anda telah melakukan presensi pada kegiatan ini',
                             style: TextStyle(
