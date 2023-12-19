@@ -175,7 +175,7 @@ class CustomSearchDelegate extends SearchDelegate {
               trailing: riwayatKehadiran
                   ? const Icon(
                       Icons.check_circle,
-                      size: 15,
+                      size: 20,
                       color: primaryColor,
                     )
                   : const Text(''),

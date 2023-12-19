@@ -53,6 +53,7 @@ class QrSuccessScreen extends StatelessWidget {
                       children: [
                         Text(
                           rapatData['agenda_rapat'],
+                          textAlign: TextAlign.justify,
                           style: const TextStyle(
                             fontSize: 16,
                             color: textColor,
