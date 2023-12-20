@@ -68,7 +68,7 @@ class _LoginState extends State<Login> {
                                   fillColor: secondaryColor,
                                   focusColor: secondaryColor,
                                   labelText: 'NIP / NIPT',
-                                  hintText: 'NIPTT',
+                                  hintText: 'NIPT',
                                   border: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5))),
@@ -83,7 +83,7 @@ class _LoginState extends State<Login> {
                                     _containerHeight =
                                         75; // Ubah tinggi container jika validasi gagal
                                   });
-                                  return 'Masukkan NIPTT anda';
+                                  return 'Masukkan NIPT anda';
                                 }
                                 return null;
                               },

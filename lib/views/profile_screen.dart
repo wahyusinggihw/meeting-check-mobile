@@ -68,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.only(top: 70),
                     child: Container(
                       constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height / 1.5,
+                        minHeight: MediaQuery.of(context).size.height,
                       ),
                       // height: MediaQuery.of(context).size.height,
                       // height: MediaQuery.of(context).size.height * 0.7,
