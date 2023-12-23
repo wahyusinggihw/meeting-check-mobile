@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:meeting_check/providers/agendarapat_provider.dart';
+import 'package:meeting_check/providers/formdaftarhadir_provider.dart';
 import 'package:meeting_check/services/helpers.dart';
 import 'package:meeting_check/services/rapat_services.dart';
 import 'package:meeting_check/views/colors.dart';
@@ -193,18 +194,37 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                       height: 50,
                       // width: 150,
                       alignment: Alignment.center,
-                      child: const Text(
-                        'Submit',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
+                      child: Consumer<LoadingProvider>(
+                        builder: (context, loadingProvider, child) {
+                          if (loadingProvider.isLoading) {
+                            // Show your loading indicator
+                            return const SizedBox(
+                              height: 25,
+                              width: 25,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            );
+                          } else {
+                            // Show your regular content
+                            return const Text(
+                              'Submit',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ),
                     onPressed: () async {
-                      // ...
+                      LoadingProvider loadingProvider =
+                          Provider.of<LoadingProvider>(context, listen: false);
+                      loadingProvider.isLoading = true;
                       if (!isSigned) {
+                        loadingProvider.isLoading = false;
                         // Show an error snackbar if the signature is empty
                         await errorSnackbar(
                             context, 'Tanda tangan belum diisi');
@@ -244,6 +264,9 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
       );
 
   submitAbsen(kodeRapat, signatureImage, context) async {
+    LoadingProvider loadingProvider =
+        Provider.of<LoadingProvider>(context, listen: false);
+
     RapatServices rapatServices = RapatServices();
     AgendaRapatProvider agendaProvider =
         Provider.of<AgendaRapatProvider>(context, listen: false);
@@ -267,9 +290,8 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
 
     String base64Signature = getBase64Image(base64Image);
 
-    // print('Base64 Signature: $base64Signature');
-    // print('errorkan' + rapat['error']);
     if (rapat['error'] == true) {
+      loadingProvider.isLoading = false;
       Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
       errorDialog(context, 'Gagal', rapat['message']);
     } else {
@@ -292,6 +314,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
         await agendaProvider.fetchAgendaRapatSelesai();
         Navigator.pushReplacementNamed(context, '/qr-success',
             arguments: {'rapat': rapat['data'][0]});
+        loadingProvider.isLoading = false;
       }
     }
   }

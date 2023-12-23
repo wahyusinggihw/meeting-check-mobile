@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meeting_check/providers/agendarapat_provider.dart';
+import 'package:meeting_check/providers/formdaftarhadir_provider.dart';
 import 'package:meeting_check/providers/search_provider.dart';
 import 'package:meeting_check/routes/router.dart' as router;
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +21,9 @@ void main() {
         ChangeNotifierProvider<SearchHistoryModel>(
           create: (context) => SearchHistoryModel(),
         ),
+        ChangeNotifierProvider<LoadingProvider>(
+          create: (context) => LoadingProvider(),
+        )
       ],
       child: const MyApp(),
     ),
