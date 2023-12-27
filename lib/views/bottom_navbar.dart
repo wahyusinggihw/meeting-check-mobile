@@ -1,6 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:meeting_check/services/rapat_services.dart';
 import 'package:meeting_check/views/colors.dart';
@@ -52,41 +50,49 @@ class _MyHomePageState extends State<MyHomePage> {
       if (codeScanner != "-1") {
         // QR code scanned successfully, now parse the URL to extract kode_rapat
         Uri uri = Uri.parse(codeScanner);
-        // String? kodeRapat = uri.queryParameters['kode_rapat'];
-        String? kodeRapat = uri.pathSegments.last;
-        log(kodeRapat);
-        setState(() {
-          qrCodeResult = kodeRapat;
-        });
-        var rapat = await rapatServices.getAgendaRapatByKode(kodeRapat);
-        // log(rapat['error']);
-        // print(rapat['error']);
-        // print(rapat['agendaRapat'].agendaRapat);
-        if (rapat['error'] == true) {
-          // errorDialog(context, 'Gagal', rapat['message']);
-          Navigator.pushNamed(context, '/qr-failed');
-          // print('error qr');
-          // Navigator.pushReplacementNamed(context, '/qr-success', arguments: {
-          //     'rapat': rapat['agendaRapat'],
-          //   });
-        } else if (rapat['error'] == false) {
-          if (rapat['hadir'] == true) {
-            Navigator.pushNamed(context, '/qr-success', arguments: {
-              'rapat': rapat['agendaRapat'],
-            });
-            return;
-          }
-          Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
-            'kodeRapat': kodeRapat,
-            'rapat': rapat['formData'],
-          });
-          await successSnackbar(context, 'Silahkan melakukan tanda tangan',
-              duration: 5);
-        } else {
-          errorDialog(context, 'Gagal', 'Terjadi kesalahan');
-        }
 
-        // print("idRapat:" + qrCodeResult);
+        // Valid URI with segments
+        /// Checks if the URI has any path segments.
+        /// Returns `true` if the URI has path segments, `false` otherwise.
+        /// i.e
+        /// valid uri = https://daftarhadir.bulelengkab.go.id/rapat/daftar-hadir/932-824
+        /// not valid uri = https://daftarhadir.bulelengkab.go.id
+        if (uri.pathSegments.isNotEmpty) {
+          // String? kodeRapat = uri.queryParameters['kode_rapat'];
+          String? kodeRapat = uri.pathSegments.last;
+          setState(() {
+            qrCodeResult = kodeRapat;
+          });
+
+          var rapat = await rapatServices.getAgendaRapatByKode(kodeRapat);
+
+          // if kode rapat not found
+          if (rapat['error'] == true) {
+            Navigator.pushNamed(context, '/qr-failed');
+            // kode rapat found
+          } else if (rapat['error'] == false) {
+            // if user has attend the meeting
+            if (rapat['hadir'] == true) {
+              Navigator.pushNamed(context, '/qr-success', arguments: {
+                'rapat': rapat['agendaRapat'],
+              });
+              return;
+            }
+            // if user has not attend the meeting
+            Navigator.pushNamed(context, '/form-daftarhadir', arguments: {
+              'kodeRapat': kodeRapat,
+              'rapat': rapat['formData'],
+            });
+            await successSnackbar(context, 'Silahkan melakukan tanda tangan',
+                duration: 5);
+          } else {
+            // if error
+            errorDialog(context, 'Gagal', 'Terjadi kesalahan');
+          }
+        } else {
+          // Invalid URI without segments
+          Navigator.pushNamed(context, '/qr-failed');
+        }
       }
     }
 
