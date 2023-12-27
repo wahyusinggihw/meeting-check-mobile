@@ -98,7 +98,7 @@ class QrSuccessScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Image.asset(
-                            'assets/images/logo-2.png',
+                            'assets/images/success.png',
                             width: 150,
                           ),
                         ),
