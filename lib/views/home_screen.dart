@@ -394,8 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         const SizedBox(height: 5),
                                         Row(
                                           children: [
-                                            const Icon(
-                                                Icons.calendar_today_rounded,
+                                            const Icon(Icons.calendar_month,
                                                 color: secondaryColor,
                                                 size: 15),
                                             const SizedBox(width: 2),

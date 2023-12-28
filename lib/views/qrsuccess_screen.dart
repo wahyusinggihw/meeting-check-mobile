@@ -53,6 +53,7 @@ class QrSuccessScreen extends StatelessWidget {
                       children: [
                         Text(
                           rapatData['agenda_rapat'],
+                          textAlign: TextAlign.justify,
                           style: const TextStyle(
                             fontSize: 16,
                             color: textColor,
@@ -97,7 +98,7 @@ class QrSuccessScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Image.asset(
-                            'assets/images/logo-2.png',
+                            'assets/images/success.png',
                             width: 150,
                           ),
                         ),
