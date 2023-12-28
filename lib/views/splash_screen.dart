@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
-            'assets/images/icon.png',
+            'assets/images/logo.png',
             width: 170,
           ),
           const SizedBox(height: 20),

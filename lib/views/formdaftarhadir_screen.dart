@@ -31,6 +31,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
     final String kodeRapat = arguments?['kodeRapat'] ?? '';
     var rapatData = arguments?['rapat'];
     bool isSigned = false;
+    // print(rapatData.tempat);
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: AppBar(
@@ -113,29 +114,59 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                     ),
                     // const SizedBox(width: 2),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.account_balance_rounded,
-                            size: 15, color: secondaryColor),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 2),
+                          child: Icon(Icons.account_balance_rounded,
+                              size: 15, color: textColorSemiBold),
+                        ),
                         const SizedBox(width: 2),
-                        Text(
-                          rapatData.namaInstansi,
-                          style: Theme.of(context).textTheme.titleSmall,
+                        Expanded(
+                          child: Text(
+                            rapatData.namaInstansi,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
                         ),
                       ],
                     ),
+                    const SizedBox(height: 2),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(top: 2),
+                          child: Icon(Icons.place_outlined,
+                              color: textColorSemiBold, size: 15),
+                        ),
+                        const SizedBox(width: 2),
+                        Expanded(
+                          child: Text(
+                            rapatData.tempat,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
                     Row(
                       children: [
                         const Icon(Icons.calendar_month,
-                            color: secondaryColor, size: 15),
+                            color: textColorSemiBold, size: 15),
                         const SizedBox(width: 2),
                         Text(
                           tanggal,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        const SizedBox(width: 50),
-                        // const Spacer(),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
                         const Icon(Icons.access_time_rounded,
-                            color: secondaryColor, size: 15),
+                            color: textColorSemiBold, size: 15),
                         const SizedBox(width: 2),
                         Text(
                           rapatData.jam,
@@ -145,7 +176,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                     )
                   ],
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 const Text(
                   'Tanda Tangan',
                   style: TextStyle(
@@ -208,7 +239,7 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
                           } else {
                             // Show your regular content
                             return const Text(
-                              'Submit',
+                              'Kirim',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16,
@@ -310,10 +341,11 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
 
       // response return error if user already absen
       if (statusAbsen['error'] == false) {
-        await agendaProvider.fetchAgendaRapat();
-        await agendaProvider.fetchAgendaRapatSelesai();
+        await agendaProvider.fetchAgendaRapatSearch();
         Navigator.pushReplacementNamed(context, '/qr-success',
             arguments: {'rapat': rapat['data'][0]});
+        await agendaProvider.fetchAgendaRapat();
+        await agendaProvider.fetchAgendaRapatSelesai();
         loadingProvider.isLoading = false;
       }
     }

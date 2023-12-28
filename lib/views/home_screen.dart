@@ -195,15 +195,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          agendaProvider
-                                              .agendaRapatList[index].tempat,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: const TextStyle(
-                                            color: secondaryColor,
-                                            fontSize: 12,
-                                          ),
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.place_outlined,
+                                                color: secondaryColor,
+                                                size: 15),
+                                            const SizedBox(width: 2),
+                                            Expanded(
+                                              child: Text(
+                                                agendaProvider
+                                                    .agendaRapatList[index]
+                                                    .tempat,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                  color: secondaryColor,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         const SizedBox(height: 5),
                                         Row(
@@ -380,16 +391,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          agendaProvider
-                                              .agendaRapatSelesaiList[index]
-                                              .tempat,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: const TextStyle(
-                                            color: secondaryColor,
-                                            fontSize: 12,
-                                          ),
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.place_outlined,
+                                                color: secondaryColor,
+                                                size: 15),
+                                            const SizedBox(width: 2),
+                                            Expanded(
+                                              child: Text(
+                                                agendaProvider
+                                                    .agendaRapatSelesaiList[
+                                                        index]
+                                                    .tempat,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                  color: secondaryColor,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         const SizedBox(height: 5),
                                         Row(
@@ -465,24 +487,27 @@ class _HomeScreenState extends State<HomeScreen> {
       width: 60,
       height: 60,
       decoration: BoxDecoration(
+        color: primaryColor,
         borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: secondaryColor),
+        border: Border.all(color: primaryColor),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 0, right: 0),
+        padding: const EdgeInsets.all(0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               firstSection,
-              style: const TextStyle(
-                fontSize: 18,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18 * MediaQuery.of(context).textScaleFactor,
               ),
             ),
             Text(
               secondSection,
-              style: const TextStyle(
-                fontSize: 18,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18 * MediaQuery.of(context).textScaleFactor,
               ),
             ),
           ],
