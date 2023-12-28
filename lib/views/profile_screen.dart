@@ -57,6 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         titleTextStyle: Theme.of(context).textTheme.headlineMedium,
         centerTitle: false,
         title: const Text('Profil Saya'),
+        automaticallyImplyLeading: false, // Remove back button
       ),
       backgroundColor: primaryColor,
       body: height > 600

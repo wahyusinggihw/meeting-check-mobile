@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:meeting_check/providers/agendarapat_provider.dart';
 import 'package:meeting_check/providers/formdaftarhadir_provider.dart';
+import 'package:meeting_check/providers/search_provider.dart';
 import 'package:meeting_check/services/helpers.dart';
 import 'package:meeting_check/services/rapat_services.dart';
 import 'package:meeting_check/views/colors.dart';
@@ -342,10 +343,37 @@ class _FormDaftarHadirState extends State<FormDaftarHadir> {
       // response return error if user already absen
       if (statusAbsen['error'] == false) {
         await agendaProvider.fetchAgendaRapatSearch();
+
+        final rapatData = rapat['data'][0];
+        final updatedEntry = SearchHistoryEntry(
+          agendaRapat: rapatData['agenda_rapat'],
+          subtitle: rapatData['nama_instansi'],
+          kodeRapat: rapatData['kode_rapat'],
+          namaInstansi: rapatData['nama_instansi'],
+          tempat: rapatData['tempat'],
+          tanggal: rapatData['tanggal'],
+          jam: rapatData['jam'],
+          riwayatKehadiran: true,
+        );
+
+        final searchHistoryModel =
+            Provider.of<SearchHistoryModel>(context, listen: false);
+
+        // Find the index of the entry with the matching kodeRapat
+        searchHistoryModel.updateSearchHistory(kodeRapat, updatedEntry);
+
         Navigator.pushReplacementNamed(context, '/qr-success',
             arguments: {'rapat': rapat['data'][0]});
+
+        // searchHistoryModel.searchHistory.removeLast();
+
         await agendaProvider.fetchAgendaRapat();
         await agendaProvider.fetchAgendaRapatSelesai();
+        loadingProvider.isLoading = false;
+      } else if (statusAbsen['error'] == true) {
+        // prevent user from double absen
+        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+        errorDialog(context, 'Gagal', statusAbsen['message']);
         loadingProvider.isLoading = false;
       }
     }

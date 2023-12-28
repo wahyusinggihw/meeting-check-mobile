@@ -107,44 +107,81 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         child: NavigationBar(
+          height: 55,
           shadowColor: Colors.black.withOpacity(0.16),
           backgroundColor: Colors.white,
           selectedIndex: index,
           onDestinationSelected: (index) => setState(() => this.index = index),
           destinations: [
-            const NavigationDestination(
-              icon: Icon(Icons.home_rounded),
-              label: '',
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  index = 0;
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 37, right: 37, top: 10, bottom: 10),
+                child: AnimatedContainer(
+                  duration: const Duration(
+                      milliseconds: 300), // Adjust the duration as needed
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    color: index == 0 ? primaryColorLight : Colors.transparent,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: const Icon(Icons.home_rounded),
+                ),
+              ),
             ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                InkWell(
-                    radius: 30,
-                    borderRadius: BorderRadius.circular(100),
-                    onTap: () {
-                      scanQRCode();
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: primaryColor,
-                        child: Icon(
-                          Icons.qr_code_scanner_rounded,
-                          size: 30,
-                        ),
-                      ),
-                    )),
-              ],
-            ),
-            const NavigationDestination(
-              icon: Icon(Icons.person),
-              label: '',
+            const SizedBox(width: 0),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  index = 2;
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 37, right: 37, top: 10, bottom: 10),
+                child: AnimatedContainer(
+                  duration: const Duration(
+                      milliseconds: 300), // Adjust the duration as needed
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    color: index == 2 ? primaryColorLight : Colors.transparent,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: const Icon(Icons.person),
+                ),
+              ),
             ),
           ],
         ),
       ),
+      floatingActionButton: Stack(
+        alignment: Alignment.center,
+        children: [
+          InkWell(
+              radius: 30,
+              borderRadius: BorderRadius.circular(100),
+              onTap: () {
+                scanQRCode();
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  radius: 30,
+                  backgroundColor: primaryColor,
+                  child: Icon(
+                    Icons.qr_code_scanner_rounded,
+                    size: 30,
+                  ),
+                ),
+              )),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

@@ -288,8 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                             child: ListView.separated(
                               separatorBuilder: (context, index) => Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Divider(
                                   color: Colors.grey[300],
                                   height: 1,

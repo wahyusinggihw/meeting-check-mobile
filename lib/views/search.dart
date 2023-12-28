@@ -178,7 +178,7 @@ class CustomSearchDelegate extends SearchDelegate {
               trailing: riwayatKehadiran
                   ? const Icon(
                       Icons.check_circle,
-                      size: 20,
+                      size: 15,
                       color: primaryColor,
                     )
                   : const Text(''),
@@ -196,8 +196,15 @@ class CustomSearchDelegate extends SearchDelegate {
                     'rapat': agendaProvider.searchedAgendaRapatSearchList[index]
                   });
                 }
-                updateSearchHistory(
-                    context, result.agendaRapat, result.namaInstansi);
+                updateSearchHistory(context,
+                    agendaRapat: result.agendaRapat,
+                    subtitle: result.namaInstansi,
+                    kodeRapat: result.kodeRapat,
+                    namaInstansi: result.namaInstansi,
+                    tempat: result.tempat,
+                    tanggal: result.tanggal,
+                    jam: result.jam,
+                    riwayatKehadiran: riwayatKehadiran);
                 // close(context, result.agendaRapat);
               },
             );
@@ -209,8 +216,9 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // return buildResults(context);
-    final searchHistoryModel = Provider.of<SearchHistoryModel>(context);
+    final searchHistoryModel =
+        Provider.of<SearchHistoryModel>(context, listen: false);
+
     if (query.isEmpty) {
       return searchHistoryModel.searchHistory.isEmpty
           ? Container()
@@ -249,54 +257,83 @@ class CustomSearchDelegate extends SearchDelegate {
                               fontFamily: 'Roboto',
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
                   // Display the last 3 search history with a delete button
-                  for (var i = searchHistoryModel.searchHistory.length - 1;
-                      i >= 0 &&
-                          i > searchHistoryModel.searchHistory.length - 11;
-                      i--)
-                    ListTile(
-                      title: Text(searchHistoryModel.searchHistory[i].title),
-                      subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  Consumer<SearchHistoryModel>(
+                    builder: (context, searchHistoryModel, child) {
+                      // print(
+                      //     searchHistoryModel.searchHistory[0].riwayatKehadiran);
+                      return Column(
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 2),
-                            child: Icon(Icons.account_balance_rounded,
-                                size: 15, color: secondaryColor),
-                          ),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              searchHistoryModel.searchHistory[i].subtitle,
-                              style: const TextStyle(
-                                color: secondaryColor,
-                                fontSize: 12,
+                          for (var i =
+                                  searchHistoryModel.searchHistory.length - 1;
+                              i >= 0 &&
+                                  i >
+                                      searchHistoryModel.searchHistory.length -
+                                          11;
+                              i--)
+                            ListTile(
+                              title: Text(searchHistoryModel
+                                  .searchHistory[i].agendaRapat),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(top: 2),
+                                    child: Icon(Icons.account_balance_rounded,
+                                        size: 15, color: secondaryColor),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: Text(
+                                      searchHistoryModel
+                                          .searchHistory[i].subtitle,
+                                      style: const TextStyle(
+                                        color: secondaryColor,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
+                              leading: const Icon(Icons.history,
+                                  color: secondaryColor),
+                              trailing: IconButton(
+                                onPressed: () {
+                                  searchHistoryModel.removeSearchHistory(i);
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                ),
+                              ),
+                              onTap: () {
+                                var rapat = searchHistoryModel.searchHistory[i];
+                                bool riwayatKehadiran = rapat.riwayatKehadiran;
+
+                                if (!riwayatKehadiran) {
+                                  Navigator.pushNamed(
+                                      context, '/form-daftarhadir',
+                                      arguments: {
+                                        'kodeRapat': rapat.kodeRapat,
+                                        'rapat': rapat,
+                                      });
+                                } else {
+                                  Navigator.pushNamed(context, '/success',
+                                      arguments: {
+                                        'kodeRapat': rapat.kodeRapat,
+                                        'rapat': rapat,
+                                      });
+                                }
+                              },
                             ),
-                          ),
                         ],
-                      ),
-                      leading: const Icon(Icons.history, color: secondaryColor),
-                      trailing: IconButton(
-                        onPressed: () {
-                          searchHistoryModel.removeSearchHistory(i);
-                        },
-                        icon: const Icon(
-                          Icons.close,
-                        ),
-                      ),
-                      onTap: () {
-                        // Handle tapping on a history item
-                        query = searchHistoryModel.searchHistory[i].title
-                            .toLowerCase();
-                        showResults(context);
-                      },
-                    ),
+                      );
+                    },
+                  ),
                 ],
               ),
             );
@@ -305,10 +342,18 @@ class CustomSearchDelegate extends SearchDelegate {
     }
   }
 
-  void updateSearchHistory(
-      BuildContext context, String title, String subtitle) {
+  void updateSearchHistory(BuildContext context,
+      {required String agendaRapat,
+      required String subtitle,
+      required String kodeRapat,
+      required String namaInstansi,
+      required String tempat,
+      required String tanggal,
+      required String jam,
+      required bool riwayatKehadiran}) {
     final searchHistoryModel =
         Provider.of<SearchHistoryModel>(context, listen: false);
-    searchHistoryModel.addSearchHistory(title, subtitle);
+    searchHistoryModel.addSearchHistory(agendaRapat, subtitle, kodeRapat,
+        namaInstansi, tempat, tanggal, jam, riwayatKehadiran);
   }
 }
