@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
           destinations: [
             const NavigationDestination(
               icon: Icon(Icons.home_rounded),
-              label: 'Home',
+              label: '',
             ),
             Stack(
               alignment: Alignment.center,
@@ -140,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const NavigationDestination(
               icon: Icon(Icons.person),
-              label: 'Profile',
+              label: '',
             ),
           ],
         ),

@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'DaftarHadir',
+      title: 'Daftar Hadir Rapat',
       theme: ThemeData(
         // scaffoldBackgroundColor: primaryColor,
         // colorScheme: ColorScheme.fromSeed(
@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
           titleSmall: GoogleFonts.roboto(
             fontSize: 12,
             fontWeight: FontWeight.normal,
-            color: secondaryColor,
+            color: textColorSemiBold,
           ),
           bodyMedium: GoogleFonts.roboto(
             fontSize: 12,

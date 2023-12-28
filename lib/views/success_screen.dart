@@ -63,8 +63,11 @@ class SuccessScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.account_balance_rounded,
-                            size: 15, color: secondaryColor),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 2),
+                          child: Icon(Icons.account_balance_rounded,
+                              size: 15, color: textColorSemiBold),
+                        ),
                         const SizedBox(width: 2),
                         Expanded(
                           child: Text(
@@ -77,18 +80,41 @@ class SuccessScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(top: 2),
+                          child: Icon(Icons.place_outlined,
+                              color: textColorSemiBold, size: 15),
+                        ),
+                        const SizedBox(width: 2),
+                        Expanded(
+                          child: Text(
+                            rapatData.tempat,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
                       children: [
                         const Icon(Icons.calendar_month,
-                            color: secondaryColor, size: 15),
+                            color: textColorSemiBold, size: 15),
                         const SizedBox(width: 2),
                         Text(
                           formatDate(rapatData.tanggal),
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
-                        const SizedBox(width: 50),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
                         // const Spacer(),
                         const Icon(Icons.access_time_rounded,
-                            color: secondaryColor, size: 15),
+                            color: textColorSemiBold, size: 15),
                         const SizedBox(width: 2),
                         Text(
                           rapatData.jam,
@@ -132,7 +158,8 @@ class SuccessScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () =>
+                          Navigator.pushReplacementNamed(context, '/'),
                     ),
                     const SizedBox(
                       height: 20,

@@ -154,11 +154,14 @@ class CustomSearchDelegate extends SearchDelegate {
                 ],
               ),
               subtitle: Row(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.account_balance_rounded,
-                      size: 15, color: secondaryColor),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 2),
+                    child: Icon(Icons.account_balance_rounded,
+                        size: 15, color: secondaryColor),
+                  ),
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
@@ -258,11 +261,13 @@ class CustomSearchDelegate extends SearchDelegate {
                     ListTile(
                       title: Text(searchHistoryModel.searchHistory[i].title),
                       subtitle: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(
-                            Icons.account_balance_rounded,
-                            size: 15,
-                            color: secondaryColor,
+                          const Padding(
+                            padding: EdgeInsets.only(top: 2),
+                            child: Icon(Icons.account_balance_rounded,
+                                size: 15, color: secondaryColor),
                           ),
                           const SizedBox(width: 4),
                           Expanded(
