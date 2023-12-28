@@ -124,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     left: 37, right: 37, top: 10, bottom: 10),
                 child: AnimatedContainer(
                   duration: const Duration(
-                      milliseconds: 300), // Adjust the duration as needed
+                      milliseconds: 200), // Adjust the duration as needed
                   height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
                     color: index == 0 ? primaryColorLight : Colors.transparent,
@@ -146,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     left: 37, right: 37, top: 10, bottom: 10),
                 child: AnimatedContainer(
                   duration: const Duration(
-                      milliseconds: 300), // Adjust the duration as needed
+                      milliseconds: 200), // Adjust the duration as needed
                   height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
                     color: index == 2 ? primaryColorLight : Colors.transparent,
