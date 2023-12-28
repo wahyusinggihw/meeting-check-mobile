@@ -108,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child: NavigationBar(
           height: 55,
+          height: 55,
           shadowColor: Colors.black.withOpacity(0.16),
           backgroundColor: Colors.white,
           selectedIndex: index,
