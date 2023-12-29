@@ -100,87 +100,48 @@ class _MyHomePageState extends State<MyHomePage> {
       body: screens[index],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
           indicatorColor: primaryColorLight,
           labelTextStyle: MaterialStateProperty.all(
             const TextStyle(fontWeight: FontWeight.normal),
           ),
         ),
         child: NavigationBar(
-          height: 55,
+          height: 60,
           shadowColor: Colors.black.withOpacity(0.16),
           backgroundColor: Colors.white,
           selectedIndex: index,
           onDestinationSelected: (index) => setState(() => this.index = index),
           destinations: [
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  index = 0;
-                });
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 37, right: 37, top: 10, bottom: 10),
-                child: AnimatedContainer(
-                  duration: const Duration(
-                      milliseconds: 200), // Adjust the duration as needed
-                  height: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                    color: index == 0 ? primaryColorLight : Colors.transparent,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: const Icon(Icons.home_rounded),
-                ),
-              ),
+            const NavigationDestination(
+              icon: Icon(Icons.home_rounded),
+              label: 'Beranda',
             ),
-            const SizedBox(width: 0),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  index = 2;
-                });
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 37, right: 37, top: 10, bottom: 10),
-                child: AnimatedContainer(
-                  duration: const Duration(
-                      milliseconds: 200), // Adjust the duration as needed
-                  height: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                    color: index == 2 ? primaryColorLight : Colors.transparent,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: const Icon(Icons.person),
-                ),
-              ),
+            Container(),
+            const NavigationDestination(
+              icon: Icon(Icons.person),
+              label: 'Profil',
             ),
           ],
         ),
       ),
-      floatingActionButton: Stack(
-        alignment: Alignment.center,
-        children: [
-          InkWell(
+      floatingActionButton: InkWell(
+          radius: 30,
+          borderRadius: BorderRadius.circular(100),
+          onTap: () {
+            scanQRCode();
+          },
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: CircleAvatar(
               radius: 30,
-              borderRadius: BorderRadius.circular(100),
-              onTap: () {
-                scanQRCode();
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: primaryColor,
-                  child: Icon(
-                    Icons.qr_code_scanner_rounded,
-                    size: 30,
-                  ),
-                ),
-              )),
-        ],
-      ),
+              backgroundColor: primaryColor,
+              child: Icon(
+                Icons.qr_code_scanner_rounded,
+                size: 30,
+              ),
+            ),
+          )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
