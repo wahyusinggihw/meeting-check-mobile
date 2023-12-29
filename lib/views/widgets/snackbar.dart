@@ -6,6 +6,7 @@ successSnackbar(BuildContext context, String text, {int duration = 2}) {
       backgroundColor: Colors.blue,
       content: Text(text),
       duration: Duration(seconds: duration),
+      behavior: SnackBarBehavior.floating,
     ),
   );
 }
@@ -16,6 +17,7 @@ errorSnackbar(BuildContext context, String text, {int duration = 2}) {
       backgroundColor: Colors.red,
       content: Text(text),
       duration: const Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
     ),
   );
 }
